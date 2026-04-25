@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Approach — aikyma.ai</title>
+<meta name="description" content="Bottom-Up statt Top-Down. Direkte Wertschöpfung in operativen Prozessen. Kurze Projekte, messbarer Nutzen.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css">
+
+<style>
+/* Approach-spezifisch */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 16px;
+}
+.compare-card {
+  padding: 40px;
+  border-radius: 14px;
+  position: relative;
+  transition: all 0.3s;
+}
+.compare-card-ours {
+  background: var(--navy-deep);
+  color: var(--text-on-dark);
+  border: 2px solid var(--teal);
+  box-shadow: 0 20px 40px -12px rgba(63, 186, 194, 0.2);
+}
+.compare-card-theirs {
+  background: #fff;
+  color: var(--text-on-light);
+  border: 1px solid var(--border-light);
+  opacity: 0.9;
+}
+.compare-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed;
+}
+.compare-card-ours .compare-header { border-color: rgba(255,255,255,0.15); }
+.compare-card-theirs .compare-header { border-color: var(--border-light); }
+.compare-card-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.compare-card-subtitle { font-size: 13px; opacity: 0.8; margin-top: 4px; font-style: italic; }
+.compare-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: var(--teal);
+  color: var(--navy-deep);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 100px;
+}
+.compare-badge-muted {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  background: var(--bg-light);
+  color: var(--text-on-light-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 100px;
+}
+.compare-list { list-style: none; }
+.compare-list li {
+  padding: 10px 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid;
+}
+.compare-card-ours .compare-list li {
+  color: var(--text-on-dark-muted);
+  border-color: rgba(255,255,255,0.06);
+}
+.compare-card-theirs .compare-list li {
+  color: var(--text-on-light);
+  border-color: var(--border-light);
+}
+.compare-list li:last-child { border-bottom: none; }
+.compare-list li::before {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+  margin-top: 2px;
+  text-align: center;
+  line-height: 18px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.compare-card-ours .compare-list li::before {
+  content: '✓';
+  background: var(--teal);
+  color: var(--navy-deep);
+}
+.compare-card-theirs .compare-list li::before {
+  content: '!';
+  background: #F4D4CC;
+  color: #B85042;
+}
+.compare-stat {
+  display: inline-block;
+  background: var(--teal-soft);
+  color: var(--teal);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+/* Success factors grid */
+.factors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 16px;
+}
+.factor-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 36px 32px;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.factor-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--teal-line);
+  box-shadow: 0 20px 40px -12px rgba(30, 42, 58, 0.12);
+}
+.factor-icon {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  background: var(--teal-soft);
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.factor-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy-deep);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+.factor-desc {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-on-light-muted);
+}
+
+/* Use case indicators */
+.indicator-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 16px;
+}
+.indicator-card {
+  background: linear-gradient(155deg, #243346 0%, var(--navy-darker) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 36px 32px;
+  color: var(--text-on-dark);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.indicator-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--teal-line);
+}
+.indicator-num {
+  font-family: var(--font-display);
+  font-size: 68px;
+  font-weight: 800;
+  color: var(--teal);
+  line-height: 1;
+  opacity: 0.35;
+  margin-bottom: -20px;
+  letter-spacing: -0.04em;
+}
+.indicator-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.indicator-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-on-dark-muted);
+}
+
+/* Journey steps */
+.journey {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 32px;
+  position: relative;
+}
+.journey::before {
+  content: '';
+  position: absolute;
+  top: 38px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: repeating-linear-gradient(to right, var(--teal-line) 0, var(--teal-line) 8px, transparent 8px, transparent 16px);
+  z-index: 0;
+}
+.journey-step {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 0 10px;
+}
+.journey-num {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--teal);
+  color: var(--teal);
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  transition: all 0.3s;
+  box-shadow: 0 0 0 6px #fff;
+}
+.journey-step:hover .journey-num {
+  background: var(--teal);
+  color: #fff;
+  transform: scale(1.08);
+}
+.journey-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--navy-deep);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.journey-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-on-light-muted);
+}
+
+/* Manifesto quote */
+.manifesto {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 60px 20px 20px;
+}
+.manifesto-quote {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3.4vw, 36px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-on-dark);
+  font-style: italic;
+  margin-bottom: 32px;
+  position: relative;
+}
+.manifesto-quote::before {
+  content: '«';
+  font-size: 80px;
+  color: var(--teal);
+  line-height: 0;
+  display: block;
+  margin-bottom: 24px;
+  opacity: 0.6;
+}
+.manifesto-attribution {
+  color: var(--text-on-dark-muted);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+.manifesto-attribution-name {
+  color: var(--teal);
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .comparison-grid { grid-template-columns: 1fr; }
+  .factors-grid { grid-template-columns: 1fr; }
+  .indicator-grid { grid-template-columns: 1fr; }
+  .journey { grid-template-columns: 1fr 1fr; gap: 32px 16px; }
+  .journey::before { display: none; }
+}
+@media (max-width: 640px) {
+  .journey { grid-template-columns: 1fr; }
+  .compare-card { padding: 28px; }
+  .factor-card { padding: 28px 24px; }
+  .indicator-card { padding: 28px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo"><span class="nav-logo-chevron">»</span>aikyma<span class="nav-logo-sub">applied AI</span></a>
+    <div class="nav-links">
+      <a href="produkt.html">Produkt</a>
+      <a href="approach.html" class="active">Approach</a>
+      <a href="team.html">Team</a>
+      <a href="kontakt.html">Kontakt</a>
+      <div class="nav-lang"><span class="active">DE</span><span>/</span><a href="en/approach.html" style="text-decoration: none; color: inherit;">EN</a></div>
+      <a href="#" data-cal-popup class="btn btn-primary">Demo buchen</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="page-hero-circles">
+    <div class="page-hero-circle page-hero-circle-1"></div>
+    <div class="page-hero-circle page-hero-circle-2"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <div class="page-hero-eyebrow">Approach</div>
+    <h1>Bottom-Up, <span class="accent">nicht Top-Down.</span></h1>
+    <p class="page-hero-lede">
+      Direkt in produktive Prozesse. Kurze Projekte. Messbarer Nutzen. Keine 6-Monats-Strategieübungen mit ungewissem Ausgang — sondern MVPs, die nach 8 Wochen in Produktion laufen und sich danach schrittweise erweitern.
+    </p>
+  </div>
+</section>
+
+<!-- BOTTOM UP VS TOP DOWN -->
+<section class="section section-light">
+  <div class="container">
+    <div class="eyebrow">Unser Vorgehensmodell</div>
+    <h2 class="section-title">Messbar effizienter.</h2>
+    <p class="section-subtitle">
+      Klassische KI-Projekte scheitern, weil sie zu gross starten. Wir gehen den umgekehrten Weg: kleine, produktive MVPs — aus denen organisches Wachstum entsteht.
+    </p>
+
+    <div class="comparison-grid">
+      <!-- Unser Ansatz -->
+      <div class="compare-card compare-card-ours">
+        <div class="compare-header">
+          <div>
+            <div class="compare-card-title">aikyma Bottom-Up</div>
+            <div class="compare-card-subtitle">MVP to Operations</div>
+          </div>
+          <span class="compare-badge">Unser Ansatz</span>
+        </div>
+        <ul class="compare-list">
+          <li>Direkte Wertschöpfung in operativen Prozessen</li>
+          <li><span class="compare-stat">&gt;70%</span>&nbsp;der Projekte erfolgreich abgeschlossen</li>
+          <li>Projektlaufzeiten <span class="compare-stat">&lt;90 Tage</span></li>
+          <li>Direkt messbarer Nutzen ab dem ersten Monat</li>
+          <li>Kostengünstige, leichtgewichtige Angebote</li>
+          <li>Schrittweise Expansion auf weitere Prozesse</li>
+        </ul>
+      </div>
+
+      <!-- Klassischer Ansatz -->
+      <div class="compare-card compare-card-theirs">
+        <div class="compare-header">
+          <div>
+            <div class="compare-card-title">Klassisch Top-Down</div>
+            <div class="compare-card-subtitle">Strategy to Operations</div>
+          </div>
+          <span class="compare-badge-muted">Traditionell</span>
+        </div>
+        <ul class="compare-list">
+          <li><span class="compare-stat">60%</span>&nbsp;der Vorhaben scheitern</li>
+          <li>Projektlaufzeiten <span class="compare-stat">&gt;6 Monate</span></li>
+          <li><span class="compare-stat">50%</span>&nbsp;enden mit Budget-Overrun</li>
+          <li><span class="compare-stat">40%</span>&nbsp;werden nach 6 Monaten gestoppt</li>
+          <li>Hohe Vorleistungen mit unsicherem Ausgang</li>
+          <li>Strategische Anforderungen oft entkoppelt von Realität</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO QUOTE -->
+<section class="section section-dark section-tight">
+  <div class="container manifesto">
+    <div class="manifesto-quote">
+      Wir neigen dazu, die Wirkung einer Technologie kurzfristig zu überschätzen und ihre langfristige Wirkung zu unterschätzen.
+    </div>
+    <div class="manifesto-attribution">— <span class="manifesto-attribution-name">Roy Amara</span></div>
+  </div>
+</section>
+
+<!-- SUCCESS FACTORS -->
+<section class="section section-tinted">
+  <div class="container">
+    <div class="eyebrow">Unsere Erfolgsfaktoren</div>
+    <h2 class="section-title">Warum unser Ansatz funktioniert.</h2>
+    <p class="section-subtitle">Drei Prinzipien, die über Erfolg oder Misserfolg entscheiden — und die wir konsequent durchziehen.</p>
+
+    <div class="factors-grid">
+      <div class="factor-card">
+        <div class="factor-icon">🎯</div>
+        <h3 class="factor-title">Business-Fokus</h3>
+        <p class="factor-desc">
+          Transparente Prozessanalyse zeigt, wo KI den grössten Mehrwert schafft. Klare Kosten-/Nutzenbewertung bildet die Grundlage für nachhaltigen Projekterfolg — nicht technische Möglichkeiten, sondern ökonomische Wirkung.
+        </p>
+      </div>
+      <div class="factor-card">
+        <div class="factor-icon">⚡</div>
+        <h3 class="factor-title">MVP-Vorgehen</h3>
+        <p class="factor-desc">
+          Keine Prototypen, sondern produktive Lösungen. Ein businessorientierter MVP demonstriert die Machbarkeit mit minimalem Aufwand — und liefert ab Woche 1 echten Betriebsnutzen, nicht nur PowerPoint-Folien.
+        </p>
+      </div>
+      <div class="factor-card">
+        <div class="factor-icon">🛡️</div>
+        <h3 class="factor-title">Risikobetrachtung</h3>
+        <p class="factor-desc">
+          Schrittweises Lernen reduziert Risiken. Überschaubare MVP-Investitionen minimieren Zeit- und Kostenrisiken. Erfolgreiche MVPs schaffen die Basis für skalierte Automatisierung — mit Evidenz statt Annahmen.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASE INDICATORS -->
+<section class="section section-light">
+  <div class="container">
+    <div class="eyebrow">Use-Case-Check</div>
+    <h2 class="section-title">Ist Ihr Prozess geeignet?</h2>
+    <p class="section-subtitle">Drei Indikatoren, an denen wir in 10 Minuten einschätzen können, ob sich eine Automatisierung lohnt.</p>
+
+    <div class="indicator-grid">
+      <div class="indicator-card">
+        <div class="indicator-num">1</div>
+        <h3 class="indicator-title">Prozesskomplexität</h3>
+        <p class="indicator-text">
+          Mehrere Eingabeschritte, Daten aus verschiedenen Quellen, Validierungen gegen Stammdaten — je komplexer die manuelle Bearbeitung, desto grösser der Hebel durch Automatisierung.
+        </p>
+      </div>
+      <div class="indicator-card">
+        <div class="indicator-num">2</div>
+        <h3 class="indicator-title">Volumen</h3>
+        <p class="indicator-text">
+          Hohe Anzahl wiederkehrender Eingaben, viele manuelle Datenprüfungen, regelmässige Stressspitzen. Ab ca. 500 Vorgängen pro Monat rechnet sich die Automatisierung typischerweise.
+        </p>
+      </div>
+      <div class="indicator-card">
+        <div class="indicator-num">3</div>
+        <h3 class="indicator-title">Datenqualität &amp; Zugang</h3>
+        <p class="indicator-text">
+          Eingabedaten liegen digital, aber unstrukturiert vor (PDF, E-Mail, Office). Backend-Systeme sind über Schnittstellen einbindbar. Keine perfekte Datenlage nötig — nur eine zugängliche.
+        </p>
+      </div>
+    </div>
+
+    <div class="pricing-note" style="margin-top: 48px;">
+      <strong>Schnelle Einschätzung gesucht?</strong> Schicken Sie uns eine E-Mail mit einer Kurzbeschreibung Ihres Prozesses. Wir melden uns innerhalb von 48 Stunden mit einer qualifizierten Ersteinschätzung — ohne Verpflichtung.
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY / 5 STEPS -->
+<section class="section section-tinted">
+  <div class="container">
+    <div class="eyebrow">Wie wir zusammenarbeiten</div>
+    <h2 class="section-title">Fünf Schritte zur produktiven KI.</h2>
+    <p class="section-subtitle">Ein bewährtes Vorgehen, das wir mit jedem Kunden durchlaufen — transparent, mit klaren Meilensteinen und ohne versteckte Erweiterungen.</p>
+
+    <div class="journey">
+      <div class="journey-step">
+        <div class="journey-num">1</div>
+        <div class="journey-title">Kennenlernen</div>
+        <div class="journey-desc">30 Min. Erstgespräch. Keine Sales-Show — wir hören zu und geben eine erste Einschätzung.</div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-num">2</div>
+        <div class="journey-title">Workshop</div>
+        <div class="journey-desc">Strukturierter Ideations-Workshop zur gemeinsamen Identifikation und Priorisierung von Use Cases.</div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-num">3</div>
+        <div class="journey-title">Pilot</div>
+        <div class="journey-desc">Zugeschnittener MVP für einen konkreten Anwendungsfall mit schnellem Mehrwert.</div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-num">4</div>
+        <div class="journey-title">Offerte</div>
+        <div class="journey-desc">Detailliertes Angebot mit Integrationskosten — optional mit Anteil an erzielten Einsparungen.</div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-num">5</div>
+        <div class="journey-title">Betrieb</div>
+        <div class="journey-desc">Engagierte Begleitung von der Inbetriebnahme bis zur kontinuierlichen Optimierung.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="final-cta-circles"><div class="c c1"></div><div class="c c2"></div><div class="c c3"></div></div>
+  <div class="container final-cta-inner">
+    <h2>Bereit für <span class="accent">einen ehrlichen Check?</span></h2>
+    <p>30 Minuten reichen, um zu sehen, ob bei Ihren Prozessen ein sinnvoller Einstieg möglich ist — oder ob es sich nicht lohnt. Wir sagen beides ehrlich.</p>
+    <div class="final-cta-row">
+      <a href="#" data-cal-popup class="btn btn-primary btn-lg">Erstgespräch buchen <span class="btn-arrow">→</span></a>
+      <a href="produkt.html" class="btn btn-ghost btn-lg">Zu den Agenten</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo"><span class="chevron">»</span>aikyma</div>
+        <p class="footer-brand-tagline">KI-native Prozessautomatisierung für den Handel. Gebaut in Basel, produktiv im DACH-Raum.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produkt</h4>
+        <a href="produkt.html#oscar">Oskar</a>
+        <a href="produkt.html#petra">Petra</a>
+        <a href="approach.html">Approach</a>
+      </div>
+      <div class="footer-col">
+        <h4>Unternehmen</h4>
+        <a href="team.html">Team</a>
+        <a href="kontakt.html">Kontakt</a>
+        <a href="kontakt.html#partner">Partnerprogramm</a>
+      </div>
+      <div class="footer-col">
+        <h4>Kontakt</h4>
+        <a href="mailto:contact@aikyma.ai">contact@aikyma.ai</a>
+        <a>Blauenstrasse 6<br>4054 Basel, Schweiz</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 aikyma.ai · Alle Rechte vorbehalten</div>
+      <div class="footer-legal">
+        <a href="#">Impressum</a>
+        <a href="#">Datenschutz</a>
+        <a href="#">AGB</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav = document.querySelector('.nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 20) { nav.classList.add('scrolled'); }
+  else { nav.classList.remove('scrolled'); }
+});
+</script>
+
+
+<!-- Cal.com Popup Loader (für data-cal-popup Buttons) -->
+<script type="text/javascript">
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", "popup-discover", { origin: "https://cal.com" });
+  Cal.ns["popup-discover"]("ui", {
+    theme: "light",
+    cssVarsPerTheme: { light: { "cal-brand": "#3FBAC2" } },
+    hideEventTypeDetails: false,
+    layout: "month_view"
+  });
+  document.querySelectorAll('[data-cal-popup]').forEach(el => {
+    el.setAttribute('data-cal-link', 'alexander-buch-sbw9zu/discover-call');
+    el.setAttribute('data-cal-namespace', 'popup-discover');
+    el.setAttribute('data-cal-config', '{"layout":"month_view","theme":"light"}');
+  });
+</script>
+
+</body>
+</html>

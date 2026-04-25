@@ -1,0 +1,3182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produkt — aikyma.ai</title>
+<meta name="description" content="Oskar und Petra: zwei produktive KI-Agenten für den Handel. Details zu Integration, Betriebsmodellen und Pricing.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shared.css">
+
+<style>
+/* ==================================================================
+   Produkt-spezifische Styles
+   ================================================================== */
+
+/* Agent-Overview-Switcher am Seitenanfang */
+.agent-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: -40px;
+  position: relative;
+  z-index: 3;
+}
+.agent-overview-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-decoration: none;
+  color: var(--text-on-light);
+  transition: all 0.2s;
+  box-shadow: 0 10px 30px -12px rgba(30, 42, 58, 0.12);
+}
+.agent-overview-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--teal-line);
+  box-shadow: 0 20px 40px -12px rgba(30, 42, 58, 0.2);
+}
+.agent-overview-avatar {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--teal) 0%, #2A8A90 100%);
+  color: var(--navy-deep);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.agent-overview-info { flex: 1; }
+.agent-overview-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy-deep);
+  margin-bottom: 2px;
+  letter-spacing: -0.01em;
+}
+.agent-overview-role { font-size: 13px; color: var(--text-on-light-muted); }
+.agent-overview-arrow {
+  color: var(--teal);
+  font-size: 20px;
+  font-weight: 700;
+  transition: transform 0.2s;
+}
+.agent-overview-card:hover .agent-overview-arrow { transform: translateX(4px); }
+
+/* Große Agent-Detail-Section */
+.agent-detail {
+  padding: clamp(80px, 10vw, 120px) 0;
+  position: relative;
+}
+.agent-detail.dark {
+  background: var(--navy-deep);
+  color: var(--text-on-dark);
+}
+.agent-detail.dark .section-subtitle { color: var(--text-on-dark-muted); }
+.agent-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.agent-detail-avatar {
+  width: 88px; height: 88px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--teal) 0%, #2A8A90 100%);
+  color: var(--navy-deep);
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 10px 30px -8px rgba(63, 186, 194, 0.4);
+  letter-spacing: -0.02em;
+}
+.agent-detail-name {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.agent-detail-role {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--teal);
+  letter-spacing: 0.02em;
+}
+.agent-detail-lede {
+  font-size: clamp(17px, 2vw, 20px);
+  line-height: 1.6;
+  color: var(--text-on-dark-muted);
+  margin-bottom: 48px;
+  max-width: 820px;
+}
+.agent-detail.light .agent-detail-lede { color: var(--text-on-light-muted); }
+.agent-detail.light .agent-detail-name { color: var(--navy-deep); }
+
+/* Sectioned details inside each agent */
+.agent-sections {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.agent-section-card {
+  padding: 28px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.agent-detail.light .agent-section-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+}
+.agent-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 12px;
+}
+.agent-section-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+}
+.agent-detail.dark .agent-section-title { color: var(--text-on-dark); }
+.agent-detail.light .agent-section-title { color: var(--navy-deep); }
+.agent-section-text {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-on-dark-muted);
+}
+.agent-detail.light .agent-section-text { color: var(--text-on-light-muted); }
+.agent-section-list {
+  list-style: none;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.agent-section-list li {
+  padding: 4px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--text-on-dark-muted);
+}
+.agent-detail.light .agent-section-list li { color: var(--text-on-light-muted); }
+.agent-section-list li::before {
+  content: '→';
+  color: var(--teal);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Full-width pipeline (larger than home version) */
+.detail-pipeline-wrap {
+  margin: 48px 0;
+  padding: 36px;
+  background: rgba(63, 186, 194, 0.04);
+  border: 1px solid var(--teal-line);
+  border-radius: 12px;
+}
+.agent-detail.light .detail-pipeline-wrap {
+  background: var(--bg-light);
+  border-color: var(--border-light);
+}
+.detail-pipeline-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 24px;
+  text-align: center;
+}
+.detail-pipeline {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+.detail-pipeline-step {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 20px 16px;
+  transition: all 0.2s;
+  position: relative;
+}
+.agent-detail.light .detail-pipeline-step {
+  background: #fff;
+  border: 1px solid var(--border-light);
+}
+.detail-pipeline-step:hover {
+  transform: translateY(-2px);
+  border-color: var(--teal-line);
+}
+.detail-pipeline-step-num {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.detail-pipeline-step-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.agent-detail.dark .detail-pipeline-step-title { color: var(--text-on-dark); }
+.agent-detail.light .detail-pipeline-step-title { color: var(--navy-deep); }
+.detail-pipeline-step-desc {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-on-dark-muted);
+}
+.agent-detail.light .detail-pipeline-step-desc { color: var(--text-on-light-muted); }
+
+/* Stats row at top of agent detail */
+.agent-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.agent-stat-box {
+  padding: 24px;
+  background: rgba(63, 186, 194, 0.08);
+  border: 1px solid var(--teal-line);
+  border-radius: 10px;
+}
+.agent-detail.light .agent-stat-box {
+  background: #fff;
+  border: 1px solid var(--border-light);
+}
+.agent-stat-box-value {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--teal);
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+.agent-stat-box-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-muted);
+  line-height: 1.4;
+}
+.agent-detail.light .agent-stat-box-label { color: var(--text-on-light-muted); }
+
+/* Integrations block */
+.integrations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.integration-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-on-dark-muted);
+}
+.agent-detail.light .integration-chip {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  color: var(--text-on-light);
+}
+.integration-chip-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+  flex-shrink: 0;
+}
+
+/* Video placeholder section */
+.agent-video-wrap {
+  margin-top: 48px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.4);
+}
+.agent-video-placeholder {
+  margin-top: 48px;
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--navy-darker);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+.agent-detail.light .agent-video-placeholder {
+  background: var(--navy-deep);
+}
+.agent-video-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 50%, rgba(63, 186, 194, 0.15), transparent 40%),
+    radial-gradient(circle at 70% 50%, rgba(63, 186, 194, 0.1), transparent 40%);
+}
+.video-play-button {
+  width: 88px; height: 88px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: var(--navy-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  padding-left: 6px;
+  box-shadow: 0 10px 30px -8px rgba(63, 186, 194, 0.6);
+  transition: transform 0.2s;
+  position: relative;
+  z-index: 1;
+}
+.agent-video-placeholder:hover .video-play-button { transform: scale(1.08); }
+.video-placeholder-label {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: var(--text-on-dark-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  z-index: 1;
+}
+
+/* Roadmap */
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 40px;
+}
+.roadmap-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 24px;
+  transition: all 0.2s;
+}
+.roadmap-card:hover {
+  border-color: var(--teal-line);
+  transform: translateY(-2px);
+}
+.roadmap-card-label {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  background: var(--teal-soft);
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+.roadmap-card-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy-deep);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.roadmap-card-desc { font-size: 13.5px; color: var(--text-on-light-muted); line-height: 1.5; }
+
+/* Pricing */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-top: 40px;
+}
+.pricing-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 36px 32px;
+  transition: all 0.3s;
+  position: relative;
+}
+.pricing-card.highlighted {
+  border: 2px solid var(--teal);
+  background: linear-gradient(to bottom, #fff, #f8fdfd);
+}
+.pricing-card:hover { transform: translateY(-4px); }
+.pricing-card-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.pricing-card-value {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--navy-deep);
+  line-height: 1;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.pricing-card-unit { font-size: 14px; color: var(--text-on-light-muted); margin-bottom: 20px; }
+.pricing-card-note { font-size: 13px; line-height: 1.5; color: var(--text-on-light-muted); }
+.pricing-note {
+  margin-top: 36px;
+  padding: 24px 28px;
+  background: rgba(63, 186, 194, 0.06);
+  border-left: 3px solid var(--teal);
+  border-radius: 6px;
+  font-size: 14.5px;
+  color: var(--text-on-light);
+  line-height: 1.6;
+}
+.pricing-note strong { color: var(--navy-deep); }
+
+/* Operating models */
+.ops-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 40px;
+}
+.ops-card {
+  background: var(--navy-darker);
+  border-radius: 12px;
+  padding: 36px;
+  color: var(--text-on-dark);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.3s;
+}
+.ops-card:hover { transform: translateY(-4px); border-color: var(--teal-line); }
+.ops-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 14px;
+}
+.ops-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+.ops-list { list-style: none; }
+.ops-list li {
+  padding: 8px 0;
+  font-size: 14px;
+  color: var(--text-on-dark-muted);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+.ops-list li:last-child { border-bottom: none; }
+.ops-list li::before {
+  content: '✓';
+  color: var(--teal);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* =======================================================
+   RESPONSIVE
+   ======================================================= */
+@media (max-width: 1024px) {
+  .agent-overview { grid-template-columns: 1fr; }
+  .agent-sections { grid-template-columns: 1fr; }
+  .agent-stats-row { grid-template-columns: 1fr 1fr; }
+  .detail-pipeline { grid-template-columns: repeat(3, 1fr); }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .ops-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .agent-stats-row { grid-template-columns: 1fr; }
+  .detail-pipeline { grid-template-columns: repeat(2, 1fr); }
+  .detail-pipeline-wrap { padding: 20px; }
+  .agent-detail-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .agent-detail-avatar { width: 64px; height: 64px; font-size: 26px; border-radius: 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo"><span class="nav-logo-chevron">»</span>aikyma<span class="nav-logo-sub">applied AI</span></a>
+    <div class="nav-links">
+      <a href="produkt.html" class="active">Produkt</a>
+      <a href="approach.html">Approach</a>
+      <a href="team.html">Team</a>
+      <a href="kontakt.html">Kontakt</a>
+      <div class="nav-lang"><span class="active">DE</span><span>/</span><a href="en/produkt.html" style="text-decoration: none; color: inherit;">EN</a></div>
+      <a href="#" data-cal-popup class="btn btn-primary">Demo buchen</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-circles">
+    <div class="page-hero-circle page-hero-circle-1"></div>
+    <div class="page-hero-circle page-hero-circle-2"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <div class="page-hero-eyebrow">Produkt</div>
+    <h1>Zwei produktive Agenten. <span class="accent">Mehr Spezialisten folgen.</span></h1>
+    <p class="page-hero-lede">
+      Oskar automatisiert Ihre Auftragsannahme. Petra Ihre Produktdatenpflege. Beide sind heute live bei zahlenden Kunden im DACH-Raum im Einsatz — auf einer Plattform, die sich ohne neue Grundintegration erweitern lässt.
+    </p>
+  </div>
+</section>
+
+<!-- AGENT OVERVIEW (Schnell-Navigation zu Detail-Sektionen) -->
+<section class="section section-light">
+  <div class="container">
+    <div class="agent-overview">
+      <a href="#oscar" class="agent-overview-card">
+        <div class="agent-overview-avatar">OD</div>
+        <div class="agent-overview-info">
+          <div class="agent-overview-name">Oskar</div>
+          <div class="agent-overview-role">Spezialist Auftragsannahme</div>
+        </div>
+        <div class="agent-overview-arrow">↓</div>
+      </a>
+      <a href="#petra" class="agent-overview-card">
+        <div class="agent-overview-avatar">PB</div>
+        <div class="agent-overview-info">
+          <div class="agent-overview-name">Petra</div>
+          <div class="agent-overview-role">Spezialistin Produktdaten</div>
+        </div>
+        <div class="agent-overview-arrow">↓</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     OSCAR DETAIL
+     ============================================ -->
+<section class="agent-detail dark anchor-scroll" id="oscar">
+  <div class="container">
+    <div class="agent-detail-header">
+      <div class="agent-detail-avatar">OD</div>
+      <div>
+        <div class="agent-detail-name">Oskar</div>
+        <div class="agent-detail-role">Spezialist Auftragsannahme · Order Agent · Produktiv im Einsatz</div>
+      </div>
+    </div>
+    <p class="agent-detail-lede">
+      Oskar verwandelt jeden eingehenden Kundenauftrag — E-Mail-Kette, PDF-Bestellschein, Excel-Liste, gescanntes Dokument oder formloser Textauftrag — in einen validierten, strukturierten Auftrag, bereit zur Übergabe an Ihr ERP. Vom Posteingang über die KI-Extraktion, Stammdaten-Abgleich, Plausibilitätsprüfung bis zur direkten Backend-Integration. Ausnahmen werden erkannt: Aufträge, die nicht automatisch verarbeitet werden, können durch Ihre Mitarbeitenden in Ihrem Backendsystem einfach ergänzt werden.
+    </p>
+
+    <!-- Stats row -->
+    <div class="agent-stats-row">
+      <div class="agent-stat-box">
+        <div class="agent-stat-box-value">80–95%</div>
+        <div class="agent-stat-box-label">Automatisierungsgrad Standardbestellungen</div>
+      </div>
+      <div class="agent-stat-box">
+        <div class="agent-stat-box-value">6</div>
+        <div class="agent-stat-box-label">End-to-End Pipeline-Schritte</div>
+      </div>
+      <div class="agent-stat-box">
+        <div class="agent-stat-box-value">&gt;50%</div>
+        <div class="agent-stat-box-label">Backoffice-Entlastung</div>
+      </div>
+      <div class="agent-stat-box">
+        <div class="agent-stat-box-value">Live</div>
+        <div class="agent-stat-box-label">Produktiv bei zahlenden Kunden</div>
+      </div>
+    </div>
+
+    <!-- Oskar 60-Sekunden-Video (Pipeline-Animation) -->
+    <div class="agent-video-wrap">
+<!--
+  Oskar 60-Sekunden-Pipeline-Animation
+  Eingesetzt in produkt.html via <div class="oskar-video-embed"></div> (replace-style)
+  oder standalone nutzbar durch direkten Aufruf dieser Datei.
+
+  Dependencies: keine (pure HTML/CSS/JS)
+  Voice-Over: optional, via Web Speech API (Browser-native)
+-->
+<style>
+/* ==================================================================
+   OSKAR PIPELINE VIDEO — 60 Sekunden
+   ================================================================== */
+.oskar-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0F1820;
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(63, 186, 194, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(63, 186, 194, 0.05) 0%, transparent 50%),
+    linear-gradient(155deg, #182330 0%, #0F1820 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  color: #fff;
+  user-select: none;
+  isolation: isolate;
+}
+
+/* Subtle grid pattern background for tech feel */
+.oskar-video::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(63, 186, 194, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63, 186, 194, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ===== Top bar: Timer + Branding ===== */
+.osv-topbar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+}
+.osv-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+}
+.osv-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #3FBAC2 0%, #2A8A90 100%);
+  color: #1E2A3A;
+  border-radius: 7px;
+  font-weight: 800;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(63, 186, 194, 0.4);
+}
+.osv-brand-name { opacity: 0.9; }
+.osv-brand-sub {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8FA0B5;
+  margin-left: 4px;
+}
+.osv-timer {
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #8FA0B5;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+.osv-timer span { color: #3FBAC2; }
+
+/* ===== Pipeline (6 Steps) ===== */
+.osv-pipeline {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 80px);
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  z-index: 3;
+}
+.osv-step {
+  position: relative;
+  padding: 14px 10px 12px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  text-align: center;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.osv-step-num {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(143, 160, 181, 0.5);
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+  transition: color 0.4s;
+}
+.osv-step-icon {
+  width: 32px; height: 32px;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #8FA0B5;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.osv-step-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.osv-step-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  transition: color 0.4s;
+}
+
+/* State: completed (wurde schon bearbeitet) */
+.osv-step.is-done { border-color: rgba(95, 217, 124, 0.3); background: rgba(95, 217, 124, 0.08); }
+.osv-step.is-done .osv-step-num { color: #5FD97C; }
+.osv-step.is-done .osv-step-icon { background: rgba(95, 217, 124, 0.15); color: #5FD97C; }
+.osv-step.is-done .osv-step-title { color: #fff; }
+
+/* State: active (gerade in Arbeit) */
+.osv-step.is-active {
+  border-color: #3FBAC2;
+  background: rgba(63, 186, 194, 0.12);
+  box-shadow: 0 0 0 4px rgba(63, 186, 194, 0.1), 0 8px 24px -4px rgba(63, 186, 194, 0.3);
+  transform: translateY(-2px) scale(1.05);
+}
+.osv-step.is-active .osv-step-num { color: #3FBAC2; }
+.osv-step.is-active .osv-step-icon {
+  background: #3FBAC2;
+  color: #1E2A3A;
+  animation: osvStepPulse 1.2s infinite;
+}
+.osv-step.is-active .osv-step-title { color: #fff; }
+@keyframes osvStepPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(63, 186, 194, 0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(63, 186, 194, 0); }
+}
+
+/* Traveling data packet between steps */
+.osv-packet {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 12px; height: 12px;
+  background: #3FBAC2;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 20px #3FBAC2, 0 0 40px rgba(63, 186, 194, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+}
+
+/* Connecting line between steps */
+.osv-pipeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 6%;
+  right: 6%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(63, 186, 194, 0.2) 10%,
+    rgba(63, 186, 194, 0.2) 90%,
+    transparent 100%);
+  z-index: -1;
+}
+
+/* ===== Title at top of frame ===== */
+.osv-title {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  text-align: center;
+  max-width: 80%;
+  z-index: 3;
+}
+.osv-title-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #3FBAC2;
+  margin-bottom: 8px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.osv-title-eyebrow.visible { opacity: 1; }
+.osv-title-text {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  min-height: 2.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.osv-title-text span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+.osv-title-text span.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.osv-title-text .accent { color: #3FBAC2; }
+
+/* ===== Detail Card (shows below pipeline when a step is active) ===== */
+.osv-detail {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: calc(100% - 80px);
+  max-width: 720px;
+  background: rgba(24, 35, 48, 0.92);
+  border: 1px solid rgba(63, 186, 194, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  z-index: 3;
+  opacity: 0;
+  transform: translate(-50%, 10px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+.osv-detail.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.osv-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+.osv-detail-label {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #3FBAC2;
+}
+.osv-detail-badge {
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: #5FD97C;
+  background: rgba(95, 217, 124, 0.15);
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.osv-detail-badge::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #5FD97C;
+  box-shadow: 0 0 6px #5FD97C;
+}
+.osv-detail-content {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #E0E8F0;
+}
+.osv-detail-content .key { color: #8FA0B5; font-weight: 500; }
+.osv-detail-content .val { color: #fff; font-weight: 600; }
+.osv-detail-content .ok { color: #5FD97C; font-weight: 600; }
+.osv-detail-content .warn { color: #FFB366; font-weight: 600; }
+
+.osv-detail-rows {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 4px 16px;
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.osv-detail-rows .key { color: #8FA0B5; }
+.osv-detail-rows .val { color: #fff; }
+.osv-detail-rows .chk { color: #5FD97C; }
+.osv-detail-rows .chk-warn { color: #FFB366; }
+
+/* ===== Progress Bar ===== */
+.osv-progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  z-index: 4;
+}
+.osv-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3FBAC2, #5FD97C);
+  width: 0;
+  transition: width 0.2s linear;
+  box-shadow: 0 0 8px #3FBAC2;
+}
+
+/* ===== Controls ===== */
+.osv-controls {
+  position: absolute;
+  bottom: 14px;
+  left: 24px;
+  right: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.oskar-video:hover .osv-controls,
+.oskar-video.is-paused .osv-controls,
+.oskar-video.is-ready .osv-controls {
+  opacity: 1;
+}
+.osv-ctrl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.osv-ctrl:hover {
+  background: rgba(63, 186, 194, 0.2);
+  border-color: #3FBAC2;
+}
+.osv-ctrl svg {
+  width: 12px; height: 12px;
+  fill: currentColor;
+}
+.osv-ctrl-group { display: flex; gap: 8px; }
+.osv-ctrl.is-on { background: rgba(63, 186, 194, 0.3); border-color: #3FBAC2; color: #3FBAC2; }
+
+/* ===== Start/End Screen ===== */
+.osv-startscreen {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(155deg, rgba(24, 35, 48, 0.98) 0%, rgba(15, 24, 32, 0.98) 100%);
+  transition: opacity 0.5s, visibility 0.5s;
+  cursor: pointer;
+}
+.osv-startscreen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.osv-startscreen-play {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: #3FBAC2;
+  color: #1E2A3A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 40px rgba(63, 186, 194, 0.4);
+  transition: transform 0.2s;
+}
+.osv-startscreen:hover .osv-startscreen-play { transform: scale(1.08); }
+.osv-startscreen-play svg { width: 24px; height: 24px; fill: currentColor; margin-left: 4px; }
+.osv-startscreen-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.osv-startscreen-sub {
+  font-size: 12px;
+  color: #8FA0B5;
+  letter-spacing: 0.05em;
+}
+
+.osv-endscreen {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(155deg, rgba(24, 35, 48, 0.96) 0%, rgba(15, 24, 32, 0.96) 100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s;
+  padding: 24px;
+  text-align: center;
+}
+.osv-endscreen.visible { opacity: 1; visibility: visible; }
+.osv-endscreen-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #5FD97C;
+  margin-bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.osv-endscreen-eyebrow::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #5FD97C;
+  box-shadow: 0 0 8px #5FD97C;
+}
+.osv-endscreen-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.osv-endscreen-title .accent { color: #3FBAC2; }
+.osv-endscreen-stats {
+  display: flex;
+  gap: clamp(20px, 4vw, 40px);
+  margin: 24px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.osv-endscreen-stat-val {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 800;
+  color: #3FBAC2;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.osv-endscreen-stat-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8FA0B5;
+  margin-top: 4px;
+}
+.osv-endscreen-replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  color: #3FBAC2;
+  border: 1px solid #3FBAC2;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  margin-top: 8px;
+}
+.osv-endscreen-replay:hover { background: #3FBAC2; color: #1E2A3A; }
+
+/* Voice-Feature vorübergehend deaktiviert - reaktivieren durch Entfernen dieser Regel */
+#osvVoiceToggle { display: none !important; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .osv-step-title { display: none; }
+  .osv-step { padding: 10px 6px; }
+  .osv-step-icon { width: 26px; height: 26px; }
+  .osv-detail { font-size: 11px; padding: 12px; }
+  .osv-detail-rows { font-size: 10px; grid-template-columns: auto 1fr; }
+  .osv-detail-rows > :nth-child(3n) { display: none; }
+  .osv-title { top: 12%; }
+  .osv-topbar { padding: 10px 14px; }
+  .osv-controls { bottom: 10px; left: 14px; right: 14px; }
+}
+</style>
+
+<!-- ==================================================================
+     VIDEO-CONTAINER
+     ================================================================== -->
+<div class="oskar-video" id="oskarVideo">
+
+  <!-- Top Bar -->
+  <div class="osv-topbar">
+    <div class="osv-brand">
+      <div class="osv-brand-mark">OK</div>
+      <div>
+        <div class="osv-brand-name">Oskar</div>
+      </div>
+      <div class="osv-brand-sub">LIVE DEMO</div>
+    </div>
+    <div class="osv-timer"><span id="osvTimerCurrent">0:00</span> / 1:00</div>
+  </div>
+
+  <!-- Title (wechselt pro Stufe) -->
+  <div class="osv-title">
+    <div class="osv-title-eyebrow" id="osvEyebrow">Schritt 1 von 6</div>
+    <div class="osv-title-text" id="osvTitleText">
+      <!-- wird per JS befüllt -->
+    </div>
+  </div>
+
+  <!-- Pipeline -->
+  <div class="osv-pipeline" id="osvPipeline">
+    <div class="osv-step" data-step="1">
+      <div class="osv-step-num">01</div>
+      <div class="osv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+      </div>
+      <div class="osv-step-title">Eingang</div>
+    </div>
+    <div class="osv-step" data-step="2">
+      <div class="osv-step-num">02</div>
+      <div class="osv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+      </div>
+      <div class="osv-step-title">Erfassen</div>
+    </div>
+    <div class="osv-step" data-step="3">
+      <div class="osv-step-num">03</div>
+      <div class="osv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M17 11l2 2 4-4"/></svg>
+      </div>
+      <div class="osv-step-title">Abgleich</div>
+    </div>
+    <div class="osv-step" data-step="4">
+      <div class="osv-step-num">04</div>
+      <div class="osv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <div class="osv-step-title">Prüfung</div>
+    </div>
+    <div class="osv-step" data-step="5">
+      <div class="osv-step-num">05</div>
+      <div class="osv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <div class="osv-step-title">Klärung</div>
+    </div>
+    <div class="osv-step" data-step="6">
+      <div class="osv-step-num">06</div>
+      <div class="osv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </div>
+      <div class="osv-step-title">Übergabe</div>
+    </div>
+    <div class="osv-packet" id="osvPacket"></div>
+  </div>
+
+  <!-- Detail-Card -->
+  <div class="osv-detail" id="osvDetail">
+    <div class="osv-detail-header">
+      <div class="osv-detail-label" id="osvDetailLabel">Eingehende E-Mail</div>
+      <div class="osv-detail-badge" id="osvDetailBadge">verarbeitet</div>
+    </div>
+    <div class="osv-detail-content" id="osvDetailContent">
+      <!-- wird per JS befüllt -->
+    </div>
+  </div>
+
+  <!-- Endscreen -->
+  <div class="osv-endscreen" id="osvEndscreen">
+    <div class="osv-endscreen-eyebrow">Fertig · An ERP übergeben</div>
+    <div class="osv-endscreen-title">
+      In <span class="accent">12 Sekunden</span> verarbeitet.<br>
+      Ohne Abtippen. Ohne Fehler.
+    </div>
+    <div class="osv-endscreen-stats">
+      <div>
+        <div class="osv-endscreen-stat-val">80–95%</div>
+        <div class="osv-endscreen-stat-lbl">Automatisierungsgrad</div>
+      </div>
+      <div>
+        <div class="osv-endscreen-stat-val">24/7</div>
+        <div class="osv-endscreen-stat-lbl">Verfügbar</div>
+      </div>
+      <div>
+        <div class="osv-endscreen-stat-val">&lt; 1 Min</div>
+        <div class="osv-endscreen-stat-lbl">pro Bestellung</div>
+      </div>
+    </div>
+    <button class="osv-endscreen-replay" onclick="window.oskarVideoReplay && window.oskarVideoReplay()">
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+      Noch einmal abspielen
+    </button>
+  </div>
+
+  <!-- Startscreen -->
+  <div class="osv-startscreen" id="osvStartscreen">
+    <div class="osv-startscreen-play">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    <div class="osv-startscreen-title">Oskar in Aktion</div>
+    <div class="osv-startscreen-sub">60 Sekunden · Vom Posteingang bis ins ERP</div>
+  </div>
+
+  <!-- Controls -->
+  <div class="osv-controls">
+    <div class="osv-ctrl-group">
+      <button class="osv-ctrl" id="osvPlayPause" title="Play/Pause">
+        <svg id="osvPlayIcon" viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+        <span id="osvPlayLabel">Pause</span>
+      </button>
+      <button class="osv-ctrl" id="osvRestart" title="Neu starten">
+        <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+      </button>
+    </div>
+    <div class="osv-ctrl-group">
+      <button class="osv-ctrl" id="osvVoiceToggle" title="Voice-Over ein/aus">
+        <svg viewBox="0 0 24 24"><path d="M12 3v18M8 7v10M4 10v4M16 5v14M20 9v6"/></svg>
+        <span id="osvVoiceLabel">Voice aus</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="osv-progress"><div class="osv-progress-fill" id="osvProgressFill"></div></div>
+</div>
+
+<script>
+// ==================================================================
+// OSKAR VIDEO CONTROLLER
+// ==================================================================
+(function() {
+  const video = document.getElementById('oskarVideo');
+  const pipeline = document.getElementById('osvPipeline');
+  const steps = pipeline.querySelectorAll('.osv-step');
+  const packet = document.getElementById('osvPacket');
+  const eyebrow = document.getElementById('osvEyebrow');
+  const titleText = document.getElementById('osvTitleText');
+  const detailCard = document.getElementById('osvDetail');
+  const detailLabel = document.getElementById('osvDetailLabel');
+  const detailBadge = document.getElementById('osvDetailBadge');
+  const detailContent = document.getElementById('osvDetailContent');
+  const timerEl = document.getElementById('osvTimerCurrent');
+  const progressFill = document.getElementById('osvProgressFill');
+  const startscreen = document.getElementById('osvStartscreen');
+  const endscreen = document.getElementById('osvEndscreen');
+  const playBtn = document.getElementById('osvPlayPause');
+  const playIcon = document.getElementById('osvPlayIcon');
+  const playLabel = document.getElementById('osvPlayLabel');
+  const restartBtn = document.getElementById('osvRestart');
+  const voiceBtn = document.getElementById('osvVoiceToggle');
+  const voiceLabel = document.getElementById('osvVoiceLabel');
+
+  const TOTAL_DURATION = 60000; // 60 Sekunden
+
+  // Timeline: jeder Schritt hat Start-Zeit (ms), Titel, Detail-HTML, Voice-Over-Text
+  const timeline = [
+    {
+      start: 0,
+      end: 4000,
+      step: 0, // Intro (kein Schritt aktiv)
+      eyebrow: 'Intro',
+      title: ['Eine ', '<span class="accent">eingehende Bestellung</span>', ' — vom Posteingang bis ins ERP.'],
+      detail: null,
+      voice: 'Oskar bearbeitet eingehende Bestellungen vollautomatisch — vom Posteingang bis ins ERP.',
+      audio: 'assets/video/audio/oskar-01-intro.mp3'
+    },
+    {
+      start: 4000,
+      end: 12000,
+      step: 1,
+      eyebrow: 'Schritt 1 von 6 · Eingang',
+      title: ['E-Mail mit Bestellung ', '<span class="accent">trifft ein.</span>'],
+      detailLabel: 'Eingehende E-Mail · Outlook',
+      detailBadge: 'erkannt',
+      detail: `
+        <div class="osv-detail-rows">
+          <span class="key">Absender</span><span class="val">bestellung@huber-ag.ch</span><span class="chk">✓</span>
+          <span class="key">Betreff</span><span class="val">Nachbestellung KW 17 — Huber AG</span><span class="chk">✓</span>
+          <span class="key">Anhang</span><span class="val">bestellung_2026-04-23.pdf · 2 Seiten</span><span class="chk">✓</span>
+          <span class="key">Klassifikation</span><span class="val">Kundenauftrag · bekannter Kunde</span><span class="chk">✓</span>
+        </div>`,
+      voice: 'Eine E-Mail von Huber AG mit einem PDF-Bestellformular. Oskar erkennt sofort, dass es sich um eine Bestellung handelt.',
+      audio: 'assets/video/audio/oskar-02-eingang.mp3'
+    },
+    {
+      start: 12000,
+      end: 20000,
+      step: 2,
+      eyebrow: 'Schritt 2 von 6 · Erfassen',
+      title: ['Daten werden aus dem PDF ', '<span class="accent">extrahiert.</span>'],
+      detailLabel: 'Extrahierte Auftragsdaten · KI-Extraktion',
+      detailBadge: '14 Felder erkannt',
+      detail: `
+        <div class="osv-detail-rows">
+          <span class="key">Kunde</span><span class="val">Huber Maschinenbau AG · CH-6003 Luzern</span><span class="chk">✓</span>
+          <span class="key">Bestelldatum</span><span class="val">23.04.2026</span><span class="chk">✓</span>
+          <span class="key">Positionen</span><span class="val">3 Artikel · Gesamtwert CHF 4'820.00</span><span class="chk">✓</span>
+          <span class="key">Liefertermin</span><span class="val">KW 19 · Standardversand</span><span class="chk">✓</span>
+        </div>`,
+      voice: 'Aus dem PDF werden Kundendaten, Artikel, Mengen und Liefertermine strukturiert erfasst.',
+      audio: 'assets/video/audio/oskar-03-erfassen.mp3'
+    },
+    {
+      start: 20000,
+      end: 30000,
+      step: 3,
+      eyebrow: 'Schritt 3 von 6 · Abgleich',
+      title: ['Kunde und Artikel ', '<span class="accent">mit ERP abgeglichen.</span>'],
+      detailLabel: 'Stammdaten-Matching · Business Central',
+      detailBadge: 'vollständig gematcht',
+      detail: `
+        <div class="osv-detail-rows">
+          <span class="key">Kunde-ID</span><span class="val">K-10287 · Huber Maschinenbau AG</span><span class="chk">✓</span>
+          <span class="key">Artikel 1</span><span class="val">ART-4521 · Präzisionslager 6205</span><span class="chk">✓</span>
+          <span class="key">Artikel 2</span><span class="val">ART-4522 · Präzisionslager 6206</span><span class="chk">✓</span>
+          <span class="key">Artikel 3</span><span class="val">ART-7810 · Dichtungsring DIN 3760</span><span class="chk">✓</span>
+        </div>`,
+      voice: 'Der Kunde wird mit der ERP-Kundennummer gematcht, alle drei Artikel werden in den Stammdaten gefunden.',
+      audio: 'assets/video/audio/oskar-04-abgleich.mp3'
+    },
+    {
+      start: 30000,
+      end: 40000,
+      step: 4,
+      eyebrow: 'Schritt 4 von 6 · Prüfung',
+      title: ['Geschäftsregeln werden ', '<span class="accent">angewendet.</span>'],
+      detailLabel: 'Plausibilitätsprüfung · 8 Regeln',
+      detailBadge: '1 Warnung',
+      detail: `
+        <div class="osv-detail-rows">
+          <span class="key">Kreditlimit</span><span class="val">CHF 4'820 von CHF 50'000</span><span class="chk">✓</span>
+          <span class="key">Zahlungsziel</span><span class="val">30 Tage netto</span><span class="chk">✓</span>
+          <span class="key">Mindestbestellwert</span><span class="val">CHF 250 erreicht</span><span class="chk">✓</span>
+          <span class="key">Lagerbestand ART-7810</span><span class="warn">Nur 40 von 60 Stk verfügbar</span><span class="chk-warn">!</span>
+        </div>`,
+      voice: 'Die Geschäftsregeln werden geprüft. Eine Position hat einen knappen Lagerbestand.',
+      audio: 'assets/video/audio/oskar-05-pruefung.mp3'
+    },
+    {
+      start: 40000,
+      end: 48000,
+      step: 5,
+      eyebrow: 'Schritt 5 von 6 · Klärung',
+      title: ['Rückfrage an Mitarbeitende — ', '<span class="accent">schnell geklärt.</span>'],
+      detailLabel: 'Human-in-the-Loop · Marco K.',
+      detailBadge: 'bestätigt in 42s',
+      detail: `
+        <div class="osv-detail-rows">
+          <span class="key">Frage</span><span class="val">Teillieferung für ART-7810 ok?</span><span class="chk">✓</span>
+          <span class="key">Antwort</span><span class="val">Ja · 40 Stk jetzt, 20 in KW 19</span><span class="chk">✓</span>
+          <span class="key">Freigabe</span><span class="val">Marco K. · 10:24 Uhr</span><span class="chk">✓</span>
+          <span class="key">Oskar lernt</span><span class="val">Regel aktualisiert für Huber AG</span><span class="chk">✓</span>
+        </div>`,
+      voice: 'Oskar stellt eine gezielte Rückfrage an den Innendienst. Die Antwort kommt in unter einer Minute und fließt direkt in die Wissensbasis ein.',
+      audio: 'assets/video/audio/oskar-06-klaerung.mp3'
+    },
+    {
+      start: 48000,
+      end: 56000,
+      step: 6,
+      eyebrow: 'Schritt 6 von 6 · Übergabe',
+      title: ['Auftrag wandert ', '<span class="accent">ins ERP.</span>'],
+      detailLabel: 'Business Central · Auftrag angelegt',
+      detailBadge: 'Auftrag #SO-2026-4782',
+      detail: `
+        <div class="osv-detail-rows">
+          <span class="key">Auftragsnummer</span><span class="val">SO-2026-4782</span><span class="chk">✓</span>
+          <span class="key">Erstellt in</span><span class="val">Microsoft Dynamics Business Central</span><span class="chk">✓</span>
+          <span class="key">Status</span><span class="val">Freigegeben · Produktion geplant</span><span class="chk">✓</span>
+          <span class="key">Bestätigung</span><span class="val">E-Mail an Kunde versendet · 10:24</span><span class="chk">✓</span>
+        </div>`,
+      voice: 'Der validierte Auftrag wird direkt ins Business Central übernommen. Der Kunde erhält automatisch seine Bestätigung.',
+      audio: 'assets/video/audio/oskar-07-uebergabe.mp3'
+    },
+    {
+      start: 56000,
+      end: 60000,
+      step: 0, // alle fertig
+      eyebrow: 'Fertig',
+      title: ['Von der E-Mail bis zum ERP-Auftrag: ', '<span class="accent">12 Sekunden.</span>'],
+      detail: null,
+      voice: 'Von der eingehenden E-Mail bis zum verarbeiteten Auftrag im ERP: zwölf Sekunden. Tag und Nacht. Vollautomatisch.',
+      audio: 'assets/video/audio/oskar-08-outro.mp3'
+    }
+  ];
+
+  // ===== State =====
+  let startTime = 0;
+  let pauseTime = 0;
+  let elapsed = 0;
+  let currentSegment = -1;
+  let rafId = null;
+  let isPlaying = false;
+  let voiceEnabled = false;
+  let spokenSegments = new Set();
+  let currentAudio = null;
+  let audioAvailable = {}; // { "assets/video/audio/oskar-01-intro.mp3": true/false }
+
+  function formatTime(ms) {
+    const s = Math.floor(ms / 1000);
+    return `0:${String(s).padStart(2, '0')}`;
+  }
+
+  function setTitle(segment) {
+    // Teile des Titels als Spans erzeugen.
+    // Strategie: Jeder Span bekommt seinen Text mit führendem/abschliessendem &nbsp;
+    // wo nötig, damit Leerzeichen garantiert nicht kollabieren.
+    titleText.innerHTML = '';
+    segment.title.forEach((part, i) => {
+      const span = document.createElement('span');
+      // Erhalte führende/abschliessende Spaces durch &nbsp;
+      let html = part;
+      if (html.startsWith(' ')) html = '\u00A0' + html.slice(1);
+      if (html.endsWith(' ')) html = html.slice(0, -1) + '\u00A0';
+      span.innerHTML = html;
+      span.style.transitionDelay = (i * 80) + 'ms';
+      titleText.appendChild(span);
+    });
+    // trigger visibility after DOM update
+    requestAnimationFrame(() => {
+      titleText.querySelectorAll('span').forEach(s => s.classList.add('visible'));
+    });
+    eyebrow.textContent = segment.eyebrow;
+    eyebrow.classList.add('visible');
+  }
+
+  function setDetail(segment) {
+    if (segment.detail) {
+      detailLabel.textContent = segment.detailLabel || '';
+      detailBadge.textContent = segment.detailBadge || 'verarbeitet';
+      detailContent.innerHTML = segment.detail;
+      detailCard.classList.add('visible');
+    } else {
+      detailCard.classList.remove('visible');
+    }
+  }
+
+  function updateSteps(activeStep, completedUpTo) {
+    steps.forEach((s, i) => {
+      const num = i + 1;
+      s.classList.remove('is-active', 'is-done');
+      if (num < completedUpTo) s.classList.add('is-done');
+      else if (num === activeStep) s.classList.add('is-active');
+    });
+  }
+
+  function movePacket(stepIndex) {
+    if (stepIndex < 1 || stepIndex > 6) {
+      packet.style.opacity = '0';
+      return;
+    }
+    const step = steps[stepIndex - 1];
+    const rect = step.getBoundingClientRect();
+    const pipeRect = pipeline.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2 - pipeRect.left - 6;
+    packet.style.left = centerX + 'px';
+    packet.style.opacity = '1';
+  }
+
+  function speakIfEnabled(segment) {
+    if (!voiceEnabled || !segment) return;
+    // Stop anything playing
+    stopAllAudio();
+
+    const text = segment.voice;
+    const audioFile = segment.audio;
+
+    if (!text && !audioFile) return;
+
+    // Priorität 1: MP3 wenn verfügbar
+    if (audioFile && audioAvailable[audioFile]) {
+      const audio = new Audio(audioFile);
+      audio.volume = 1.0;
+      audio.play().catch(err => {
+        console.warn('Audio-Wiedergabe fehlgeschlagen, falle zurück auf TTS:', err);
+        speakWithTTS(text);
+      });
+      currentAudio = audio;
+      return;
+    }
+
+    // Priorität 2: TTS-Fallback (Browser Speech API)
+    speakWithTTS(text);
+  }
+
+  function speakWithTTS(text) {
+    if (!text || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'de-DE';
+    utter.rate = 0.95; // etwas langsamer für Natürlichkeit
+    utter.pitch = 1.0;
+    utter.volume = 1.0;
+
+    // Gezielte Wahl der besten verfügbaren deutschen Stimme
+    const voices = window.speechSynthesis.getVoices();
+    const preferredNames = [
+      'Google Deutsch',                     // Chrome
+      'Microsoft Katja Online',             // Edge Neural
+      'Microsoft Conrad Online',            // Edge Neural
+      'Microsoft Katja',                    // Windows
+      'Microsoft Hedda Desktop',            // Windows
+      'Anna (Premium)', 'Petra (Premium)',  // macOS Premium
+      'Anna',                               // macOS Standard
+    ];
+    let bestVoice = null;
+    for (const name of preferredNames) {
+      bestVoice = voices.find(v => v.name.includes(name) && v.lang.startsWith('de'));
+      if (bestVoice) break;
+    }
+    if (!bestVoice) bestVoice = voices.find(v => v.lang.startsWith('de'));
+    if (bestVoice) utter.voice = bestVoice;
+
+    window.speechSynthesis.speak(utter);
+  }
+
+  function stopAllAudio() {
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      currentAudio = null;
+    }
+  }
+
+  // Prüft welche MP3-Dateien tatsächlich verfügbar sind
+  // Nutzt Audio-Element statt fetch(), damit es auch bei file://-Zugriff funktioniert
+  async function checkAudioAvailability() {
+    const audioFiles = timeline
+      .filter(s => s.audio)
+      .map(s => s.audio);
+
+    const checks = audioFiles.map(file => new Promise((resolve) => {
+      const audio = new Audio();
+      let settled = false;
+      const settle = (ok) => {
+        if (settled) return;
+        settled = true;
+        audioAvailable[file] = ok;
+        resolve();
+      };
+      // canplay / loadedmetadata = Datei existiert und ist lesbar
+      audio.addEventListener('canplaythrough', () => settle(true), { once: true });
+      audio.addEventListener('loadedmetadata', () => settle(true), { once: true });
+      audio.addEventListener('error', () => settle(false), { once: true });
+      // Timeout für hängende Ladevorgänge
+      setTimeout(() => settle(false), 2500);
+      audio.preload = 'metadata';
+      audio.src = file;
+    }));
+
+    await Promise.all(checks);
+
+    const availableCount = Object.values(audioAvailable).filter(Boolean).length;
+    const totalCount = audioFiles.length;
+    if (availableCount === totalCount) {
+      console.info(`Oskar-Video: Alle ${totalCount} MP3-Dateien gefunden. Nutze hochwertiges Voice-Over.`);
+    } else if (availableCount > 0) {
+      console.info(`Oskar-Video: ${availableCount}/${totalCount} MP3-Dateien gefunden. Fehlende werden mit Browser-TTS ersetzt.`);
+    } else {
+      console.info(`Oskar-Video: Keine MP3-Dateien gefunden. Voice-Over nutzt Browser-TTS als Fallback.`);
+    }
+  }
+
+  function tick() {
+    elapsed = performance.now() - startTime;
+    const progress = Math.min(elapsed / TOTAL_DURATION, 1);
+    progressFill.style.width = (progress * 100) + '%';
+    timerEl.textContent = formatTime(elapsed);
+
+    // Find current segment
+    let newSegment = -1;
+    for (let i = 0; i < timeline.length; i++) {
+      if (elapsed >= timeline[i].start && elapsed < timeline[i].end) {
+        newSegment = i;
+        break;
+      }
+    }
+    if (elapsed >= TOTAL_DURATION) {
+      endVideo();
+      return;
+    }
+
+    if (newSegment !== currentSegment && newSegment !== -1) {
+      currentSegment = newSegment;
+      const seg = timeline[newSegment];
+      setTitle(seg);
+      setDetail(seg);
+      // Step-State
+      if (seg.step > 0 && seg.step <= 6) {
+        updateSteps(seg.step, seg.step);
+        movePacket(seg.step);
+      } else if (newSegment === 0) {
+        // Intro: nichts aktiv
+        updateSteps(0, 0);
+        packet.style.opacity = '0';
+      } else {
+        // Outro: alle fertig
+        updateSteps(0, 7);
+        packet.style.opacity = '0';
+      }
+      // Voice
+      if (!spokenSegments.has(newSegment)) {
+        spokenSegments.add(newSegment);
+        speakIfEnabled(seg);
+      }
+    }
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function startVideo() {
+    startTime = performance.now() - elapsed;
+    isPlaying = true;
+    video.classList.remove('is-paused', 'is-ready');
+    playIcon.innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>';
+    playLabel.textContent = 'Pause';
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function pauseVideo() {
+    if (rafId) cancelAnimationFrame(rafId);
+    isPlaying = false;
+    video.classList.add('is-paused');
+    playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    playLabel.textContent = 'Play';
+    stopAllAudio();
+  }
+
+  function endVideo() {
+    if (rafId) cancelAnimationFrame(rafId);
+    isPlaying = false;
+    elapsed = TOTAL_DURATION;
+    progressFill.style.width = '100%';
+    timerEl.textContent = '1:00';
+    updateSteps(0, 7); // alle grün
+    detailCard.classList.remove('visible');
+    packet.style.opacity = '0';
+    endscreen.classList.add('visible');
+  }
+
+  function resetVideo() {
+    elapsed = 0;
+    currentSegment = -1;
+    spokenSegments.clear();
+    progressFill.style.width = '0%';
+    timerEl.textContent = '0:00';
+    updateSteps(0, 0);
+    packet.style.opacity = '0';
+    detailCard.classList.remove('visible');
+    titleText.innerHTML = '';
+    eyebrow.classList.remove('visible');
+    endscreen.classList.remove('visible');
+    stopAllAudio();
+  }
+
+  // ===== Event Listeners =====
+  startscreen.addEventListener('click', () => {
+    startscreen.classList.add('hidden');
+    resetVideo();
+    startVideo();
+  });
+
+  playBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (isPlaying) pauseVideo();
+    else {
+      if (elapsed >= TOTAL_DURATION) {
+        // Von vorne wenn zu Ende
+        resetVideo();
+        endscreen.classList.remove('visible');
+      }
+      startVideo();
+    }
+  });
+
+  restartBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (rafId) cancelAnimationFrame(rafId);
+    resetVideo();
+    endscreen.classList.remove('visible');
+    startVideo();
+  });
+
+  voiceBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    voiceEnabled = !voiceEnabled;
+    voiceBtn.classList.toggle('is-on', voiceEnabled);
+    voiceLabel.textContent = voiceEnabled ? 'Voice an' : 'Voice aus';
+    if (!voiceEnabled) {
+      stopAllAudio();
+    } else if (voiceEnabled && isPlaying && currentSegment >= 0 && !spokenSegments.has(currentSegment)) {
+      // Wenn Voice gerade eingeschaltet wird, aktuelles Segment vorlesen
+      const seg = timeline[currentSegment];
+      spokenSegments.add(currentSegment);
+      speakIfEnabled(seg);
+    }
+  });
+
+  // Expose replay for endscreen button
+  window.oskarVideoReplay = function() {
+    resetVideo();
+    endscreen.classList.remove('visible');
+    startVideo();
+  };
+
+  // Voice List bei manchen Browsern erst nach voiceschanged verfügbar
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = () => {};
+  }
+
+  // Prüfe welche MP3-Dateien verfügbar sind (nicht-blockierend)
+  checkAudioAvailability();
+
+  // Init: Ready-State
+  video.classList.add('is-ready');
+})();
+</script>
+
+    </div>
+
+    <!-- Pipeline in full detail -->
+    <div class="detail-pipeline-wrap">
+      <div class="detail-pipeline-label">Die 6 Schritte · End-to-End Pipeline</div>
+      <div class="detail-pipeline">
+        <div class="detail-pipeline-step">
+          <div class="detail-pipeline-step-num">01 · EINGANG</div>
+          <div class="detail-pipeline-step-title">Eingang überwachen</div>
+          <div class="detail-pipeline-step-desc">Oskar liest Ihren Posteingang mit (Microsoft Graph, Gmail, Exchange), erkennt Bestellungen und trennt relevante Anhänge vom Lärm.</div>
+        </div>
+        <div class="detail-pipeline-step">
+          <div class="detail-pipeline-step-num">02 · ERFASSEN</div>
+          <div class="detail-pipeline-step-title">Daten erfassen</div>
+          <div class="detail-pipeline-step-desc">KI-basierte Erfassung von Kundendaten, Adressen, Positionen, Mengen, Terminen und Referenzen — aus jedem Dokumentformat.</div>
+        </div>
+        <div class="detail-pipeline-step">
+          <div class="detail-pipeline-step-num">03 · ABGLEICH</div>
+          <div class="detail-pipeline-step-title">Stammdaten abgleichen</div>
+          <div class="detail-pipeline-step-desc">Kunden und Artikel werden über Fuzzy- und semantisches Matching mit Ihren Stammdaten verknüpft. Zuvor erstellte Offerten werden automatisch zugeordnet.</div>
+        </div>
+        <div class="detail-pipeline-step">
+          <div class="detail-pipeline-step-num">04 · PRÜFUNG</div>
+          <div class="detail-pipeline-step-title">Plausibilität prüfen</div>
+          <div class="detail-pipeline-step-desc">Konfigurierbare Geschäftsregeln werden angewendet: Daten normalisiert, Ausnahmen erkannt, mandantenspezifische Anforderungen durchgesetzt.</div>
+        </div>
+        <div class="detail-pipeline-step">
+          <div class="detail-pipeline-step-num">05 · KLÄRUNG</div>
+          <div class="detail-pipeline-step-title">Ausnahmen klären</div>
+          <div class="detail-pipeline-step-desc">Unklare oder riskante Fälle gehen mit konkreten Rückfragen an Ihr Team. Oskar lernt kontinuierlich aus jeder Korrektur.</div>
+        </div>
+        <div class="detail-pipeline-step">
+          <div class="detail-pipeline-step-num">06 · ÜBERGABE</div>
+          <div class="detail-pipeline-step-title">An ERP übergeben</div>
+          <div class="detail-pipeline-step-desc">Validierte Aufträge direkt im Business Central (REST API), SAP (ORDERS05 IDoc) oder Custom Backend. Vollständiger Audit-Trail erhalten.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deeper sections -->
+    <div class="agent-sections">
+      <div class="agent-section-card">
+        <div class="agent-section-label">Warum Oskar</div>
+        <div class="agent-section-title">Gebaut für Handelsrealität</div>
+        <p class="agent-section-text">Keine generische KI, die gelegentlich halluziniert. Oskar kombiniert generative KI mit Heuristiken, Fuzzy Matching und systematischen Cross-Checks — für reproduzierbare, robuste und auditierbare Ergebnisse bei jeder Bestellung.</p>
+      </div>
+      <div class="agent-section-card">
+        <div class="agent-section-label">Enterprise-Features</div>
+        <div class="agent-section-title">Produktionsreif, mandantenfähig</div>
+        <ul class="agent-section-list">
+          <li>Mandanten-isolierte Konfiguration, Credentials und Daten</li>
+          <li>Secret Handling via Azure Key Vault</li>
+          <li>Asynchrone Verarbeitung mit persistentem State</li>
+          <li>Admin-API und CLI für Konfiguration und Betrieb</li>
+        </ul>
+      </div>
+      <div class="agent-section-card">
+        <div class="agent-section-label">Human-in-the-Loop</div>
+        <div class="agent-section-title">Mensch behält Kontrolle</div>
+        <p class="agent-section-text">Oskar hat keine Entscheidungsautorität — er empfiehlt und liefert. Unklare Fälle werden automatisch zur Freigabe an Ihr Team geroutet, inklusive automatisch generierter Klärungsfragen. So bleibt Kontrolle dort, wo sie hingehört.</p>
+      </div>
+      <div class="agent-section-card">
+        <div class="agent-section-label">Stammdaten-Sync</div>
+        <div class="agent-section-title">Immer aktuell</div>
+        <p class="agent-section-text">Produkte, Kunden und Referenzen werden kontinuierlich aus Ihren Systemen synchronisiert. Oskar arbeitet nie mit veralteten Daten — neue Artikel, geänderte Preise und aktualisierte Lieferadressen sind sofort im Matching berücksichtigt.</p>
+      </div>
+    </div>
+
+    <!-- Integrations -->
+    <div style="margin-top: 48px;">
+      <div class="agent-section-label" style="margin-bottom: 20px;">Integrationen</div>
+      <div class="integrations-grid">
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Microsoft Graph</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Gmail API</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Exchange</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Business Central REST</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>SAP ORDERS05 IDoc</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Custom REST Backends</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>MongoDB / CosmosDB</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Claude, GPT-4, Gemini, Azure</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     PETRA DETAIL
+     ============================================ -->
+<section class="agent-detail light anchor-scroll" id="petra" style="background: var(--bg-lighter);">
+  <div class="container">
+    <div class="agent-detail-header">
+      <div class="agent-detail-avatar">PB</div>
+      <div>
+        <div class="agent-detail-name">Petra</div>
+        <div class="agent-detail-role">Spezialistin Produktdaten · Product Agent · Produktiv im Einsatz</div>
+      </div>
+    </div>
+    <p class="agent-detail-lede">
+      Petra verwandelt chaotische Lieferantendaten — E-Mails, PDFs, Excel-Listen, gescannte Datenblätter und geschützte Webportale — vollautomatisch in strukturierte, commerce-ready Produktbeschreibungen. Sie liefert exportfertige Daten mit Titeln, Beschreibungen, Attributen, SEO-Feldern und Bildern. Rund um die Uhr.
+    </p>
+
+    <div class="agent-stats-row">
+      <div class="agent-stat-box">
+        <div class="agent-stat-box-value">~30%</div>
+        <div class="agent-stat-box-label">Produktivitätsgewinn Category Management</div>
+      </div>
+      <div class="agent-stat-box">
+        <div class="agent-stat-box-value">95%</div>
+        <div class="agent-stat-box-label">Verarbeitungsrate Dokumente</div>
+      </div>
+      <div class="agent-stat-box">
+        <div class="agent-stat-box-value">&lt; 60s</div>
+        <div class="agent-stat-box-label">Durchlaufzeit pro Artikel</div>
+      </div>
+      <div class="agent-stat-box">
+        <div class="agent-stat-box-value">20+</div>
+        <div class="agent-stat-box-label">Dokumenttypen verarbeitet</div>
+      </div>
+    </div>
+
+    <!-- Petra 60-Sekunden-Video (Pipeline-Animation) -->
+    <div class="agent-video-wrap">
+<!--
+  Petra 60-Sekunden-Pipeline-Animation
+  Eingesetzt in produkt.html via <div class="petra-video-embed"></div>
+
+  Dependencies: keine (pure HTML/CSS/JS)
+  Voice-Feature: bewusst ausgelassen (wird später ergänzt)
+-->
+<style>
+/* ==================================================================
+   PETRA PIPELINE VIDEO — 60 Sekunden
+   Eigener Prefix (.psv-*) um Konflikte mit Oskar-Video zu vermeiden
+   ================================================================== */
+.petra-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0F1820;
+  background-image:
+    radial-gradient(ellipse at 80% 30%, rgba(63, 186, 194, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 70%, rgba(63, 186, 194, 0.05) 0%, transparent 50%),
+    linear-gradient(155deg, #182330 0%, #0F1820 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  color: #fff;
+  user-select: none;
+  isolation: isolate;
+}
+
+.petra-video::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(63, 186, 194, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63, 186, 194, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ===== Top bar ===== */
+.psv-topbar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+}
+.psv-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+}
+.psv-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #3FBAC2 0%, #2A8A90 100%);
+  color: #1E2A3A;
+  border-radius: 7px;
+  font-weight: 800;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(63, 186, 194, 0.4);
+}
+.psv-brand-name { opacity: 0.9; }
+.psv-brand-sub {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8FA0B5;
+  margin-left: 4px;
+}
+.psv-timer {
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #8FA0B5;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+.psv-timer span { color: #3FBAC2; }
+
+/* ===== Pipeline ===== */
+.psv-pipeline {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 80px);
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  z-index: 3;
+}
+.psv-step {
+  position: relative;
+  padding: 14px 10px 12px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  text-align: center;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.psv-step-num {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(143, 160, 181, 0.5);
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+  transition: color 0.4s;
+}
+.psv-step-icon {
+  width: 32px; height: 32px;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #8FA0B5;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.psv-step-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.psv-step-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  transition: color 0.4s;
+}
+
+.psv-step.is-done { border-color: rgba(95, 217, 124, 0.3); background: rgba(95, 217, 124, 0.08); }
+.psv-step.is-done .psv-step-num { color: #5FD97C; }
+.psv-step.is-done .psv-step-icon { background: rgba(95, 217, 124, 0.15); color: #5FD97C; }
+.psv-step.is-done .psv-step-title { color: #fff; }
+
+.psv-step.is-active {
+  border-color: #3FBAC2;
+  background: rgba(63, 186, 194, 0.12);
+  box-shadow: 0 0 0 4px rgba(63, 186, 194, 0.1), 0 8px 24px -4px rgba(63, 186, 194, 0.3);
+  transform: translateY(-2px) scale(1.05);
+}
+.psv-step.is-active .psv-step-num { color: #3FBAC2; }
+.psv-step.is-active .psv-step-icon {
+  background: #3FBAC2;
+  color: #1E2A3A;
+  animation: psvStepPulse 1.2s infinite;
+}
+.psv-step.is-active .psv-step-title { color: #fff; }
+@keyframes psvStepPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(63, 186, 194, 0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(63, 186, 194, 0); }
+}
+
+.psv-packet {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 12px; height: 12px;
+  background: #3FBAC2;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 20px #3FBAC2, 0 0 40px rgba(63, 186, 194, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+}
+
+.psv-pipeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 6%;
+  right: 6%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(63, 186, 194, 0.2) 10%,
+    rgba(63, 186, 194, 0.2) 90%,
+    transparent 100%);
+  z-index: -1;
+}
+
+/* ===== Title ===== */
+.psv-title {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  text-align: center;
+  max-width: 80%;
+  z-index: 3;
+}
+.psv-title-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #3FBAC2;
+  margin-bottom: 8px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.psv-title-eyebrow.visible { opacity: 1; }
+.psv-title-text {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  min-height: 2.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.psv-title-text span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+.psv-title-text span.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.psv-title-text .accent { color: #3FBAC2; }
+
+/* ===== Detail Card ===== */
+.psv-detail {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: calc(100% - 80px);
+  max-width: 720px;
+  background: rgba(24, 35, 48, 0.92);
+  border: 1px solid rgba(63, 186, 194, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  z-index: 3;
+  opacity: 0;
+  transform: translate(-50%, 10px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+.psv-detail.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.psv-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+.psv-detail-label {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #3FBAC2;
+}
+.psv-detail-badge {
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: #5FD97C;
+  background: rgba(95, 217, 124, 0.15);
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.psv-detail-badge::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #5FD97C;
+  box-shadow: 0 0 6px #5FD97C;
+}
+.psv-detail-content {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #E0E8F0;
+}
+.psv-detail-rows {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 4px 16px;
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.psv-detail-rows .key { color: #8FA0B5; }
+.psv-detail-rows .val { color: #fff; }
+.psv-detail-rows .chk { color: #5FD97C; }
+.psv-detail-rows .chk-warn { color: #FFB366; }
+.psv-detail-rows .warn { color: #FFB366; font-weight: 600; }
+
+/* ===== Progress Bar ===== */
+.psv-progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  z-index: 4;
+}
+.psv-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3FBAC2, #5FD97C);
+  width: 0;
+  transition: width 0.2s linear;
+  box-shadow: 0 0 8px #3FBAC2;
+}
+
+/* ===== Controls (ohne Voice-Toggle) ===== */
+.psv-controls {
+  position: absolute;
+  bottom: 14px;
+  left: 24px;
+  right: 24px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.petra-video:hover .psv-controls,
+.petra-video.is-paused .psv-controls,
+.petra-video.is-ready .psv-controls {
+  opacity: 1;
+}
+.psv-ctrl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.psv-ctrl:hover {
+  background: rgba(63, 186, 194, 0.2);
+  border-color: #3FBAC2;
+}
+.psv-ctrl svg {
+  width: 12px; height: 12px;
+  fill: currentColor;
+}
+.psv-ctrl-group { display: flex; gap: 8px; }
+
+/* ===== Start/End Screen ===== */
+.psv-startscreen {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(155deg, rgba(24, 35, 48, 0.98) 0%, rgba(15, 24, 32, 0.98) 100%);
+  transition: opacity 0.5s, visibility 0.5s;
+  cursor: pointer;
+}
+.psv-startscreen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.psv-startscreen-play {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: #3FBAC2;
+  color: #1E2A3A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 40px rgba(63, 186, 194, 0.4);
+  transition: transform 0.2s;
+}
+.psv-startscreen:hover .psv-startscreen-play { transform: scale(1.08); }
+.psv-startscreen-play svg { width: 24px; height: 24px; fill: currentColor; margin-left: 4px; }
+.psv-startscreen-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.psv-startscreen-sub {
+  font-size: 12px;
+  color: #8FA0B5;
+  letter-spacing: 0.05em;
+}
+
+.psv-endscreen {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(155deg, rgba(24, 35, 48, 0.96) 0%, rgba(15, 24, 32, 0.96) 100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s;
+  padding: 24px;
+  text-align: center;
+}
+.psv-endscreen.visible { opacity: 1; visibility: visible; }
+.psv-endscreen-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #5FD97C;
+  margin-bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.psv-endscreen-eyebrow::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #5FD97C;
+  box-shadow: 0 0 8px #5FD97C;
+}
+.psv-endscreen-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.psv-endscreen-title .accent { color: #3FBAC2; }
+.psv-endscreen-stats {
+  display: flex;
+  gap: clamp(20px, 4vw, 40px);
+  margin: 24px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.psv-endscreen-stat-val {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 800;
+  color: #3FBAC2;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.psv-endscreen-stat-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8FA0B5;
+  margin-top: 4px;
+}
+.psv-endscreen-replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  color: #3FBAC2;
+  border: 1px solid #3FBAC2;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  margin-top: 8px;
+}
+.psv-endscreen-replay:hover { background: #3FBAC2; color: #1E2A3A; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .psv-step-title { display: none; }
+  .psv-step { padding: 10px 6px; }
+  .psv-step-icon { width: 26px; height: 26px; }
+  .psv-detail { font-size: 11px; padding: 12px; }
+  .psv-detail-rows { font-size: 10px; grid-template-columns: auto 1fr; }
+  .psv-detail-rows > :nth-child(3n) { display: none; }
+  .psv-title { top: 12%; }
+  .psv-topbar { padding: 10px 14px; }
+  .psv-controls { bottom: 10px; left: 14px; right: 14px; }
+}
+</style>
+
+<!-- ==================================================================
+     VIDEO-CONTAINER
+     ================================================================== -->
+<div class="petra-video" id="petraVideo">
+
+  <!-- Top Bar -->
+  <div class="psv-topbar">
+    <div class="psv-brand">
+      <div class="psv-brand-mark">P</div>
+      <div>
+        <div class="psv-brand-name">Petra</div>
+      </div>
+      <div class="psv-brand-sub">LIVE DEMO</div>
+    </div>
+    <div class="psv-timer"><span id="psvTimerCurrent">0:00</span> / 1:00</div>
+  </div>
+
+  <!-- Title -->
+  <div class="psv-title">
+    <div class="psv-title-eyebrow" id="psvEyebrow">Schritt 1 von 6</div>
+    <div class="psv-title-text" id="psvTitleText"></div>
+  </div>
+
+  <!-- Pipeline -->
+  <div class="psv-pipeline" id="psvPipeline">
+    <div class="psv-step" data-step="1">
+      <div class="psv-step-num">01</div>
+      <div class="psv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+      </div>
+      <div class="psv-step-title">Einlesen</div>
+    </div>
+    <div class="psv-step" data-step="2">
+      <div class="psv-step-num">02</div>
+      <div class="psv-step-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+      </div>
+      <div class="psv-step-title">Portale</div>
+    </div>
+    <div class="psv-step" data-step="3">
+      <div class="psv-step-num">03</div>
+      <div class="psv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5L12 2z"/><circle cx="19" cy="5" r="1.2" fill="currentColor"/><circle cx="5" cy="19" r="1.2" fill="currentColor"/></svg>
+      </div>
+      <div class="psv-step-title">Extraktion</div>
+    </div>
+    <div class="psv-step" data-step="4">
+      <div class="psv-step-num">04</div>
+      <div class="psv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+      </div>
+      <div class="psv-step-title">Anreichern</div>
+    </div>
+    <div class="psv-step" data-step="5">
+      <div class="psv-step-num">05</div>
+      <div class="psv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2l9 4v6c0 5-3.5 9-9 10-5.5-1-9-5-9-10V6l9-4z"/><polyline points="9 12 11 14 15 10"/></svg>
+      </div>
+      <div class="psv-step-title">Qualität</div>
+    </div>
+    <div class="psv-step" data-step="6">
+      <div class="psv-step-num">06</div>
+      <div class="psv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <div class="psv-step-title">Export</div>
+    </div>
+    <div class="psv-packet" id="psvPacket"></div>
+  </div>
+
+  <!-- Detail-Card -->
+  <div class="psv-detail" id="psvDetail">
+    <div class="psv-detail-header">
+      <div class="psv-detail-label" id="psvDetailLabel"></div>
+      <div class="psv-detail-badge" id="psvDetailBadge">verarbeitet</div>
+    </div>
+    <div class="psv-detail-content" id="psvDetailContent"></div>
+  </div>
+
+  <!-- Endscreen -->
+  <div class="psv-endscreen" id="psvEndscreen">
+    <div class="psv-endscreen-eyebrow">Fertig · Shop-Feed exportiert</div>
+    <div class="psv-endscreen-title">
+      <span class="accent">39 Felder</span> pro Artikel.<br>
+      Rund um die Uhr.
+    </div>
+    <div class="psv-endscreen-stats">
+      <div>
+        <div class="psv-endscreen-stat-val">~30%</div>
+        <div class="psv-endscreen-stat-lbl">Produktivitätsgewinn</div>
+      </div>
+      <div>
+        <div class="psv-endscreen-stat-val">&lt; 60 s</div>
+        <div class="psv-endscreen-stat-lbl">pro Artikel</div>
+      </div>
+      <div>
+        <div class="psv-endscreen-stat-val">4 Sprachen</div>
+        <div class="psv-endscreen-stat-lbl">DE · EN · FR · IT</div>
+      </div>
+    </div>
+    <button class="psv-endscreen-replay" onclick="window.petraVideoReplay && window.petraVideoReplay()">
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+      Noch einmal abspielen
+    </button>
+  </div>
+
+  <!-- Startscreen -->
+  <div class="psv-startscreen" id="psvStartscreen">
+    <div class="psv-startscreen-play">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    <div class="psv-startscreen-title">Petra in Aktion</div>
+    <div class="psv-startscreen-sub">60 Sekunden · Von Lieferantendaten zum Shop-Feed</div>
+  </div>
+
+  <!-- Controls (ohne Voice-Toggle) -->
+  <div class="psv-controls">
+    <div class="psv-ctrl-group">
+      <button class="psv-ctrl" id="psvPlayPause" title="Play/Pause">
+        <svg id="psvPlayIcon" viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+        <span id="psvPlayLabel">Pause</span>
+      </button>
+      <button class="psv-ctrl" id="psvRestart" title="Neu starten">
+        <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="psv-progress"><div class="psv-progress-fill" id="psvProgressFill"></div></div>
+</div>
+
+<script>
+// ==================================================================
+// PETRA VIDEO CONTROLLER
+// ==================================================================
+(function() {
+  const video = document.getElementById('petraVideo');
+  const pipeline = document.getElementById('psvPipeline');
+  const steps = pipeline.querySelectorAll('.psv-step');
+  const packet = document.getElementById('psvPacket');
+  const eyebrow = document.getElementById('psvEyebrow');
+  const titleText = document.getElementById('psvTitleText');
+  const detailCard = document.getElementById('psvDetail');
+  const detailLabel = document.getElementById('psvDetailLabel');
+  const detailBadge = document.getElementById('psvDetailBadge');
+  const detailContent = document.getElementById('psvDetailContent');
+  const timerEl = document.getElementById('psvTimerCurrent');
+  const progressFill = document.getElementById('psvProgressFill');
+  const startscreen = document.getElementById('psvStartscreen');
+  const endscreen = document.getElementById('psvEndscreen');
+  const playBtn = document.getElementById('psvPlayPause');
+  const playIcon = document.getElementById('psvPlayIcon');
+  const playLabel = document.getElementById('psvPlayLabel');
+  const restartBtn = document.getElementById('psvRestart');
+
+  const TOTAL_DURATION = 60000;
+
+  // Timeline: Beispiel Lieferant Husqvarna, Gartengeräte-Serie
+  const timeline = [
+    {
+      start: 0,
+      end: 4000,
+      step: 0,
+      eyebrow: 'Intro',
+      title: ['Von ', '<span class="accent">Lieferantendaten</span>', ' zum fertigen Shop-Feed.'],
+      detail: null
+    },
+    {
+      start: 4000,
+      end: 12000,
+      step: 1,
+      eyebrow: 'Schritt 1 von 6 · Einlesen',
+      title: ['Lieferant schickt ', '<span class="accent">12 Dokumente.</span>'],
+      detailLabel: 'Eingang Husqvarna · Automatische Klassifikation',
+      detailBadge: '12 Dokumente',
+      detail: `
+        <div class="psv-detail-rows">
+          <span class="key">E-Mail-Text</span><span class="val">"Neue Produktserie · Akku-Rasenmäher 2026"</span><span class="chk">✓</span>
+          <span class="key">Datenblätter</span><span class="val">8 PDFs · technische Spezifikationen</span><span class="chk">✓</span>
+          <span class="key">Preisliste</span><span class="val">1 Excel · 47 Artikelnummern</span><span class="chk">✓</span>
+          <span class="key">Bilder</span><span class="val">3 Produktfotos · ZIP-Archiv</span><span class="chk">✓</span>
+        </div>`
+    },
+    {
+      start: 12000,
+      end: 20000,
+      step: 2,
+      eyebrow: 'Schritt 2 von 6 · Portale',
+      title: ['Zusätzliche Daten aus dem ', '<span class="accent">Lieferantenportal.</span>'],
+      detailLabel: 'Husqvarna B2B-Portal · Authentifiziert',
+      detailBadge: 'angemeldet',
+      detail: `
+        <div class="psv-detail-rows">
+          <span class="key">Login</span><span class="val">OAuth 2.0 · 2FA bestätigt</span><span class="chk">✓</span>
+          <span class="key">Cookie-Consent</span><span class="val">DE-Dialog erkannt und akzeptiert</span><span class="chk">✓</span>
+          <span class="key">Hochauflösende Bilder</span><span class="val">14 JPG · je 2400×2400 px</span><span class="chk">✓</span>
+          <span class="key">Zertifikate</span><span class="val">CE · RoHS · Energielabel</span><span class="chk">✓</span>
+        </div>`
+    },
+    {
+      start: 20000,
+      end: 30000,
+      step: 3,
+      eyebrow: 'Schritt 3 von 6 · Extraktion',
+      title: ['Multi-LLM extrahiert ', '<span class="accent">47 Artikel parallel.</span>'],
+      detailLabel: 'KI-Extraktion · Claude + GPT-4 + Gemini',
+      detailBadge: 'Konsens 98,4%',
+      detail: `
+        <div class="psv-detail-rows">
+          <span class="key">Artikel ART-LM-2026-03</span><span class="val">Akku-Rasenmäher LM 232 RKI</span><span class="chk">✓</span>
+          <span class="key">Technische Daten</span><span class="val">56 Attribute · Schnittbreite, Akku, Gewicht</span><span class="chk">✓</span>
+          <span class="key">OCR-Datenblatt</span><span class="val">Gerätemaße aus gescannter Zeichnung</span><span class="chk">✓</span>
+          <span class="key">Multi-LLM-Konsens</span><span class="val">3 Modelle · Abweichungen geprüft</span><span class="chk">✓</span>
+        </div>`
+    },
+    {
+      start: 30000,
+      end: 40000,
+      step: 4,
+      eyebrow: 'Schritt 4 von 6 · Anreichern',
+      title: ['Produkttexte ', '<span class="accent">werden geschrieben.</span>'],
+      detailLabel: 'Copywriting nach Ihren Richtlinien',
+      detailBadge: '4 Sprachen',
+      detail: `
+        <div class="psv-detail-rows">
+          <span class="key">SEO-Titel</span><span class="val">Husqvarna LM 232 RKI · Akku-Rasenmäher 38 cm</span><span class="chk">✓</span>
+          <span class="key">Meta-Description</span><span class="val">Optimiert auf 155 Zeichen · Keyword-Dichte 2,1%</span><span class="chk">✓</span>
+          <span class="key">Produktbeschreibung</span><span class="val">DE · EN · FR · IT · Ihr Tonfall</span><span class="chk">✓</span>
+          <span class="key">GEO-Metadaten</span><span class="val">Für AI-Suchmaschinen strukturiert</span><span class="chk">✓</span>
+        </div>`
+    },
+    {
+      start: 40000,
+      end: 48000,
+      step: 5,
+      eyebrow: 'Schritt 5 von 6 · Qualität',
+      title: ['Completeness-Scoring — ', '<span class="accent">eine Lücke erkannt.</span>'],
+      detailLabel: 'Qualitätsprüfung · 3 Stufen',
+      detailBadge: 'Score 12,5 / 13,5',
+      detail: `
+        <div class="psv-detail-rows">
+          <span class="key">Pflichtfelder</span><span class="val">36 von 36 vorhanden</span><span class="chk">✓</span>
+          <span class="key">Konsistenz</span><span class="val">Mehrsprachig widerspruchsfrei</span><span class="chk">✓</span>
+          <span class="key">Bilder</span><span class="val">14 verfügbar · alle geprüft</span><span class="chk">✓</span>
+          <span class="key">Energielabel</span><span class="warn">Fehlt bei 2 Artikeln · Prüffrage generiert</span><span class="chk-warn">!</span>
+        </div>`
+    },
+    {
+      start: 48000,
+      end: 56000,
+      step: 6,
+      eyebrow: 'Schritt 6 von 6 · Export',
+      title: ['47 Artikel ', '<span class="accent">bereit für den Shop.</span>'],
+      detailLabel: 'Export · Shop-Feed bereit',
+      detailBadge: '45 / 47 freigegeben',
+      detail: `
+        <div class="psv-detail-rows">
+          <span class="key">Format</span><span class="val">XML-Feed · kundenspezifisches Schema</span><span class="chk">✓</span>
+          <span class="key">Datenfelder</span><span class="val">39 pro Artikel · inkl. SEO &amp; GEO</span><span class="chk">✓</span>
+          <span class="key">Report-Tiefe</span><span class="val">Enriched · höchste Stufe</span><span class="chk">✓</span>
+          <span class="key">Offen</span><span class="val">2 Artikel mit Rückfrage an Category Management</span><span class="chk-warn">!</span>
+        </div>`
+    },
+    {
+      start: 56000,
+      end: 60000,
+      step: 0,
+      eyebrow: 'Fertig',
+      title: ['Von 12 Dokumenten zu 47 Artikeln: ', '<span class="accent">unter einer Minute.</span>'],
+      detail: null
+    }
+  ];
+
+  // ===== State =====
+  let startTime = 0;
+  let elapsed = 0;
+  let currentSegment = -1;
+  let rafId = null;
+  let isPlaying = false;
+
+  function formatTime(ms) {
+    const s = Math.floor(ms / 1000);
+    return `0:${String(s).padStart(2, '0')}`;
+  }
+
+  function setTitle(segment) {
+    titleText.innerHTML = '';
+    segment.title.forEach((part, i) => {
+      const span = document.createElement('span');
+      let html = part;
+      if (html.startsWith(' ')) html = '\u00A0' + html.slice(1);
+      if (html.endsWith(' ')) html = html.slice(0, -1) + '\u00A0';
+      span.innerHTML = html;
+      span.style.transitionDelay = (i * 80) + 'ms';
+      titleText.appendChild(span);
+    });
+    requestAnimationFrame(() => {
+      titleText.querySelectorAll('span').forEach(s => s.classList.add('visible'));
+    });
+    eyebrow.textContent = segment.eyebrow;
+    eyebrow.classList.add('visible');
+  }
+
+  function setDetail(segment) {
+    if (segment.detail) {
+      detailLabel.textContent = segment.detailLabel || '';
+      detailBadge.textContent = segment.detailBadge || 'verarbeitet';
+      detailContent.innerHTML = segment.detail;
+      detailCard.classList.add('visible');
+    } else {
+      detailCard.classList.remove('visible');
+    }
+  }
+
+  function updateSteps(activeStep, completedUpTo) {
+    steps.forEach((s, i) => {
+      const num = i + 1;
+      s.classList.remove('is-active', 'is-done');
+      if (num < completedUpTo) s.classList.add('is-done');
+      else if (num === activeStep) s.classList.add('is-active');
+    });
+  }
+
+  function movePacket(stepIndex) {
+    if (stepIndex < 1 || stepIndex > 6) {
+      packet.style.opacity = '0';
+      return;
+    }
+    const step = steps[stepIndex - 1];
+    const rect = step.getBoundingClientRect();
+    const pipeRect = pipeline.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2 - pipeRect.left - 6;
+    packet.style.left = centerX + 'px';
+    packet.style.opacity = '1';
+  }
+
+  function tick() {
+    elapsed = performance.now() - startTime;
+    const progress = Math.min(elapsed / TOTAL_DURATION, 1);
+    progressFill.style.width = (progress * 100) + '%';
+    timerEl.textContent = formatTime(elapsed);
+
+    let newSegment = -1;
+    for (let i = 0; i < timeline.length; i++) {
+      if (elapsed >= timeline[i].start && elapsed < timeline[i].end) {
+        newSegment = i;
+        break;
+      }
+    }
+    if (elapsed >= TOTAL_DURATION) {
+      endVideo();
+      return;
+    }
+
+    if (newSegment !== currentSegment && newSegment !== -1) {
+      currentSegment = newSegment;
+      const seg = timeline[newSegment];
+      setTitle(seg);
+      setDetail(seg);
+      if (seg.step > 0 && seg.step <= 6) {
+        updateSteps(seg.step, seg.step);
+        movePacket(seg.step);
+      } else if (newSegment === 0) {
+        updateSteps(0, 0);
+        packet.style.opacity = '0';
+      } else {
+        updateSteps(0, 7);
+        packet.style.opacity = '0';
+      }
+    }
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function startVideo() {
+    startTime = performance.now() - elapsed;
+    isPlaying = true;
+    video.classList.remove('is-paused', 'is-ready');
+    playIcon.innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>';
+    playLabel.textContent = 'Pause';
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function pauseVideo() {
+    if (rafId) cancelAnimationFrame(rafId);
+    isPlaying = false;
+    video.classList.add('is-paused');
+    playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    playLabel.textContent = 'Play';
+  }
+
+  function endVideo() {
+    if (rafId) cancelAnimationFrame(rafId);
+    isPlaying = false;
+    elapsed = TOTAL_DURATION;
+    progressFill.style.width = '100%';
+    timerEl.textContent = '1:00';
+    updateSteps(0, 7);
+    detailCard.classList.remove('visible');
+    packet.style.opacity = '0';
+    endscreen.classList.add('visible');
+  }
+
+  function resetVideo() {
+    elapsed = 0;
+    currentSegment = -1;
+    progressFill.style.width = '0%';
+    timerEl.textContent = '0:00';
+    updateSteps(0, 0);
+    packet.style.opacity = '0';
+    detailCard.classList.remove('visible');
+    titleText.innerHTML = '';
+    eyebrow.classList.remove('visible');
+    endscreen.classList.remove('visible');
+  }
+
+  // ===== Event Listeners =====
+  startscreen.addEventListener('click', () => {
+    startscreen.classList.add('hidden');
+    resetVideo();
+    startVideo();
+  });
+
+  playBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (isPlaying) pauseVideo();
+    else {
+      if (elapsed >= TOTAL_DURATION) {
+        resetVideo();
+        endscreen.classList.remove('visible');
+      }
+      startVideo();
+    }
+  });
+
+  restartBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (rafId) cancelAnimationFrame(rafId);
+    resetVideo();
+    endscreen.classList.remove('visible');
+    startVideo();
+  });
+
+  window.petraVideoReplay = function() {
+    resetVideo();
+    endscreen.classList.remove('visible');
+    startVideo();
+  };
+
+  video.classList.add('is-ready');
+})();
+</script>
+
+    </div>
+
+    <div class="detail-pipeline-wrap">
+      <div class="detail-pipeline-label">Die 6 Schritte · Petras Arbeitsweise</div>
+      <div class="detail-pipeline">
+        <div class="detail-pipeline-step">
+          <div class="detail-pipeline-step-num">01 · EINLESEN</div>
+          <div class="detail-pipeline-step-title">Dokumente einlesen &amp; klassifizieren</div>
+          <div class="detail-pipeline-step-desc">E-Mails, PDFs, Excel/CSV, Word, Bilder und Web-URLs — automatisch erkannt und nach Datenblatt oder Artikelliste geroutet.</div>
+        </div>
+        <div class="detail-pipeline-step">
+          <div class="detail-pipeline-step-num">02 · PORTALE</div>
+          <div class="detail-pipeline-step-title">Web Scraping &amp; Portalzugang</div>
+          <div class="detail-pipeline-step-desc">Navigiert geschützte Lieferantenportale mit 4 Authentifizierungsmethoden und Cookie-Consent in 7+ Sprachen.</div>
+        </div>
+        <div class="detail-pipeline-step">
+          <div class="detail-pipeline-step-num">03 · EXTRAKTION</div>
+          <div class="detail-pipeline-step-title">KI-gestützte Extraktion</div>
+          <div class="detail-pipeline-step-desc">Multi-LLM-Strategie (Claude, GPT-4, Gemini) mit deutschsprachig optimierten Prompts aus Markdown, OCR, Bildern und E-Mails.</div>
+        </div>
+        <div class="detail-pipeline-step">
+          <div class="detail-pipeline-step-num">04 · ANREICHERN</div>
+          <div class="detail-pipeline-step-title">Anreichern &amp; optimieren</div>
+          <div class="detail-pipeline-step-desc">Nach Ihren Copywriting-Richtlinien aus Datasheets und Webquellen angereichert. SEO- und GEO-Metadaten automatisch erzeugt.</div>
+        </div>
+        <div class="detail-pipeline-step">
+          <div class="detail-pipeline-step-num">05 · QUALITÄT</div>
+          <div class="detail-pipeline-step-title">Qualität &amp; Human-in-the-Loop</div>
+          <div class="detail-pipeline-step-desc">3-stufiges Completeness-Scoring (max. 13,5 Punkte). Unzureichende Ergebnisse werden automatisch blockiert, Prüffragen generiert.</div>
+        </div>
+        <div class="detail-pipeline-step">
+          <div class="detail-pipeline-step-num">06 · EXPORT</div>
+          <div class="detail-pipeline-step-title">Export &amp; Bereitstellung</div>
+          <div class="detail-pipeline-step-desc">Reports in drei Tiefen (Parsed, Refined, Enriched) als Excel oder kundenspezifische Shop-Feeds. Bis zu 39 Datenfelder inkl. SEO.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="agent-sections">
+      <div class="agent-section-card">
+        <div class="agent-section-label">Persönlichkeit</div>
+        <div class="agent-section-title">Vielseitig, gründlich, transparent</div>
+        <p class="agent-section-text">Petra verarbeitet 20+ Dokumenttypen, 4 Authentifizierungsmethoden, 7+ Sprachen — kein Format ist zu chaotisch. Jede Quelle wird geprüft, jeder Widerspruch erkannt, Konfidenzwerte und Quellherkunft sind jederzeit nachvollziehbar.</p>
+      </div>
+      <div class="agent-section-card">
+        <div class="agent-section-label">Konservativ</div>
+        <div class="agent-section-title">Im Zweifel blockieren, nicht liefern</div>
+        <p class="agent-section-text">Petra hat keine Entscheidungsautorität — sie empfiehlt und liefert, entscheidet nicht. Im Zweifel blockiert sie automatisch und eskaliert an den Menschen. Keine ungeprüfte Datenlieferung ins Produktivsystem.</p>
+      </div>
+      <div class="agent-section-card">
+        <div class="agent-section-label">Lernfähig</div>
+        <div class="agent-section-title">Jede Korrektur wird zur Regel</div>
+        <p class="agent-section-text">Korrekturen aus dem Human-in-the-Loop fliessen als neue CEL-Regeln in zukünftige Verarbeitungen ein. Petra wird mit jeder Woche präziser für Ihre spezifischen Anforderungen.</p>
+      </div>
+      <div class="agent-section-card">
+        <div class="agent-section-label">Kennzahlen</div>
+        <div class="agent-section-title">Messbar von Tag eins</div>
+        <ul class="agent-section-list">
+          <li>95% Verarbeitungsrate der Dokumente</li>
+          <li>&lt; 60s Durchlaufzeit pro Artikel</li>
+          <li>↓ 80% manueller Aufwand Produktdaten</li>
+          <li>0 unerkannte Widersprüche</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top: 48px;">
+      <div class="agent-section-label" style="margin-bottom: 20px;">Integrationen</div>
+      <div class="integrations-grid">
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Microsoft Graph</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Gmail · Exchange</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Business Central</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>MongoDB / CosmosDB</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Claude, GPT-4, Gemini</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Azure, LMStudio</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Shop-Feeds (CSV/XML)</div>
+        <div class="integration-chip"><span class="integration-chip-dot"></span>Playwright Web Automation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="section section-dark" id="roadmap">
+  <div class="container">
+    <div class="eyebrow">Die Plattform</div>
+    <h2 class="section-title">Weitere Prozesse — ohne neue Grundintegration.</h2>
+    <p class="section-subtitle">
+      Oskar und Petra sind der Anfang, nicht das Ende. Dieselbe Plattform trägt weitere Agenten, die sich in bestehende ERP-Integration einklinken — bei Ihnen oder Ihren Kunden.
+    </p>
+    <div class="roadmap-grid">
+      <div class="roadmap-card" style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08);">
+        <span class="roadmap-card-label">In Vorbereitung</span>
+        <h4 class="roadmap-card-title" style="color: #fff;">Auftragsänderungen &amp; Reklamationen</h4>
+        <p class="roadmap-card-desc" style="color: var(--text-on-dark-muted);">Änderungen an laufenden Aufträgen automatisch erkennen, validieren und ins ERP übernehmen.</p>
+      </div>
+      <div class="roadmap-card" style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08);">
+        <span class="roadmap-card-label">In Vorbereitung</span>
+        <h4 class="roadmap-card-title" style="color: #fff;">Offerten- &amp; Preisprüfung</h4>
+        <p class="roadmap-card-desc" style="color: var(--text-on-dark-muted);">Eingehende Offerten gegen Referenzpreise und Konditionen prüfen, Abweichungen kennzeichnen.</p>
+      </div>
+      <div class="roadmap-card" style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08);">
+        <span class="roadmap-card-label">Geplant</span>
+        <h4 class="roadmap-card-title" style="color: #fff;">Lieferantenbestellungen</h4>
+        <p class="roadmap-card-desc" style="color: var(--text-on-dark-muted);">Replenishment und Lieferantenorder-Erstellung auf Basis von Bestellsignalen aus Vertrieb und Lager.</p>
+      </div>
+      <div class="roadmap-card" style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08);">
+        <span class="roadmap-card-label">Geplant</span>
+        <h4 class="roadmap-card-title" style="color: #fff;">Rechnungsprozesse</h4>
+        <p class="roadmap-card-desc" style="color: var(--text-on-dark-muted);">Rechnungseingang, Abgleich mit Bestellung und Wareneingang, Freigabe-Routing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section section-tinted" id="pricing">
+  <div class="container">
+    <div class="eyebrow">Kosten &amp; Modell</div>
+    <h2 class="section-title">Transparent. Transaktionsbasiert.</h2>
+    <p class="section-subtitle">Kein Abo für ungenutzte Lizenzen. Sie zahlen pro verarbeitetem Vorgang — der Nutzen skaliert mit Ihrem Geschäft.</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-card-title">Einmalige Integration</div>
+        <div class="pricing-card-value">5–20 TCHF</div>
+        <div class="pricing-card-unit">pro Kunde</div>
+        <p class="pricing-card-note">Abhängig von Komplexität und Systemumfeld. Nachträgliche Anpassungen auf Time &amp; Material-Basis.</p>
+      </div>
+      <div class="pricing-card highlighted">
+        <div class="pricing-card-title">Laufende Nutzung</div>
+        <div class="pricing-card-value">0.50 – 2.00 CHF</div>
+        <div class="pricing-card-unit">pro verarbeitetem Vorgang</div>
+        <p class="pricing-card-note">Transaktionsbasiertes Modell. Kein Sockelbetrag, keine ungenutzten Lizenzen — Sie zahlen, was Sie nutzen.</p>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-card-title">Empfohlenes Volumen</div>
+        <div class="pricing-card-value">ab ~500 / Monat</div>
+        <div class="pricing-card-unit">wirtschaftlich sinnvoll</div>
+        <p class="pricing-card-note">Unter 500 Vorgängen pro Monat rechnet sich die Integration typischerweise noch nicht — sprechen Sie uns trotzdem an.</p>
+      </div>
+    </div>
+
+    <div class="pricing-note">
+      <strong>Land-and-Expand.</strong> Nach der ersten Integration lassen sich weitere Prozesse ohne neue Grundintegration hinzufügen. So wächst der Nutzen pro Integration mit der Zeit — und die wirtschaftliche Schwelle sinkt.
+    </div>
+  </div>
+</section>
+
+<!-- OPERATING MODELS -->
+<section class="section section-light" id="ops">
+  <div class="container">
+    <div class="eyebrow">Betriebsmodelle</div>
+    <h2 class="section-title">Wo der Agent läuft — entscheiden Sie.</h2>
+    <p class="section-subtitle">Zwei etablierte Modelle, je nach IT-Governance und Präferenz.</p>
+
+    <div class="ops-grid">
+      <div class="ops-card">
+        <div class="ops-label">Modell 1</div>
+        <h3 class="ops-title">aikyma.ai SaaS</h3>
+        <ul class="ops-list">
+          <li>Dedizierte Instanz in der aikyma Azure Cloud</li>
+          <li>Integration in Ihre Backendsysteme</li>
+          <li>Service Level Agreement für Betrieb und Wartung</li>
+          <li>Volumenbasiertes Transaktions-Pricing</li>
+          <li>Infrastrukturkosten inklusive</li>
+        </ul>
+      </div>
+      <div class="ops-card">
+        <div class="ops-label">Modell 2</div>
+        <h3 class="ops-title">Betrieb bei Ihnen / Dienstleister</h3>
+        <ul class="ops-list">
+          <li>Betrieb in Ihrem Azure Tenant</li>
+          <li>Integration in Ihre Backendsysteme</li>
+          <li>2nd &amp; 3rd Level SLA für Ihren Dienstleister / IT</li>
+          <li>Volumenbasiertes Transaktions-Pricing + Wartungsvertrag</li>
+          <li>Ideal für strenge Compliance-Anforderungen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="final-cta-circles"><div class="c c1"></div><div class="c c2"></div><div class="c c3"></div></div>
+  <div class="container final-cta-inner">
+    <h2>Konkretes Potenzial <span class="accent">für Ihr Unternehmen erfahren.</span></h2>
+    <p>30 Minuten Erstgespräch. Wir schauen gemeinsam, welche Prozesse bei Ihnen sofort profitieren — und welche später folgen können.</p>
+    <div class="final-cta-row">
+      <a href="#" data-cal-popup class="btn btn-primary btn-lg">Demo buchen <span class="btn-arrow">→</span></a>
+      <a href="approach.html" class="btn btn-ghost btn-lg">Unser Vorgehen</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo"><span class="chevron">»</span>aikyma</div>
+        <p class="footer-brand-tagline">KI-native Prozessautomatisierung für den Handel. Gebaut in Basel, produktiv im DACH-Raum.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produkt</h4>
+        <a href="produkt.html#oscar">Oskar</a>
+        <a href="produkt.html#petra">Petra</a>
+        <a href="approach.html">Approach</a>
+      </div>
+      <div class="footer-col">
+        <h4>Unternehmen</h4>
+        <a href="team.html">Team</a>
+        <a href="kontakt.html">Kontakt</a>
+        <a href="kontakt.html#partner">Partnerprogramm</a>
+      </div>
+      <div class="footer-col">
+        <h4>Kontakt</h4>
+        <a href="mailto:contact@aikyma.ai">contact@aikyma.ai</a>
+        <a>Blauenstrasse 6<br>4054 Basel, Schweiz</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 aikyma.ai · Alle Rechte vorbehalten</div>
+      <div class="footer-legal">
+        <a href="#">Impressum</a>
+        <a href="#">Datenschutz</a>
+        <a href="#">AGB</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav = document.querySelector('.nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 20) { nav.classList.add('scrolled'); }
+  else { nav.classList.remove('scrolled'); }
+});
+</script>
+
+
+<!-- Cal.com Popup Loader (für data-cal-popup Buttons) -->
+<script type="text/javascript">
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", "popup-discover", { origin: "https://cal.com" });
+  Cal.ns["popup-discover"]("ui", {
+    theme: "light",
+    cssVarsPerTheme: { light: { "cal-brand": "#3FBAC2" } },
+    hideEventTypeDetails: false,
+    layout: "month_view"
+  });
+  document.querySelectorAll('[data-cal-popup]').forEach(el => {
+    el.setAttribute('data-cal-link', 'alexander-buch-sbw9zu/discover-call');
+    el.setAttribute('data-cal-namespace', 'popup-discover');
+    el.setAttribute('data-cal-config', '{"layout":"month_view","theme":"light"}');
+  });
+</script>
+
+</body>
+</html>

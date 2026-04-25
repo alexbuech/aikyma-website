@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editoren
+.vscode/
+.idea/
+*.swp
+*~
+
+# Logs
+*.log
+
+# OS-spezifisches Junk
+Thumbs.db
+desktop.ini

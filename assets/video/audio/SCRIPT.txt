@@ -1,0 +1,76 @@
+OSKAR VIDEO — VOICE-OVER SKRIPT
+================================
+
+Dieses Skript enthält alle 8 Sätze für das 60-Sekunden-Video.
+Jeder Satz wird separat aufgenommen und als MP3 mit dem angegebenen
+Dateinamen gespeichert.
+
+Empfehlungen:
+- Natürliche Sprechgeschwindigkeit (~150 Wörter/Minute)
+- Kleine Pausen bei Kommas und Gedankenstrichen
+- Zahlen ausgeschrieben oder als Ziffer — beides funktioniert
+- Keine übertriebene Betonung
+- Tonalität: sachlich-kompetent, nicht werblich-laut
+
+
+───────────────────────────────────────
+DATEI: oskar-01-intro.mp3      (~3 sek)
+───────────────────────────────────────
+
+Oskar bearbeitet eingehende Bestellungen vollautomatisch — vom Posteingang bis ins ERP.
+
+
+───────────────────────────────────────
+DATEI: oskar-02-eingang.mp3    (~7 sek)
+───────────────────────────────────────
+
+Eine E-Mail von Huber AG mit einem PDF-Bestellformular. Oskar erkennt sofort, dass es sich um eine Bestellung handelt.
+
+
+───────────────────────────────────────
+DATEI: oskar-03-erfassen.mp3   (~7 sek)
+───────────────────────────────────────
+
+Aus dem PDF werden Kundendaten, Artikel, Mengen und Liefertermine strukturiert erfasst.
+
+
+───────────────────────────────────────
+DATEI: oskar-04-abgleich.mp3   (~9 sek)
+───────────────────────────────────────
+
+Der Kunde wird mit der ERP-Kundennummer gematcht, alle drei Artikel werden in den Stammdaten gefunden.
+
+
+───────────────────────────────────────
+DATEI: oskar-05-pruefung.mp3   (~9 sek)
+───────────────────────────────────────
+
+Die Geschäftsregeln werden geprüft. Eine Position hat einen knappen Lagerbestand.
+
+
+───────────────────────────────────────
+DATEI: oskar-06-klaerung.mp3   (~7 sek)
+───────────────────────────────────────
+
+Oskar stellt eine gezielte Rückfrage an den Innendienst. Die Antwort kommt in unter einer Minute und fließt direkt in die Wissensbasis ein.
+
+
+───────────────────────────────────────
+DATEI: oskar-07-uebergabe.mp3  (~7 sek)
+───────────────────────────────────────
+
+Der validierte Auftrag wird direkt ins Business Central übernommen. Der Kunde erhält automatisch seine Bestätigung.
+
+
+───────────────────────────────────────
+DATEI: oskar-08-outro.mp3      (~4 sek)
+───────────────────────────────────────
+
+Von der eingehenden E-Mail bis zum verarbeiteten Auftrag im ERP: zwölf Sekunden. Tag und Nacht. Vollautomatisch.
+
+
+───────────────────────────────────────
+GESAMTLAUFZEIT: ~53 Sekunden Sprache
+in einem 60-Sekunden-Video = ~88% Sprechanteil
+mit ~7 Sekunden Pausen zwischen den Sätzen.
+───────────────────────────────────────

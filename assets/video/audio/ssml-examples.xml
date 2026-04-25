@@ -1,0 +1,86 @@
+<!--
+  SSML für Azure Speech Studio
+  https://speech.microsoft.com/audiocontentcreation
+
+  Jeden dieser 8 Blöcke einzeln einfügen, Stimme und Modell auswählen, generieren.
+  Empfohlene Stimme: de-DE-ConradNeural oder de-DE-KatjaNeural
+-->
+
+<!-- oskar-01-intro.mp3 -->
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+  <voice name="de-DE-ConradNeural">
+    <prosody rate="0%">
+      Oskar bearbeitet eingehende Bestellungen vollautomatisch<break time="200ms"/> vom Posteingang bis ins ERP.
+    </prosody>
+  </voice>
+</speak>
+
+<!-- oskar-02-eingang.mp3 -->
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+  <voice name="de-DE-ConradNeural">
+    <prosody rate="-5%">
+      Eine E-Mail von Huber AG mit einem PDF-Bestellformular.<break time="300ms"/>
+      Oskar erkennt sofort, dass es sich um eine Bestellung handelt.
+    </prosody>
+  </voice>
+</speak>
+
+<!-- oskar-03-erfassen.mp3 -->
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+  <voice name="de-DE-ConradNeural">
+    <prosody rate="-5%">
+      Aus dem PDF werden Kundendaten, Artikel, Mengen und Liefertermine strukturiert erfasst.
+    </prosody>
+  </voice>
+</speak>
+
+<!-- oskar-04-abgleich.mp3 -->
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+  <voice name="de-DE-ConradNeural">
+    <prosody rate="-5%">
+      Der Kunde wird mit der ERP-Kundennummer gematcht,<break time="200ms"/>
+      alle drei Artikel werden in den Stammdaten gefunden.
+    </prosody>
+  </voice>
+</speak>
+
+<!-- oskar-05-pruefung.mp3 -->
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+  <voice name="de-DE-ConradNeural">
+    <prosody rate="-5%">
+      Die Geschäftsregeln werden geprüft.<break time="400ms"/>
+      Eine Position hat einen knappen Lagerbestand.
+    </prosody>
+  </voice>
+</speak>
+
+<!-- oskar-06-klaerung.mp3 -->
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+  <voice name="de-DE-ConradNeural">
+    <prosody rate="-5%">
+      Oskar stellt eine gezielte Rückfrage an den Innendienst.<break time="300ms"/>
+      Die Antwort kommt in unter einer Minute und fließt direkt in die Wissensbasis ein.
+    </prosody>
+  </voice>
+</speak>
+
+<!-- oskar-07-uebergabe.mp3 -->
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+  <voice name="de-DE-ConradNeural">
+    <prosody rate="-5%">
+      Der validierte Auftrag wird direkt ins Business Central übernommen.<break time="300ms"/>
+      Der Kunde erhält automatisch seine Bestätigung.
+    </prosody>
+  </voice>
+</speak>
+
+<!-- oskar-08-outro.mp3 -->
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">
+  <voice name="de-DE-ConradNeural">
+    <prosody rate="0%">
+      Von der eingehenden E-Mail bis zum verarbeiteten Auftrag im ERP:<break time="400ms"/>
+      <emphasis level="moderate">zwölf Sekunden.</emphasis><break time="300ms"/>
+      Tag und Nacht.<break time="200ms"/> Vollautomatisch.
+    </prosody>
+  </voice>
+</speak>

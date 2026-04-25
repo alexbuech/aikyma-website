@@ -1,0 +1,982 @@
+<!--
+  Petra 60-Sekunden-Pipeline-Animation
+  Eingesetzt in produkt.html via <div class="petra-video-embed"></div>
+
+  Dependencies: keine (pure HTML/CSS/JS)
+  Voice-Feature: bewusst ausgelassen (wird später ergänzt)
+-->
+<style>
+/* ==================================================================
+   PETRA PIPELINE VIDEO — 60 Sekunden
+   Eigener Prefix (.psv-*) um Konflikte mit Oskar-Video zu vermeiden
+   ================================================================== */
+.petra-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0F1820;
+  background-image:
+    radial-gradient(ellipse at 80% 30%, rgba(63, 186, 194, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 70%, rgba(63, 186, 194, 0.05) 0%, transparent 50%),
+    linear-gradient(155deg, #182330 0%, #0F1820 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  color: #fff;
+  user-select: none;
+  isolation: isolate;
+}
+
+.petra-video::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(63, 186, 194, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63, 186, 194, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ===== Top bar ===== */
+.psv-topbar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+}
+.psv-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+}
+.psv-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #3FBAC2 0%, #2A8A90 100%);
+  color: #1E2A3A;
+  border-radius: 7px;
+  font-weight: 800;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(63, 186, 194, 0.4);
+}
+.psv-brand-name { opacity: 0.9; }
+.psv-brand-sub {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8FA0B5;
+  margin-left: 4px;
+}
+.psv-timer {
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #8FA0B5;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+.psv-timer span { color: #3FBAC2; }
+
+/* ===== Pipeline ===== */
+.psv-pipeline {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 80px);
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  z-index: 3;
+}
+.psv-step {
+  position: relative;
+  padding: 14px 10px 12px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  text-align: center;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.psv-step-num {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(143, 160, 181, 0.5);
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+  transition: color 0.4s;
+}
+.psv-step-icon {
+  width: 32px; height: 32px;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #8FA0B5;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.psv-step-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.psv-step-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  transition: color 0.4s;
+}
+
+.psv-step.is-done { border-color: rgba(95, 217, 124, 0.3); background: rgba(95, 217, 124, 0.08); }
+.psv-step.is-done .psv-step-num { color: #5FD97C; }
+.psv-step.is-done .psv-step-icon { background: rgba(95, 217, 124, 0.15); color: #5FD97C; }
+.psv-step.is-done .psv-step-title { color: #fff; }
+
+.psv-step.is-active {
+  border-color: #3FBAC2;
+  background: rgba(63, 186, 194, 0.12);
+  box-shadow: 0 0 0 4px rgba(63, 186, 194, 0.1), 0 8px 24px -4px rgba(63, 186, 194, 0.3);
+  transform: translateY(-2px) scale(1.05);
+}
+.psv-step.is-active .psv-step-num { color: #3FBAC2; }
+.psv-step.is-active .psv-step-icon {
+  background: #3FBAC2;
+  color: #1E2A3A;
+  animation: psvStepPulse 1.2s infinite;
+}
+.psv-step.is-active .psv-step-title { color: #fff; }
+@keyframes psvStepPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(63, 186, 194, 0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(63, 186, 194, 0); }
+}
+
+.psv-packet {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 12px; height: 12px;
+  background: #3FBAC2;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 20px #3FBAC2, 0 0 40px rgba(63, 186, 194, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+}
+
+.psv-pipeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 6%;
+  right: 6%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(63, 186, 194, 0.2) 10%,
+    rgba(63, 186, 194, 0.2) 90%,
+    transparent 100%);
+  z-index: -1;
+}
+
+/* ===== Title ===== */
+.psv-title {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  text-align: center;
+  max-width: 80%;
+  z-index: 3;
+}
+.psv-title-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #3FBAC2;
+  margin-bottom: 8px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.psv-title-eyebrow.visible { opacity: 1; }
+.psv-title-text {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  min-height: 2.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.psv-title-text span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+.psv-title-text span.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.psv-title-text .accent { color: #3FBAC2; }
+
+/* ===== Detail Card ===== */
+.psv-detail {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: calc(100% - 80px);
+  max-width: 720px;
+  background: rgba(24, 35, 48, 0.92);
+  border: 1px solid rgba(63, 186, 194, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  z-index: 3;
+  opacity: 0;
+  transform: translate(-50%, 10px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+.psv-detail.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.psv-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+.psv-detail-label {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #3FBAC2;
+}
+.psv-detail-badge {
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: #5FD97C;
+  background: rgba(95, 217, 124, 0.15);
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.psv-detail-badge::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #5FD97C;
+  box-shadow: 0 0 6px #5FD97C;
+}
+.psv-detail-content {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #E0E8F0;
+}
+.psv-detail-rows {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 4px 16px;
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.psv-detail-rows .key { color: #8FA0B5; }
+.psv-detail-rows .val { color: #fff; }
+.psv-detail-rows .chk { color: #5FD97C; }
+.psv-detail-rows .chk-warn { color: #FFB366; }
+.psv-detail-rows .warn { color: #FFB366; font-weight: 600; }
+
+/* ===== Progress Bar ===== */
+.psv-progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  z-index: 4;
+}
+.psv-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3FBAC2, #5FD97C);
+  width: 0;
+  transition: width 0.2s linear;
+  box-shadow: 0 0 8px #3FBAC2;
+}
+
+/* ===== Controls (ohne Voice-Toggle) ===== */
+.psv-controls {
+  position: absolute;
+  bottom: 14px;
+  left: 24px;
+  right: 24px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.petra-video:hover .psv-controls,
+.petra-video.is-paused .psv-controls,
+.petra-video.is-ready .psv-controls {
+  opacity: 1;
+}
+.psv-ctrl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.psv-ctrl:hover {
+  background: rgba(63, 186, 194, 0.2);
+  border-color: #3FBAC2;
+}
+.psv-ctrl svg {
+  width: 12px; height: 12px;
+  fill: currentColor;
+}
+.psv-ctrl-group { display: flex; gap: 8px; }
+
+/* ===== Start/End Screen ===== */
+.psv-startscreen {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(155deg, rgba(24, 35, 48, 0.98) 0%, rgba(15, 24, 32, 0.98) 100%);
+  transition: opacity 0.5s, visibility 0.5s;
+  cursor: pointer;
+}
+.psv-startscreen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.psv-startscreen-play {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: #3FBAC2;
+  color: #1E2A3A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 40px rgba(63, 186, 194, 0.4);
+  transition: transform 0.2s;
+}
+.psv-startscreen:hover .psv-startscreen-play { transform: scale(1.08); }
+.psv-startscreen-play svg { width: 24px; height: 24px; fill: currentColor; margin-left: 4px; }
+.psv-startscreen-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.psv-startscreen-sub {
+  font-size: 12px;
+  color: #8FA0B5;
+  letter-spacing: 0.05em;
+}
+
+.psv-endscreen {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(155deg, rgba(24, 35, 48, 0.96) 0%, rgba(15, 24, 32, 0.96) 100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s;
+  padding: 24px;
+  text-align: center;
+}
+.psv-endscreen.visible { opacity: 1; visibility: visible; }
+.psv-endscreen-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #5FD97C;
+  margin-bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.psv-endscreen-eyebrow::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #5FD97C;
+  box-shadow: 0 0 8px #5FD97C;
+}
+.psv-endscreen-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.psv-endscreen-title .accent { color: #3FBAC2; }
+.psv-endscreen-stats {
+  display: flex;
+  gap: clamp(20px, 4vw, 40px);
+  margin: 24px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.psv-endscreen-stat-val {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 800;
+  color: #3FBAC2;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.psv-endscreen-stat-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8FA0B5;
+  margin-top: 4px;
+}
+.psv-endscreen-replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  color: #3FBAC2;
+  border: 1px solid #3FBAC2;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  margin-top: 8px;
+}
+.psv-endscreen-replay:hover { background: #3FBAC2; color: #1E2A3A; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .psv-step-title { display: none; }
+  .psv-step { padding: 10px 6px; }
+  .psv-step-icon { width: 26px; height: 26px; }
+  .psv-detail { font-size: 11px; padding: 12px; }
+  .psv-detail-rows { font-size: 10px; grid-template-columns: auto 1fr; }
+  .psv-detail-rows > :nth-child(3n) { display: none; }
+  .psv-title { top: 12%; }
+  .psv-topbar { padding: 10px 14px; }
+  .psv-controls { bottom: 10px; left: 14px; right: 14px; }
+}
+</style>
+
+<!-- ==================================================================
+     VIDEO-CONTAINER
+     ================================================================== -->
+<div class="petra-video" id="petraVideo">
+
+  <!-- Top Bar -->
+  <div class="psv-topbar">
+    <div class="psv-brand">
+      <div class="psv-brand-mark">P</div>
+      <div>
+        <div class="psv-brand-name">Petra</div>
+      </div>
+      <div class="psv-brand-sub">LIVE DEMO</div>
+    </div>
+    <div class="psv-timer"><span id="psvTimerCurrent">0:00</span> / 1:00</div>
+  </div>
+
+  <!-- Title -->
+  <div class="psv-title">
+    <div class="psv-title-eyebrow" id="psvEyebrow">Schritt 1 von 6</div>
+    <div class="psv-title-text" id="psvTitleText"></div>
+  </div>
+
+  <!-- Pipeline -->
+  <div class="psv-pipeline" id="psvPipeline">
+    <div class="psv-step" data-step="1">
+      <div class="psv-step-num">01</div>
+      <div class="psv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+      </div>
+      <div class="psv-step-title">Einlesen</div>
+    </div>
+    <div class="psv-step" data-step="2">
+      <div class="psv-step-num">02</div>
+      <div class="psv-step-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+      </div>
+      <div class="psv-step-title">Portale</div>
+    </div>
+    <div class="psv-step" data-step="3">
+      <div class="psv-step-num">03</div>
+      <div class="psv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5L12 2z"/><circle cx="19" cy="5" r="1.2" fill="currentColor"/><circle cx="5" cy="19" r="1.2" fill="currentColor"/></svg>
+      </div>
+      <div class="psv-step-title">Extraktion</div>
+    </div>
+    <div class="psv-step" data-step="4">
+      <div class="psv-step-num">04</div>
+      <div class="psv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+      </div>
+      <div class="psv-step-title">Anreichern</div>
+    </div>
+    <div class="psv-step" data-step="5">
+      <div class="psv-step-num">05</div>
+      <div class="psv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2l9 4v6c0 5-3.5 9-9 10-5.5-1-9-5-9-10V6l9-4z"/><polyline points="9 12 11 14 15 10"/></svg>
+      </div>
+      <div class="psv-step-title">Qualität</div>
+    </div>
+    <div class="psv-step" data-step="6">
+      <div class="psv-step-num">06</div>
+      <div class="psv-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <div class="psv-step-title">Export</div>
+    </div>
+    <div class="psv-packet" id="psvPacket"></div>
+  </div>
+
+  <!-- Detail-Card -->
+  <div class="psv-detail" id="psvDetail">
+    <div class="psv-detail-header">
+      <div class="psv-detail-label" id="psvDetailLabel"></div>
+      <div class="psv-detail-badge" id="psvDetailBadge">verarbeitet</div>
+    </div>
+    <div class="psv-detail-content" id="psvDetailContent"></div>
+  </div>
+
+  <!-- Endscreen -->
+  <div class="psv-endscreen" id="psvEndscreen">
+    <div class="psv-endscreen-eyebrow">Fertig · Shop-Feed exportiert</div>
+    <div class="psv-endscreen-title">
+      <span class="accent">39 Felder</span> pro Artikel.<br>
+      Rund um die Uhr.
+    </div>
+    <div class="psv-endscreen-stats">
+      <div>
+        <div class="psv-endscreen-stat-val">~30%</div>
+        <div class="psv-endscreen-stat-lbl">Produktivitätsgewinn</div>
+      </div>
+      <div>
+        <div class="psv-endscreen-stat-val">&lt; 60 s</div>
+        <div class="psv-endscreen-stat-lbl">pro Artikel</div>
+      </div>
+      <div>
+        <div class="psv-endscreen-stat-val">4 Sprachen</div>
+        <div class="psv-endscreen-stat-lbl">DE · EN · FR · IT</div>
+      </div>
+    </div>
+    <button class="psv-endscreen-replay" onclick="window.petraVideoReplay && window.petraVideoReplay()">
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+      Noch einmal abspielen
+    </button>
+  </div>
+
+  <!-- Startscreen -->
+  <div class="psv-startscreen" id="psvStartscreen">
+    <div class="psv-startscreen-play">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    <div class="psv-startscreen-title">Petra in Aktion</div>
+    <div class="psv-startscreen-sub">60 Sekunden · Von Lieferantendaten zum Shop-Feed</div>
+  </div>
+
+  <!-- Controls (ohne Voice-Toggle) -->
+  <div class="psv-controls">
+    <div class="psv-ctrl-group">
+      <button class="psv-ctrl" id="psvPlayPause" title="Play/Pause">
+        <svg id="psvPlayIcon" viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+        <span id="psvPlayLabel">Pause</span>
+      </button>
+      <button class="psv-ctrl" id="psvRestart" title="Neu starten">
+        <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="psv-progress"><div class="psv-progress-fill" id="psvProgressFill"></div></div>
+</div>
+
+<script>
+// ==================================================================
+// PETRA VIDEO CONTROLLER
+// ==================================================================
+(function() {
+  const video = document.getElementById('petraVideo');
+  const pipeline = document.getElementById('psvPipeline');
+  const steps = pipeline.querySelectorAll('.psv-step');
+  const packet = document.getElementById('psvPacket');
+  const eyebrow = document.getElementById('psvEyebrow');
+  const titleText = document.getElementById('psvTitleText');
+  const detailCard = document.getElementById('psvDetail');
+  const detailLabel = document.getElementById('psvDetailLabel');
+  const detailBadge = document.getElementById('psvDetailBadge');
+  const detailContent = document.getElementById('psvDetailContent');
+  const timerEl = document.getElementById('psvTimerCurrent');
+  const progressFill = document.getElementById('psvProgressFill');
+  const startscreen = document.getElementById('psvStartscreen');
+  const endscreen = document.getElementById('psvEndscreen');
+  const playBtn = document.getElementById('psvPlayPause');
+  const playIcon = document.getElementById('psvPlayIcon');
+  const playLabel = document.getElementById('psvPlayLabel');
+  const restartBtn = document.getElementById('psvRestart');
+
+  const TOTAL_DURATION = 60000;
+
+  // Timeline: Beispiel Lieferant Husqvarna, Gartengeräte-Serie
+  const timeline = [
+    {
+      start: 0,
+      end: 4000,
+      step: 0,
+      eyebrow: 'Intro',
+      title: ['Von ', '<span class="accent">Lieferantendaten</span>', ' zum fertigen Shop-Feed.'],
+      detail: null
+    },
+    {
+      start: 4000,
+      end: 12000,
+      step: 1,
+      eyebrow: 'Schritt 1 von 6 · Einlesen',
+      title: ['Lieferant schickt ', '<span class="accent">12 Dokumente.</span>'],
+      detailLabel: 'Eingang Husqvarna · Automatische Klassifikation',
+      detailBadge: '12 Dokumente',
+      detail: `
+        <div class="psv-detail-rows">
+          <span class="key">E-Mail-Text</span><span class="val">"Neue Produktserie · Akku-Rasenmäher 2026"</span><span class="chk">✓</span>
+          <span class="key">Datenblätter</span><span class="val">8 PDFs · technische Spezifikationen</span><span class="chk">✓</span>
+          <span class="key">Preisliste</span><span class="val">1 Excel · 47 Artikelnummern</span><span class="chk">✓</span>
+          <span class="key">Bilder</span><span class="val">3 Produktfotos · ZIP-Archiv</span><span class="chk">✓</span>
+        </div>`
+    },
+    {
+      start: 12000,
+      end: 20000,
+      step: 2,
+      eyebrow: 'Schritt 2 von 6 · Portale',
+      title: ['Zusätzliche Daten aus dem ', '<span class="accent">Lieferantenportal.</span>'],
+      detailLabel: 'Husqvarna B2B-Portal · Authentifiziert',
+      detailBadge: 'angemeldet',
+      detail: `
+        <div class="psv-detail-rows">
+          <span class="key">Login</span><span class="val">OAuth 2.0 · 2FA bestätigt</span><span class="chk">✓</span>
+          <span class="key">Cookie-Consent</span><span class="val">DE-Dialog erkannt und akzeptiert</span><span class="chk">✓</span>
+          <span class="key">Hochauflösende Bilder</span><span class="val">14 JPG · je 2400×2400 px</span><span class="chk">✓</span>
+          <span class="key">Zertifikate</span><span class="val">CE · RoHS · Energielabel</span><span class="chk">✓</span>
+        </div>`
+    },
+    {
+      start: 20000,
+      end: 30000,
+      step: 3,
+      eyebrow: 'Schritt 3 von 6 · Extraktion',
+      title: ['Multi-LLM extrahiert ', '<span class="accent">47 Artikel parallel.</span>'],
+      detailLabel: 'KI-Extraktion · Claude + GPT-4 + Gemini',
+      detailBadge: 'Konsens 98,4%',
+      detail: `
+        <div class="psv-detail-rows">
+          <span class="key">Artikel ART-LM-2026-03</span><span class="val">Akku-Rasenmäher LM 232 RKI</span><span class="chk">✓</span>
+          <span class="key">Technische Daten</span><span class="val">56 Attribute · Schnittbreite, Akku, Gewicht</span><span class="chk">✓</span>
+          <span class="key">OCR-Datenblatt</span><span class="val">Gerätemaße aus gescannter Zeichnung</span><span class="chk">✓</span>
+          <span class="key">Multi-LLM-Konsens</span><span class="val">3 Modelle · Abweichungen geprüft</span><span class="chk">✓</span>
+        </div>`
+    },
+    {
+      start: 30000,
+      end: 40000,
+      step: 4,
+      eyebrow: 'Schritt 4 von 6 · Anreichern',
+      title: ['Produkttexte ', '<span class="accent">werden geschrieben.</span>'],
+      detailLabel: 'Copywriting nach Ihren Richtlinien',
+      detailBadge: '4 Sprachen',
+      detail: `
+        <div class="psv-detail-rows">
+          <span class="key">SEO-Titel</span><span class="val">Husqvarna LM 232 RKI · Akku-Rasenmäher 38 cm</span><span class="chk">✓</span>
+          <span class="key">Meta-Description</span><span class="val">Optimiert auf 155 Zeichen · Keyword-Dichte 2,1%</span><span class="chk">✓</span>
+          <span class="key">Produktbeschreibung</span><span class="val">DE · EN · FR · IT · Ihr Tonfall</span><span class="chk">✓</span>
+          <span class="key">GEO-Metadaten</span><span class="val">Für AI-Suchmaschinen strukturiert</span><span class="chk">✓</span>
+        </div>`
+    },
+    {
+      start: 40000,
+      end: 48000,
+      step: 5,
+      eyebrow: 'Schritt 5 von 6 · Qualität',
+      title: ['Completeness-Scoring — ', '<span class="accent">eine Lücke erkannt.</span>'],
+      detailLabel: 'Qualitätsprüfung · 3 Stufen',
+      detailBadge: 'Score 12,5 / 13,5',
+      detail: `
+        <div class="psv-detail-rows">
+          <span class="key">Pflichtfelder</span><span class="val">36 von 36 vorhanden</span><span class="chk">✓</span>
+          <span class="key">Konsistenz</span><span class="val">Mehrsprachig widerspruchsfrei</span><span class="chk">✓</span>
+          <span class="key">Bilder</span><span class="val">14 verfügbar · alle geprüft</span><span class="chk">✓</span>
+          <span class="key">Energielabel</span><span class="warn">Fehlt bei 2 Artikeln · Prüffrage generiert</span><span class="chk-warn">!</span>
+        </div>`
+    },
+    {
+      start: 48000,
+      end: 56000,
+      step: 6,
+      eyebrow: 'Schritt 6 von 6 · Export',
+      title: ['47 Artikel ', '<span class="accent">bereit für den Shop.</span>'],
+      detailLabel: 'Export · Shop-Feed bereit',
+      detailBadge: '45 / 47 freigegeben',
+      detail: `
+        <div class="psv-detail-rows">
+          <span class="key">Format</span><span class="val">XML-Feed · kundenspezifisches Schema</span><span class="chk">✓</span>
+          <span class="key">Datenfelder</span><span class="val">39 pro Artikel · inkl. SEO &amp; GEO</span><span class="chk">✓</span>
+          <span class="key">Report-Tiefe</span><span class="val">Enriched · höchste Stufe</span><span class="chk">✓</span>
+          <span class="key">Offen</span><span class="val">2 Artikel mit Rückfrage an Category Management</span><span class="chk-warn">!</span>
+        </div>`
+    },
+    {
+      start: 56000,
+      end: 60000,
+      step: 0,
+      eyebrow: 'Fertig',
+      title: ['Von 12 Dokumenten zu 47 Artikeln: ', '<span class="accent">unter einer Minute.</span>'],
+      detail: null
+    }
+  ];
+
+  // ===== State =====
+  let startTime = 0;
+  let elapsed = 0;
+  let currentSegment = -1;
+  let rafId = null;
+  let isPlaying = false;
+
+  function formatTime(ms) {
+    const s = Math.floor(ms / 1000);
+    return `0:${String(s).padStart(2, '0')}`;
+  }
+
+  function setTitle(segment) {
+    titleText.innerHTML = '';
+    segment.title.forEach((part, i) => {
+      const span = document.createElement('span');
+      let html = part;
+      if (html.startsWith(' ')) html = '\u00A0' + html.slice(1);
+      if (html.endsWith(' ')) html = html.slice(0, -1) + '\u00A0';
+      span.innerHTML = html;
+      span.style.transitionDelay = (i * 80) + 'ms';
+      titleText.appendChild(span);
+    });
+    requestAnimationFrame(() => {
+      titleText.querySelectorAll('span').forEach(s => s.classList.add('visible'));
+    });
+    eyebrow.textContent = segment.eyebrow;
+    eyebrow.classList.add('visible');
+  }
+
+  function setDetail(segment) {
+    if (segment.detail) {
+      detailLabel.textContent = segment.detailLabel || '';
+      detailBadge.textContent = segment.detailBadge || 'verarbeitet';
+      detailContent.innerHTML = segment.detail;
+      detailCard.classList.add('visible');
+    } else {
+      detailCard.classList.remove('visible');
+    }
+  }
+
+  function updateSteps(activeStep, completedUpTo) {
+    steps.forEach((s, i) => {
+      const num = i + 1;
+      s.classList.remove('is-active', 'is-done');
+      if (num < completedUpTo) s.classList.add('is-done');
+      else if (num === activeStep) s.classList.add('is-active');
+    });
+  }
+
+  function movePacket(stepIndex) {
+    if (stepIndex < 1 || stepIndex > 6) {
+      packet.style.opacity = '0';
+      return;
+    }
+    const step = steps[stepIndex - 1];
+    const rect = step.getBoundingClientRect();
+    const pipeRect = pipeline.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2 - pipeRect.left - 6;
+    packet.style.left = centerX + 'px';
+    packet.style.opacity = '1';
+  }
+
+  function tick() {
+    elapsed = performance.now() - startTime;
+    const progress = Math.min(elapsed / TOTAL_DURATION, 1);
+    progressFill.style.width = (progress * 100) + '%';
+    timerEl.textContent = formatTime(elapsed);
+
+    let newSegment = -1;
+    for (let i = 0; i < timeline.length; i++) {
+      if (elapsed >= timeline[i].start && elapsed < timeline[i].end) {
+        newSegment = i;
+        break;
+      }
+    }
+    if (elapsed >= TOTAL_DURATION) {
+      endVideo();
+      return;
+    }
+
+    if (newSegment !== currentSegment && newSegment !== -1) {
+      currentSegment = newSegment;
+      const seg = timeline[newSegment];
+      setTitle(seg);
+      setDetail(seg);
+      if (seg.step > 0 && seg.step <= 6) {
+        updateSteps(seg.step, seg.step);
+        movePacket(seg.step);
+      } else if (newSegment === 0) {
+        updateSteps(0, 0);
+        packet.style.opacity = '0';
+      } else {
+        updateSteps(0, 7);
+        packet.style.opacity = '0';
+      }
+    }
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function startVideo() {
+    startTime = performance.now() - elapsed;
+    isPlaying = true;
+    video.classList.remove('is-paused', 'is-ready');
+    playIcon.innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>';
+    playLabel.textContent = 'Pause';
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function pauseVideo() {
+    if (rafId) cancelAnimationFrame(rafId);
+    isPlaying = false;
+    video.classList.add('is-paused');
+    playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    playLabel.textContent = 'Play';
+  }
+
+  function endVideo() {
+    if (rafId) cancelAnimationFrame(rafId);
+    isPlaying = false;
+    elapsed = TOTAL_DURATION;
+    progressFill.style.width = '100%';
+    timerEl.textContent = '1:00';
+    updateSteps(0, 7);
+    detailCard.classList.remove('visible');
+    packet.style.opacity = '0';
+    endscreen.classList.add('visible');
+  }
+
+  function resetVideo() {
+    elapsed = 0;
+    currentSegment = -1;
+    progressFill.style.width = '0%';
+    timerEl.textContent = '0:00';
+    updateSteps(0, 0);
+    packet.style.opacity = '0';
+    detailCard.classList.remove('visible');
+    titleText.innerHTML = '';
+    eyebrow.classList.remove('visible');
+    endscreen.classList.remove('visible');
+  }
+
+  // ===== Event Listeners =====
+  startscreen.addEventListener('click', () => {
+    startscreen.classList.add('hidden');
+    resetVideo();
+    startVideo();
+  });
+
+  playBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (isPlaying) pauseVideo();
+    else {
+      if (elapsed >= TOTAL_DURATION) {
+        resetVideo();
+        endscreen.classList.remove('visible');
+      }
+      startVideo();
+    }
+  });
+
+  restartBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (rafId) cancelAnimationFrame(rafId);
+    resetVideo();
+    endscreen.classList.remove('visible');
+    startVideo();
+  });
+
+  window.petraVideoReplay = function() {
+    resetVideo();
+    endscreen.classList.remove('visible');
+    startVideo();
+  };
+
+  video.classList.add('is-ready');
+})();
+</script>

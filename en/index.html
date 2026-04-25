@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>aikyma.ai — Back-office automation for trading and e-commerce</title>
+<meta name="description" content="AI agents that process orders and product data automatically. 80–95% automation rate. In production in the DACH region at Jauch, Apfelkiste, Medidor.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/shared.css">
+
+<style>
+/* ==================================================================
+   Home-specific styles
+   ================================================================== */
+
+/* =======================================================
+   HERO (Home)
+   ======================================================= */
+.hero {
+  background: var(--navy-deep);
+  color: var(--text-on-dark);
+  padding: calc(72px + 80px) 0 100px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-circles {
+  position: absolute;
+  top: -80px;
+  right: -120px;
+  width: 640px;
+  height: 640px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+.hero-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid var(--teal);
+}
+.hero-circle-1 {
+  width: 380px; height: 380px;
+  top: 40px; left: 40px;
+  background: rgba(63, 186, 194, 0.05);
+}
+.hero-circle-2 {
+  width: 280px; height: 280px;
+  bottom: 60px; right: 60px;
+  background: rgba(63, 186, 194, 0.1);
+}
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.hero-content { max-width: 640px; }
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  background: var(--teal-soft);
+  border: 1px solid var(--teal-line);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--teal);
+  margin-bottom: 28px;
+  letter-spacing: 0.02em;
+}
+.hero-eyebrow-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--teal-line); }
+  50% { opacity: 0.6; box-shadow: 0 0 0 6px transparent; }
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 68px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+}
+.hero h1 .accent { color: var(--teal); }
+.hero-subhead {
+  font-size: clamp(17px, 1.8vw, 20px);
+  line-height: 1.55;
+  color: var(--text-on-dark-muted);
+  margin-bottom: 40px;
+  max-width: 560px;
+}
+.hero-cta-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.hero-trust {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--text-on-dark-muted);
+  padding-top: 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.hero-trust-dot {
+  width: 8px; height: 8px;
+  background: #5FD97C;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(95, 217, 124, 0.2);
+}
+.hero-visual { position: relative; padding: 24px; }
+.hero-mockup {
+  background: var(--navy-darker);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--teal-line);
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 13px;
+  color: var(--text-on-dark-muted);
+  position: relative;
+  overflow: hidden;
+}
+.hero-mockup::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.hero-mockup-dots {
+  position: absolute;
+  top: 12px; left: 14px;
+  display: flex;
+  gap: 6px;
+}
+.hero-mockup-dots span {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+}
+.hero-mockup-content { padding: 38px 10px 8px; }
+.mockup-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 2px solid transparent;
+  transition: all 0.3s;
+}
+.mockup-line.active { background: var(--teal-soft); border-left-color: var(--teal); }
+.mockup-line.processed { border-left-color: #5FD97C; }
+.mockup-icon {
+  width: 24px; height: 24px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.mockup-line.active .mockup-icon { background: var(--teal); color: var(--navy-deep); }
+.mockup-line.processed .mockup-icon { background: #5FD97C; color: var(--navy-deep); }
+.mockup-text { flex: 1; font-size: 12px; }
+.mockup-status {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  letter-spacing: 0.05em;
+}
+.mockup-line.active .mockup-status { background: var(--teal); color: var(--navy-deep); font-weight: 600; }
+.mockup-line.processed .mockup-status { background: rgba(95, 217, 124, 0.2); color: #5FD97C; font-weight: 600; }
+.live-pulse {
+  position: absolute;
+  top: 36px; right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #5FD97C;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  background: rgba(95, 217, 124, 0.12);
+  border-radius: 4px;
+}
+.live-pulse::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #5FD97C;
+  animation: pulse 1.5s infinite;
+}
+
+/* =======================================================
+   TRUST BAR
+   ======================================================= */
+.trust-bar {
+  background: var(--navy-darker);
+  padding: 40px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.trust-title {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-dim);
+  margin-bottom: 28px;
+}
+.trust-logos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(16px, 3vw, 32px);
+  align-items: stretch;
+  justify-items: stretch;
+}
+.trust-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px 24px;
+  min-height: 96px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.trust-logo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+.trust-logo-img {
+  max-height: 52px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+.trust-logo-badge {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-top: 2px;
+}
+
+/* =======================================================
+   PROBLEM
+   ======================================================= */
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.problem-item {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-left: 3px solid #D97358;
+  padding: 22px 26px;
+  border-radius: 4px;
+  font-size: 15px;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: all 0.2s;
+}
+.problem-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -6px rgba(30, 42, 58, 0.1);
+}
+.problem-x {
+  color: #D97358;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* =======================================================
+   AGENTS
+   ======================================================= */
+.agents-stack { display: flex; flex-direction: column; gap: 40px; margin-top: 16px; }
+.agent-portrait {
+  background: linear-gradient(155deg, #243346 0%, var(--navy-darker) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s var(--ease);
+}
+.agent-portrait::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  border: 1.5px solid var(--teal);
+  opacity: 0.12;
+  transition: all 0.4s;
+  pointer-events: none;
+}
+.agent-portrait::after {
+  content: '';
+  position: absolute;
+  top: 40px; right: 60px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  border: 1.5px solid var(--teal);
+  opacity: 0.18;
+  transition: all 0.4s;
+  pointer-events: none;
+}
+.agent-portrait:hover::before { transform: scale(1.1); opacity: 0.2; }
+.agent-portrait:hover::after { transform: scale(1.1); opacity: 0.3; }
+.agent-portrait-header {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 48px;
+  padding: 44px 44px 32px;
+  position: relative;
+  z-index: 2;
+}
+.agent-portrait-identity { display: flex; flex-direction: column; gap: 16px; }
+.agent-persona-row { display: flex; align-items: center; gap: 16px; margin-bottom: 4px; }
+.agent-avatar {
+  width: 64px; height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--teal) 0%, #2A8A90 100%);
+  color: var(--navy-deep);
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: -0.02em;
+  box-shadow: 0 8px 20px -6px rgba(63, 186, 194, 0.4);
+}
+.agent-persona-info { display: flex; flex-direction: column; gap: 4px; }
+.agent-persona-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-on-dark);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.agent-persona-role { font-size: 13px; color: var(--teal); font-weight: 600; letter-spacing: 0.03em; }
+.agent-portrait-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.agent-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-on-dark-muted);
+  letter-spacing: 0.02em;
+}
+.agent-meta-chip.status {
+  background: rgba(95, 217, 124, 0.1);
+  border-color: rgba(95, 217, 124, 0.25);
+  color: #5FD97C;
+}
+.agent-meta-chip.status::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #5FD97C;
+}
+.agent-portrait-purpose {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-on-dark-muted);
+  margin-top: 4px;
+}
+.agent-portrait-purpose strong { color: var(--text-on-dark); font-weight: 500; }
+.agent-portrait-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(63, 186, 194, 0.08);
+  border: 1px solid var(--teal-line);
+  border-radius: 12px;
+  padding: 24px 28px;
+}
+.agent-portrait-stat-value {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--teal);
+  line-height: 1;
+  margin-bottom: 8px;
+  letter-spacing: -0.03em;
+}
+.agent-portrait-stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-muted);
+  line-height: 1.4;
+}
+.agent-pipeline-wrap { padding: 0 44px 36px; position: relative; z-index: 2; }
+.agent-pipeline-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.agent-pipeline-label::before, .agent-pipeline-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(63, 186, 194, 0.2);
+}
+.agent-pipeline-label::before { max-width: 40px; }
+.agent-pipeline {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  position: relative;
+}
+.pipeline-step {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 18px 14px;
+  text-align: left;
+  transition: all 0.2s;
+}
+.pipeline-step:hover {
+  background: rgba(63, 186, 194, 0.08);
+  border-color: var(--teal-line);
+  transform: translateY(-2px);
+}
+.pipeline-step-num {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  opacity: 0.7;
+}
+.pipeline-step-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-on-dark);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.pipeline-step-desc { font-size: 11.5px; line-height: 1.45; color: var(--text-on-dark-muted); }
+.agent-portrait-lower {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+  padding: 24px 44px;
+  background: rgba(0, 0, 0, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 2;
+}
+.agent-highlights { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.agent-highlight { display: flex; flex-direction: column; gap: 2px; }
+.agent-highlight-value {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: -0.01em;
+}
+.agent-highlight-label { font-size: 11.5px; line-height: 1.4; color: var(--text-on-dark-muted); }
+.agent-portrait-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: var(--teal);
+  color: var(--navy-deep);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 8px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.agent-portrait-cta:hover { background: var(--teal-hover); transform: translateX(2px); }
+.agents-extension-note {
+  margin-top: 36px;
+  padding: 24px 32px;
+  background: rgba(63, 186, 194, 0.08);
+  border: 1px solid var(--teal-line);
+  border-radius: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  color: var(--text-on-dark-muted);
+  line-height: 1.6;
+}
+.agents-extension-note strong { color: var(--text-on-dark); }
+.agents-extension-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--teal);
+  color: var(--navy-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.agents-extension-text { font-size: 14px; }
+
+/* =======================================================
+   PROCESS
+   ======================================================= */
+.process {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 16px;
+  position: relative;
+}
+.process::before {
+  content: '';
+  position: absolute;
+  top: 32px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 1px;
+  background: repeating-linear-gradient(to right, var(--border-light) 0, var(--border-light) 6px, transparent 6px, transparent 12px);
+  z-index: 0;
+}
+.process-step { text-align: center; padding: 0 16px; position: relative; z-index: 1; }
+.process-num {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--teal);
+  color: var(--teal);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  transition: all 0.3s;
+}
+.process-step:hover .process-num { background: var(--teal); color: #fff; transform: scale(1.05); }
+.process-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  margin-bottom: 6px;
+  color: var(--navy-deep);
+}
+.process-duration {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--teal);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.process-desc { font-size: 14px; color: var(--text-on-light-muted); line-height: 1.5; }
+.process-summary {
+  text-align: center;
+  margin-top: 56px;
+  padding: 28px;
+  background: var(--navy-deep);
+  color: var(--text-on-dark);
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 500;
+}
+.process-summary .highlight {
+  color: var(--teal);
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+/* =======================================================
+   RESULTS
+   ======================================================= */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 16px;
+}
+.result-card {
+  background: var(--navy-darker);
+  border-radius: 12px;
+  padding: 32px;
+  color: var(--text-on-dark);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.result-card:hover { transform: translateY(-4px); border-color: var(--teal-line); }
+.result-sector {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  background: var(--teal-soft);
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+.result-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-on-dark-muted);
+  margin-bottom: 28px;
+  min-height: 90px;
+}
+.result-metric { padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.result-metric-value {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--teal);
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+.result-metric-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-muted);
+}
+.result-extra {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text-on-dark-muted);
+}
+.result-anonymized-note {
+  text-align: center;
+  margin-top: 36px;
+  font-size: 13px;
+  color: var(--text-on-light-muted);
+  font-style: italic;
+}
+
+/* =======================================================
+   SPLITTER
+   ======================================================= */
+.splitter { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px; }
+.split-card {
+  padding: 44px;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.split-card-customer { background: var(--navy-deep); color: var(--text-on-dark); }
+.split-card-partner { background: #fff; color: var(--navy-deep); border: 1px solid var(--border-light); }
+.split-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(30, 42, 58, 0.15); }
+.split-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  color: var(--teal);
+}
+.split-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+.split-desc { font-size: 15px; line-height: 1.6; margin-bottom: 28px; opacity: 0.85; }
+.split-card-customer .split-desc { color: var(--text-on-dark-muted); opacity: 1; }
+.split-card-partner .split-desc { color: var(--text-on-light-muted); }
+.split-benefits { list-style: none; margin-bottom: 32px; }
+.split-benefits li {
+  padding: 6px 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.9;
+}
+.split-card-customer .split-benefits li { color: var(--text-on-dark-muted); }
+.split-benefits li::before {
+  content: '';
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--teal-soft);
+  flex-shrink: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 5L4 7L8 3' stroke='%233FBAC2' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* =======================================================
+   RESPONSIVE
+   ======================================================= */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero { padding-bottom: 64px; }
+  .hero-circles { opacity: 0.3; width: 400px; height: 400px; top: -40px; right: -150px; }
+  .process { grid-template-columns: 1fr 1fr; gap: 40px 24px; }
+  .process::before { display: none; }
+  .results-grid, .splitter { grid-template-columns: 1fr; }
+  .agent-portrait-header { grid-template-columns: 1fr; gap: 24px; padding: 32px 28px 24px; }
+  .agent-portrait-stat { padding: 20px 24px; }
+  .agent-portrait-stat-value { font-size: 44px; }
+  .agent-pipeline-wrap { padding: 0 28px 28px; }
+  .agent-pipeline { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .agent-portrait-lower { grid-template-columns: 1fr; padding: 24px 28px; gap: 20px; }
+  .agent-highlights { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .agent-portrait-cta { justify-self: flex-start; }
+}
+@media (max-width: 640px) {
+  .trust-logos { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .problem-grid { grid-template-columns: 1fr; }
+  .process { grid-template-columns: 1fr; }
+  .split-card { padding: 28px; }
+  .agent-portrait-header { padding: 24px 20px 20px; }
+  .agent-pipeline-wrap { padding: 0 20px 24px; }
+  .agent-pipeline { grid-template-columns: repeat(2, 1fr); }
+  .agent-portrait-lower { padding: 20px; }
+  .agent-highlights { grid-template-columns: 1fr; gap: 14px; }
+  .agent-persona-title { font-size: 22px; }
+  .agent-avatar { width: 52px; height: 52px; font-size: 22px; border-radius: 12px; }
+  .agent-portrait-stat-value { font-size: 38px; }
+  .agents-extension-note { padding: 20px; flex-direction: column; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-chevron">»</span>aikyma
+      <span class="nav-logo-sub">applied AI</span>
+    </a>
+    <div class="nav-links">
+      <a href="produkt.html">Product</a>
+      <a href="approach.html">Approach</a>
+      <a href="team.html">Team</a>
+      <a href="kontakt.html">Contact</a>
+      <div class="nav-lang">
+        <a href="../index.html" style="text-decoration: none; color: inherit;">DE</a>
+        <span>/</span>
+        <span class="active">EN</span>
+      </div>
+      <a href="#" data-cal-popup class="btn btn-primary">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-circles">
+    <div class="hero-circle hero-circle-1"></div>
+    <div class="hero-circle hero-circle-2"></div>
+  </div>
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-dot"></span>
+        In production in the DACH region
+      </div>
+      <h1>Our AI agents work alongside your people — <span class="accent">around the clock.</span></h1>
+      <p class="hero-subhead">Process orders and product data automatically, directly in your back-office systems. Less retyping. Fewer errors. Lower processing costs.</p>
+      <div class="hero-cta-row">
+        <a href="#" data-cal-popup class="btn btn-primary btn-lg">Book a demo <span class="btn-arrow">→</span></a>
+        <a href="#agents" class="btn btn-ghost btn-lg">How it works</a>
+      </div>
+      <div class="hero-trust">
+        <span class="hero-trust-dot"></span>
+        In production at Jauch, Apfelkiste and Medidor
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-mockup">
+        <div class="hero-mockup-dots"><span></span><span></span><span></span></div>
+        <div class="live-pulse">ORDER AGENT · LIVE</div>
+        <div class="hero-mockup-content">
+          <div class="mockup-line processed"><div class="mockup-icon">✓</div><div class="mockup-text">Order #4782 · Huber AG · PDF</div><div class="mockup-status">ERP</div></div>
+          <div class="mockup-line processed"><div class="mockup-icon">✓</div><div class="mockup-text">Order #4781 · Müller GmbH · Email</div><div class="mockup-status">ERP</div></div>
+          <div class="mockup-line active"><div class="mockup-icon">◉</div><div class="mockup-text">Order #4783 · Lang &amp; Co · Excel</div><div class="mockup-status">CHECKING</div></div>
+          <div class="mockup-line"><div class="mockup-icon">·</div><div class="mockup-text">Order #4784 · Weber KG · PDF</div><div class="mockup-status">Queue</div></div>
+          <div class="mockup-line"><div class="mockup-icon">·</div><div class="mockup-text">Order #4785 · IEC Industrial · Email</div><div class="mockup-status">Queue</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<section class="trust-bar">
+  <div class="container">
+    <div class="trust-title">In production at</div>
+    <div class="trust-logos">
+      <a href="https://www.jauch.com" target="_blank" rel="noopener noreferrer" class="trust-logo" aria-label="Jauch Quartz GmbH">
+        <img src="../assets/logos/jauch.png" alt="Jauch" class="trust-logo-img">
+      </a>
+      <a href="https://www.apfelkiste.ch" target="_blank" rel="noopener noreferrer" class="trust-logo" aria-label="Apfelkiste">
+        <img src="../assets/logos/apfelkiste.png" alt="Apfelkiste" class="trust-logo-img">
+      </a>
+      <a href="https://www.medidor.ch" target="_blank" rel="noopener noreferrer" class="trust-logo" aria-label="Medidor">
+        <img src="../assets/logos/medidor.png" alt="Medidor" class="trust-logo-img">
+      </a>
+      <a href="https://www.aproda.ch" target="_blank" rel="noopener noreferrer" class="trust-logo" aria-label="Aproda AG">
+        <img src="../assets/logos/aproda.svg" alt="Aproda" class="trust-logo-img">
+        <span class="trust-logo-badge">Partner</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section section-tinted">
+  <div class="container">
+    <div class="eyebrow">The problem</div>
+    <h2 class="section-title">Does this sound familiar?</h2>
+    <p class="section-subtitle">Your staff retypes orders, maintains product data manually and corrects errors — day after day. A pattern you recognize from many areas:</p>
+    <div class="problem-grid">
+      <div class="problem-item"><span class="problem-x">✕</span><span>Orders arrive by email, PDF, Word, Excel — each entered manually into your ERP</span></div>
+      <div class="problem-item"><span class="problem-x">✕</span><span>Errors in items, prices, quantities and addresses that surface only later</span></div>
+      <div class="problem-item"><span class="problem-x">✕</span><span>Pressure peaks in the back office — mornings, month-end, peak season</span></div>
+      <div class="problem-item"><span class="problem-x">✕</span><span>Product data captured and maintained manually — time-consuming and error-prone</span></div>
+      <div class="problem-item"><span class="problem-x">✕</span><span>Skilled people tied up retyping instead of doing valuable work</span></div>
+      <div class="problem-item"><span class="problem-x">✕</span><span>ERP systems that are hard to extend with AI-native capabilities</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<section class="section section-dark" id="agents">
+  <div class="container">
+    <div class="eyebrow">Our agent team</div>
+    <h2 class="section-title">Two AI specialists. Live in production.</h2>
+    <p class="section-subtitle">Oskar handles your order intake, Petra your product data. Not generic tools, but specialised agents for trading and e-commerce — auditable, traceable and continuously learning.</p>
+
+    <div class="agents-stack">
+      <!-- Oskar -->
+      <div class="agent-portrait">
+        <div class="agent-portrait-header">
+          <div class="agent-portrait-identity">
+            <div class="agent-portrait-meta">
+              <span class="agent-meta-chip status">Live in production</span>
+              <span class="agent-meta-chip">Order Agent</span>
+              <span class="agent-meta-chip">Final approval by humans</span>
+            </div>
+            <div class="agent-persona-row">
+              <div class="agent-avatar">OK</div>
+              <div class="agent-persona-info">
+                <div class="agent-persona-title">Oskar</div>
+                <div class="agent-persona-role">Order intake specialist</div>
+              </div>
+            </div>
+            <p class="agent-portrait-purpose"><strong>Oskar turns your incoming orders into clean customer orders, ready to be processed automatically in your back-office system.</strong> Every element of an email intake — whether PDF, Word, Excel or scanned images — no retyping, no transfer errors, no manual master-data matching. From inbox to ERP in seconds.</p>
+          </div>
+          <div class="agent-portrait-stat">
+            <div class="agent-portrait-stat-value">80–95%</div>
+            <div class="agent-portrait-stat-label">Automation rate<br>for standard orders</div>
+          </div>
+        </div>
+        <div class="agent-pipeline-wrap">
+          <div class="agent-pipeline-label">How Oskar works · 6 steps</div>
+          <div class="agent-pipeline">
+            <div class="pipeline-step"><div class="pipeline-step-num">01</div><div class="pipeline-step-title">Monitor inbox</div><div class="pipeline-step-desc">Reads the inbox, recognizes orders, separates signal from noise.</div></div>
+            <div class="pipeline-step"><div class="pipeline-step-num">02</div><div class="pipeline-step-title">Capture data</div><div class="pipeline-step-desc">Customer data, line items, quantities and dates — from any format.</div></div>
+            <div class="pipeline-step"><div class="pipeline-step-num">03</div><div class="pipeline-step-title">Match master data</div><div class="pipeline-step-desc">Customers and items matched automatically, quotes linked up.</div></div>
+            <div class="pipeline-step"><div class="pipeline-step-num">04</div><div class="pipeline-step-title">Plausibility check</div><div class="pipeline-step-desc">Applies your business rules, flags exceptions and ambiguities.</div></div>
+            <div class="pipeline-step"><div class="pipeline-step-num">05</div><div class="pipeline-step-title">Resolve exceptions</div><div class="pipeline-step-desc">Unclear cases sent to your team with targeted questions. Learns from corrections.</div></div>
+            <div class="pipeline-step"><div class="pipeline-step-num">06</div><div class="pipeline-step-title">Hand over to ERP</div><div class="pipeline-step-desc">Ready order in Business Central, SAP or online shop. Fully traceable.</div></div>
+          </div>
+        </div>
+        <div class="agent-portrait-lower">
+          <div class="agent-highlights">
+            <div class="agent-highlight"><div class="agent-highlight-value">Redundant AI</div><div class="agent-highlight-label">Multiple models for stable extraction</div></div>
+            <div class="agent-highlight"><div class="agent-highlight-value">Human in the loop</div><div class="agent-highlight-label">Critical cases always approved manually</div></div>
+            <div class="agent-highlight"><div class="agent-highlight-value">ERP-native</div><div class="agent-highlight-label">Business Central, SAP, custom REST</div></div>
+            <div class="agent-highlight"><div class="agent-highlight-value">Multi-tenant</div><div class="agent-highlight-label">Azure Key Vault, auditable</div></div>
+          </div>
+          <a href="produkt.html#oscar" class="agent-portrait-cta">Oskar in detail <span>→</span></a>
+        </div>
+      </div>
+
+      <!-- Petra -->
+      <div class="agent-portrait">
+        <div class="agent-portrait-header">
+          <div class="agent-portrait-identity">
+            <div class="agent-portrait-meta">
+              <span class="agent-meta-chip status">Live in production</span>
+              <span class="agent-meta-chip">Product Agent</span>
+              <span class="agent-meta-chip">Recommends, doesn't decide</span>
+            </div>
+            <div class="agent-persona-row">
+              <div class="agent-avatar">P</div>
+              <div class="agent-persona-info">
+                <div class="agent-persona-title">Petra</div>
+                <div class="agent-persona-role">Product data specialist</div>
+              </div>
+            </div>
+            <p class="agent-portrait-purpose"><strong>Petra turns chaotic supplier data into commerce-ready product descriptions.</strong> She reads PDFs, Excel files and scanned datasheets, gathers information from supplier portals and delivers data with titles, descriptions, attributes and SEO fields that can be loaded directly into your back-office systems — around the clock.</p>
+          </div>
+          <div class="agent-portrait-stat">
+            <div class="agent-portrait-stat-value">~30%</div>
+            <div class="agent-portrait-stat-label">Productivity gain<br>in category management</div>
+          </div>
+        </div>
+        <div class="agent-pipeline-wrap">
+          <div class="agent-pipeline-label">How Petra works · 6 steps</div>
+          <div class="agent-pipeline">
+            <div class="pipeline-step"><div class="pipeline-step-num">01</div><div class="pipeline-step-title">Ingest documents</div><div class="pipeline-step-desc">Emails, PDFs, Excel, Word, images — 20+ formats, classified automatically.</div></div>
+            <div class="pipeline-step"><div class="pipeline-step-num">02</div><div class="pipeline-step-title">Navigate portals</div><div class="pipeline-step-desc">Navigates protected supplier portals with login and cookie handling.</div></div>
+            <div class="pipeline-step"><div class="pipeline-step-num">03</div><div class="pipeline-step-title">Extract content</div><div class="pipeline-step-desc">Captures product data from markdown, OCR, images and emails in a structured way.</div></div>
+            <div class="pipeline-step"><div class="pipeline-step-num">04</div><div class="pipeline-step-title">Enrich &amp; optimize</div><div class="pipeline-step-desc">Follows your copywriting guidelines, with SEO and GEO metadata.</div></div>
+            <div class="pipeline-step"><div class="pipeline-step-num">05</div><div class="pipeline-step-title">Check quality</div><div class="pipeline-step-desc">3-stage completeness scoring. Detects contradictions, blocks incomplete records.</div></div>
+            <div class="pipeline-step"><div class="pipeline-step-num">06</div><div class="pipeline-step-title">Export</div><div class="pipeline-step-desc">Structured reports as Excel or into shop feeds. Up to 39 data fields.</div></div>
+          </div>
+        </div>
+        <div class="agent-portrait-lower">
+          <div class="agent-highlights">
+            <div class="agent-highlight"><div class="agent-highlight-value">20+ formats</div><div class="agent-highlight-label">Any document, any source</div></div>
+            <div class="agent-highlight"><div class="agent-highlight-value">&lt; 60 seconds</div><div class="agent-highlight-label">Throughput per article</div></div>
+            <div class="agent-highlight"><div class="agent-highlight-value">4 languages</div><div class="agent-highlight-label">DE, EN, FR, IT optimized</div></div>
+            <div class="agent-highlight"><div class="agent-highlight-value">Learning</div><div class="agent-highlight-label">Corrections become rules</div></div>
+          </div>
+          <a href="produkt.html#petra" class="agent-portrait-cta">Petra in detail <span>→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="agents-extension-note">
+      <div class="agents-extension-icon">+</div>
+      <div class="agents-extension-text"><strong>One entry process, many extensions.</strong> The same principle can be applied to order changes, quote and price checks, supplier purchasing and invoice-related processes — without a new core integration.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section section-light">
+  <div class="container">
+    <div class="eyebrow">How to get to results</div>
+    <h2 class="section-title">In production within 4–8 weeks.</h2>
+    <p class="section-subtitle">No 6-month strategy projects. Direct value creation in your operational processes — with manageable effort and measurable benefit.</p>
+    <div class="process">
+      <div class="process-step"><div class="process-num">1</div><div class="process-title">Analysis</div><div class="process-duration">1–2 weeks</div><p class="process-desc">Assess processes, data quality and ERP environment together.</p></div>
+      <div class="process-step"><div class="process-num">2</div><div class="process-title">Integration</div><div class="process-duration">2–4 weeks</div><p class="process-desc">ERP connection, configuration and data pipeline setup.</p></div>
+      <div class="process-step"><div class="process-num">3</div><div class="process-title">Pilot</div><div class="process-duration">1–2 weeks</div><p class="process-desc">Parallel processing — your team checks, the agent learns.</p></div>
+      <div class="process-step"><div class="process-num">4</div><div class="process-title">Production</div><div class="process-duration">Ongoing</div><p class="process-desc">Automated processing with continuous learning and monitoring.</p></div>
+    </div>
+    <div class="process-summary">Typical time-to-value: <span class="highlight">4–8 weeks</span> from analysis to production.</div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="section section-tinted">
+  <div class="container">
+    <div class="eyebrow">Concrete results</div>
+    <h2 class="section-title">Measurable impact for our clients.</h2>
+    <p class="section-subtitle">Three cases from production. Not proof-of-concept — live with paying customers in the DACH region.</p>
+    <div class="results-grid">
+      <div class="result-card">
+        <span class="result-sector">Electronic manufacturing</span>
+        <p class="result-desc">Standard orders tied up about half of a three-person team. Additional work in adjacent areas further strained the organization.</p>
+        <div class="result-metric">
+          <div class="result-metric-value">~50%</div>
+          <div class="result-metric-label">Order team relieved</div>
+          <div class="result-extra">+ more than 100 working days / year automated in adjacent areas</div>
+        </div>
+      </div>
+      <div class="result-card">
+        <span class="result-sector">Healthcare distribution</span>
+        <p class="result-desc">Monthly order volumes with a high share of recurring patterns — prime candidates for automation, but handled manually until now.</p>
+        <div class="result-metric">
+          <div class="result-metric-value">~0.5 FTE</div>
+          <div class="result-metric-label">Saved per month</div>
+          <div class="result-extra">From standard orders alone, without any ERP changes</div>
+        </div>
+      </div>
+      <div class="result-card">
+        <span class="result-sector">Category management</span>
+        <p class="result-desc">Four category teams, dealing with product data maintenance daily. Manual capture, manual enrichment, manual SEO optimization.</p>
+        <div class="result-metric">
+          <div class="result-metric-value">&gt;2 FTE</div>
+          <div class="result-metric-label">Saved across 4 teams</div>
+          <div class="result-extra">~3 days per week and team freed up for strategic work</div>
+        </div>
+      </div>
+    </div>
+    <p class="result-anonymized-note">Results anonymised. Customer names available on request in personal conversation.</p>
+  </div>
+</section>
+
+<!-- SPLITTER -->
+<section class="section section-light">
+  <div class="container">
+    <div class="eyebrow">Our channels</div>
+    <h2 class="section-title">Two audiences. One product.</h2>
+    <p class="section-subtitle">We work directly with trading companies — or with service providers that integrate our technology as a white-label solution into their portfolio.</p>
+    <div class="splitter">
+      <div class="split-card split-card-customer">
+        <div class="split-label">For trading companies</div>
+        <h3 class="split-title">Automate directly.</h3>
+        <p class="split-desc">We integrate the agents into your existing ERP and support you through to production.</p>
+        <ul class="split-benefits">
+          <li>Transaction-based pricing — no subscription for unused licenses</li>
+          <li>4–8 weeks time-to-value</li>
+          <li>Land-and-expand: additional processes without a new core integration</li>
+        </ul>
+        <a href="kontakt.html" class="btn btn-primary">Demo for companies <span class="btn-arrow">→</span></a>
+      </div>
+      <div class="split-card split-card-partner">
+        <div class="split-label" style="color: var(--navy-deep);">For service providers</div>
+        <h3 class="split-title">Extend your portfolio.</h3>
+        <p class="split-desc">White-label extension for your service offering. AI-native differentiation from classic providers.</p>
+        <ul class="split-benefits">
+          <li>Recurring revenue stream with attractive partner margins</li>
+          <li>Deep system integration creates customer retention</li>
+          <li>Scalable: integrate once, roll out many processes</li>
+        </ul>
+        <a href="kontakt.html" class="btn btn-outline-dark">Apply for partnership <span class="btn-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta" id="demo">
+  <div class="final-cta-circles"><div class="c c1"></div><div class="c c2"></div><div class="c c3"></div></div>
+  <div class="container final-cta-inner">
+    <h2>Ready to rethink <span class="accent">your back office?</span></h2>
+    <p>30-minute intro call. We'll show you what's concretely possible for your processes. No sales show.</p>
+    <div class="final-cta-row">
+      <a href="#" data-cal-popup class="btn btn-primary btn-lg">Book a demo <span class="btn-arrow">→</span></a>
+      <a href="kontakt.html#partner" class="btn btn-ghost btn-lg">View factsheets</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo"><span class="chevron">»</span>aikyma</div>
+        <p class="footer-brand-tagline">AI-native process automation for trading and e-commerce. Built in Basel, in production across the DACH region.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="produkt.html#oscar">Oskar</a>
+        <a href="produkt.html#petra">Petra</a>
+        <a href="approach.html">Approach</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="team.html">Team</a>
+        <a href="kontakt.html">Contact</a>
+        <a href="kontakt.html#partner">Partner program</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:contact@aikyma.ai">contact@aikyma.ai</a>
+        <a>Blauenstrasse 6<br>4054 Basel, Switzerland</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 aikyma.ai · All rights reserved</div>
+      <div class="footer-legal">
+        <a href="#">Imprint</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav = document.querySelector('.nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 20) { nav.classList.add('scrolled'); }
+  else { nav.classList.remove('scrolled'); }
+});
+
+// Mockup-Animation
+const mockupLines = document.querySelectorAll('.mockup-line');
+if (mockupLines.length > 0) {
+  let activeIdx = 2;
+  setInterval(() => {
+    mockupLines.forEach(l => l.classList.remove('active'));
+    const prevIdx = (activeIdx - 1 + mockupLines.length) % mockupLines.length;
+    if (prevIdx >= 0 && !mockupLines[prevIdx].classList.contains('processed')) {
+      mockupLines[prevIdx].classList.add('processed');
+      const icon = mockupLines[prevIdx].querySelector('.mockup-icon');
+      const status = mockupLines[prevIdx].querySelector('.mockup-status');
+      if (icon) icon.textContent = '✓';
+      if (status) status.textContent = 'ERP';
+    }
+    activeIdx = (activeIdx + 1) % mockupLines.length;
+    if (activeIdx < mockupLines.length) {
+      mockupLines[activeIdx].classList.add('active');
+      const icon = mockupLines[activeIdx].querySelector('.mockup-icon');
+      const status = mockupLines[activeIdx].querySelector('.mockup-status');
+      if (icon) icon.textContent = '◉';
+      if (status) status.textContent = 'CHECKING';
+    }
+  }, 2500);
+}
+</script>
+
+
+<!-- Cal.com Popup Loader (für data-cal-popup Buttons) -->
+<script type="text/javascript">
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", "popup-discover", { origin: "https://cal.com" });
+  Cal.ns["popup-discover"]("ui", {
+    theme: "light",
+    cssVarsPerTheme: { light: { "cal-brand": "#3FBAC2" } },
+    hideEventTypeDetails: false,
+    layout: "month_view"
+  });
+  document.querySelectorAll('[data-cal-popup]').forEach(el => {
+    el.setAttribute('data-cal-link', 'alexander-buch-sbw9zu/discover-call');
+    el.setAttribute('data-cal-namespace', 'popup-discover');
+    el.setAttribute('data-cal-config', '{"layout":"month_view","theme":"light"}');
+  });
+</script>
+
+</body>
+</html>
