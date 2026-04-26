@@ -686,6 +686,7 @@
 
 <!-- NAV -->
 <nav class="nav">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Menu">
   <div class="container nav-inner">
     <a href="index.html" class="nav-logo"><span class="nav-logo-chevron">»</span>aikyma<span class="nav-logo-sub">applied AI</span></a>
     <div class="nav-links">
@@ -696,7 +697,20 @@
       <div class="nav-lang"><span class="active">DE</span><span>/</span><a href="en/kontakt.html" style="text-decoration: none; color: inherit;">EN</a></div>
       <a href="#cal" class="btn btn-primary">Demo buchen</a>
     </div>
+    <label for="nav-toggle" class="nav-burger" aria-label="Menu öffnen"><span></span><span></span><span></span></label>
   </div>
+    <div class="nav-mobile-menu">
+      <a href="produkt.html">Produkt</a>
+      <a href="approach.html">Approach</a>
+      <a href="team.html">Team</a>
+      <a href="kontakt.html" class="active">Kontakt</a>
+      <div class="nav-mobile-lang">
+        <span class="active">DE</span>
+        <span class="sep">/</span>
+        <a href="en/kontakt.html">EN</a>
+      </div>
+      <a href="#" data-cal-popup class="nav-mobile-cta">Demo buchen</a>
+    </div>
 </nav>
 
 <!-- HERO -->
@@ -1098,5 +1112,6 @@ if (partnershipCheckbox && partnershipDetails && partnershipTextarea && contactF
   });
 </script>
 
+<script src="assets/shared.js"></script>
 </body>
 </html>

@@ -505,17 +505,157 @@ h3.subsection-title {
 }
 
 /* =======================================================
-   RESPONSIVE (shared)
+   RESPONSIVE (shared) — incl. mobile burger menu
    ======================================================= */
+
+/* Burger toggle (checkbox hack) */
+.nav-toggle { 
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.nav-burger {
+  display: none;
+  width: 28px; height: 28px;
+  cursor: pointer;
+  position: relative;
+  z-index: 201;
+  flex-shrink: 0;
+}
+/* Hide mobile menu by default — only show on mobile breakpoint */
+.nav-mobile-menu {
+  display: none;
+}
+.nav-burger span {
+  position: absolute;
+  left: 3px; right: 3px;
+  height: 2px;
+  background: #fff;
+  border-radius: 1px;
+  transition: transform 0.25s ease, opacity 0.2s ease, background-color 0.2s ease, top 0.25s ease;
+}
+.nav-burger span:nth-child(1) { top: 8px; }
+.nav-burger span:nth-child(2) { top: 13px; }
+.nav-burger span:nth-child(3) { top: 18px; }
+
+/* Burger animates to "X" when checkbox is checked */
+.nav-toggle:checked ~ .nav-inner .nav-burger span:nth-child(1) {
+  top: 13px; transform: rotate(45deg); background: var(--teal);
+}
+.nav-toggle:checked ~ .nav-inner .nav-burger span:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle:checked ~ .nav-inner .nav-burger span:nth-child(3) {
+  top: 13px; transform: rotate(-45deg); background: var(--teal);
+}
+
 @media (max-width: 1024px) {
+  /* Show burger */
+  .nav-burger { display: block; }
+
+  /* Hide desktop nav items */
   .nav-links > a:not(.btn) { display: none; }
   .nav-lang { display: none; }
+  .nav-links > a.btn { display: none; }
+
+  /* Mobile overlay menu — full screen, opaque, above everything */
+  .nav-mobile-menu {
+    display: flex;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--navy-deep);
+    z-index: 200;
+    flex-direction: column;
+    padding: 88px 28px 32px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    visibility: hidden;
+  }
+  .nav-toggle:checked ~ .nav-mobile-menu {
+    transform: translateX(0);
+    visibility: visible;
+  }
+  .nav-mobile-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 16px 0;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+    transition: color 0.15s ease;
+  }
+  .nav-mobile-menu a:hover,
+  .nav-mobile-menu a.active {
+    color: var(--teal);
+  }
+  .nav-mobile-lang {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 0 14px;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+    font-size: 15px;
+  }
+  .nav-mobile-lang span,
+  .nav-mobile-lang a {
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    border: none;
+    padding: 0;
+  }
+  .nav-mobile-lang .active {
+    color: var(--teal);
+    font-weight: 600;
+  }
+  .nav-mobile-lang .sep {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  .nav-mobile-cta {
+    margin-top: 28px;
+    background: var(--teal);
+    color: var(--navy-deep) !important;
+    padding: 16px 24px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    border-bottom: none !important;
+    text-decoration: none;
+  }
+  .nav-mobile-cta:hover {
+    color: var(--navy-deep) !important;
+    background: #5cd0d8;
+  }
+
+  /* Prevent background scroll when menu open */
+  html:has(.nav-toggle:checked),
+  body:has(.nav-toggle:checked) {
+    overflow: hidden;
+  }
+
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
+
 @media (max-width: 640px) {
   .nav-inner { height: 60px; }
   .nav-links { gap: 12px; }
+  .nav-mobile-menu { padding-top: 76px; }
   .footer-grid { grid-template-columns: 1fr; gap: 32px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+
+/* =======================================================
+   AGENT VIDEOS — auf Mobile komplett ausblenden
+   ======================================================= */
+@media (max-width: 640px) {
+  .oskar-video,
+  .petra-video {
+    display: none !important;
+  }
 }

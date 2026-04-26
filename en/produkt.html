@@ -547,6 +547,7 @@
 
 <!-- NAV -->
 <nav class="nav">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Menu">
   <div class="container nav-inner">
     <a href="index.html" class="nav-logo"><span class="nav-logo-chevron">»</span>aikyma<span class="nav-logo-sub">applied AI</span></a>
     <div class="nav-links">
@@ -561,7 +562,20 @@
       </div>
       <a href="#" data-cal-popup class="btn btn-primary">Book a demo</a>
     </div>
+    <label for="nav-toggle" class="nav-burger" aria-label="Menu öffnen"><span></span><span></span><span></span></label>
   </div>
+    <div class="nav-mobile-menu">
+      <a href="produkt.html" class="active">Product</a>
+      <a href="approach.html">Approach</a>
+      <a href="team.html">Team</a>
+      <a href="kontakt.html">Contact</a>
+      <div class="nav-mobile-lang">
+        <a href="../produkt.html">DE</a>
+        <span class="sep">/</span>
+        <span class="active">EN</span>
+      </div>
+      <a href="#" data-cal-popup class="nav-mobile-cta">Book demo</a>
+    </div>
 </nav>
 
 <!-- PAGE HERO -->
@@ -3182,5 +3196,6 @@ window.addEventListener('scroll', () => {
   });
 </script>
 
+<script src="../assets/shared.js"></script>
 </body>
 </html>
