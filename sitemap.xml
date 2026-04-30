@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Home -->
+  <url>
+    <loc>https://aikyma.ai/</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/"/>
+  </url>
+
+  <!-- Produkt -->
+  <url>
+    <loc>https://aikyma.ai/produkt.html</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/produkt.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/produkt.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/produkt.html"/>
+  </url>
+
+  <!-- Approach -->
+  <url>
+    <loc>https://aikyma.ai/approach.html</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/approach.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/approach.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/approach.html"/>
+  </url>
+
+  <!-- Team -->
+  <url>
+    <loc>https://aikyma.ai/team.html</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/team.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/team.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/team.html"/>
+  </url>
+
+  <!-- Kontakt -->
+  <url>
+    <loc>https://aikyma.ai/kontakt.html</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/kontakt.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/kontakt.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/kontakt.html"/>
+  </url>
+
+  <!-- EN: Home -->
+  <url>
+    <loc>https://aikyma.ai/en/</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/"/>
+  </url>
+
+  <!-- EN: Produkt -->
+  <url>
+    <loc>https://aikyma.ai/en/produkt.html</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/produkt.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/produkt.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/produkt.html"/>
+  </url>
+
+  <!-- EN: Approach -->
+  <url>
+    <loc>https://aikyma.ai/en/approach.html</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/approach.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/approach.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/approach.html"/>
+  </url>
+
+  <!-- EN: Team -->
+  <url>
+    <loc>https://aikyma.ai/en/team.html</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/team.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/team.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/team.html"/>
+  </url>
+
+  <!-- EN: Kontakt -->
+  <url>
+    <loc>https://aikyma.ai/en/kontakt.html</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/kontakt.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/kontakt.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/kontakt.html"/>
+  </url>
+
+</urlset>
