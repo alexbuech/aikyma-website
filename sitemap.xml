@@ -57,6 +57,17 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/kontakt.html"/>
   </url>
 
+  <!-- Media -->
+  <url>
+    <loc>https://aikyma.ai/media.html</loc>
+    <lastmod>2026-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/media.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/media.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/media.html"/>
+  </url>
+
   <!-- EN: Home -->
   <url>
     <loc>https://aikyma.ai/en/</loc>
@@ -110,6 +121,17 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/kontakt.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/kontakt.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/kontakt.html"/>
+  </url>
+
+  <!-- EN: Media -->
+  <url>
+    <loc>https://aikyma.ai/en/media.html</loc>
+    <lastmod>2026-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://aikyma.ai/media.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aikyma.ai/en/media.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aikyma.ai/media.html"/>
   </url>
 
 </urlset>

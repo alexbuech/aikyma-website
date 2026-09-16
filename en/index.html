@@ -22,7 +22,7 @@
 .hero {
   background: var(--navy-deep);
   color: var(--text-on-dark);
-  padding: calc(72px + 80px) 0 100px;
+  padding: 80px 0 100px;
   position: relative;
   overflow: hidden;
 }
@@ -851,6 +851,7 @@
       <a href="approach.html">Approach</a>
       <a href="team.html">Team</a>
       <a href="kontakt.html">Contact</a>
+      <a href="media.html">Media</a>
       <div class="nav-lang">
         <a href="../index.html" style="text-decoration: none; color: inherit;">DE</a>
         <span>/</span>
@@ -865,6 +866,7 @@
       <a href="approach.html">Approach</a>
       <a href="team.html">Team</a>
       <a href="kontakt.html">Contact</a>
+      <a href="media.html">Media</a>
       <div class="nav-mobile-lang">
         <a href="../index.html">DE</a>
         <span class="sep">/</span>
@@ -873,6 +875,33 @@
       <a href="#" data-cal-popup class="nav-mobile-cta">Book demo</a>
     </div>
 </nav>
+
+<!-- MEDIA BANNER — shows the newest entry from ../assets/media-data.js -->
+<div class="media-banner" id="media-banner"></div>
+<script src="../assets/media-data.js"></script>
+<script>
+(function () {
+  var item = (typeof AIKYMA_MEDIA !== "undefined") ? AIKYMA_MEDIA[0] : null;
+  var el = document.getElementById("media-banner");
+  if (!item || !el) return;
+
+  el.innerHTML =
+    '<div class="media-banner-bar">' +
+      '<div class="container media-banner-inner">' +
+        '<a href="' + item.url + '" target="_blank" rel="noopener noreferrer" class="media-banner-link">' +
+          (item.thumbnail ? '<img class="media-banner-thumb" src="' + item.thumbnail + '" alt="">' : '') +
+          '<span class="media-banner-badge"><span class="media-banner-badge-dot"></span>New</span>' +
+          '<span class="media-banner-text">🎙 ' + item.sourceEn + ': “<strong>' + item.titleEn + '</strong>”</span>' +
+          '<span class="media-banner-cta">Listen now →</span>' +
+        '</a>' +
+        '<a href="media.html" class="media-banner-all">All media</a>' +
+      '</div>' +
+    '</div>';
+
+  var bar = el.querySelector(".media-banner-bar");
+  requestAnimationFrame(function () { bar.classList.add("is-visible"); });
+})();
+</script>
 
 <!-- HERO -->
 <section class="hero">
@@ -1177,6 +1206,7 @@
         <h4>Company</h4>
         <a href="team.html">Team</a>
         <a href="kontakt.html">Contact</a>
+        <a href="media.html">Media</a>
         <a href="kontakt.html#partner">Partner program</a>
       </div>
       <div class="footer-col">
