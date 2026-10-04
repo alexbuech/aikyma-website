@@ -793,19 +793,24 @@
    Custom (third card) — Compare-Visual + 3-way Splitter
    ============================================================ */
 
+/* Inherits padding from .agent-pipeline-wrap container — DO NOT add own padding */
 .compare-visual {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  padding: 0 44px 36px;
   position: relative;
   z-index: 2;
+  padding-bottom: 12px;
 }
 .compare-column {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   padding: 24px 20px;
+  box-sizing: border-box;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 .compare-column-mass {
   background: linear-gradient(155deg, rgba(63, 186, 194, 0.12) 0%, rgba(63, 186, 194, 0.04) 100%);
@@ -899,7 +904,10 @@
   .compare-visual { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 640px) {
-  .compare-visual { padding: 0 20px 24px; }
+  .compare-column { padding: 20px 16px; }
+  .compare-column-title { font-size: 15px; }
+  .compare-points li { font-size: 12px; padding-left: 18px; }
+  .compare-points li::before { left: 0; }
 }
 </style>
 
