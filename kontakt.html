@@ -501,7 +501,7 @@
 /* Factsheet Downloads */
 .factsheets-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-top: 16px;
 }
@@ -563,6 +563,23 @@
 .factsheet-card--customer .factsheet-icon {
   background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy-darker) 100%);
   color: #fff;
+}
+
+/* Variante: Massarbeit-Karte — Navy-Teal-Mix (eigenständig, zwischen Kunden und Partner) */
+.factsheet-card--custom {
+  border-top: 3px solid var(--navy-deep);
+  border-top-color: #2A8A90;
+}
+.factsheet-card--custom:hover {
+  border-color: var(--border-light);
+  border-top-color: #2A8A90;
+}
+.factsheet-card--custom .factsheet-icon {
+  background: linear-gradient(135deg, #2A8A90 0%, var(--navy-deep) 100%);
+  color: #fff;
+}
+.factsheet-card--custom .factsheet-label {
+  color: #2A8A90;
 }
 
 .factsheet-icon {
@@ -673,6 +690,9 @@
   .factsheets-grid { grid-template-columns: 1fr; }
   .faq-grid { grid-template-columns: 1fr; }
 }
+@media (min-width: 1025px) and (max-width: 1180px) {
+  .factsheets-grid { grid-template-columns: 1fr 1fr; }
+}
 @media (max-width: 640px) {
   .form-submit-row { flex-direction: column; align-items: stretch; }
   .form-submit-row .btn { justify-content: center; }
@@ -719,6 +739,7 @@
     <a href="index.html" class="nav-logo"><img src="assets/logo.svg" alt="aikyma · applied AI" class="nav-logo-img"></a>
     <div class="nav-links">
       <a href="produkt.html">Produkt</a>
+      <a href="massarbeit.html">Massarbeit</a>
       <a href="approach.html">Approach</a>
       <a href="team.html">Team</a>
       <a href="kontakt.html" class="active">Kontakt</a>
@@ -730,6 +751,7 @@
   </div>
     <div class="nav-mobile-menu">
       <a href="produkt.html">Produkt</a>
+      <a href="massarbeit.html">Massarbeit</a>
       <a href="approach.html">Approach</a>
       <a href="team.html">Team</a>
       <a href="kontakt.html" class="active">Kontakt</a>
@@ -962,7 +984,7 @@
     <div class="eyebrow">Factsheets</div>
     <h2 class="section-title">Mehr Details zum Lesen.</h2>
     <p class="section-subtitle">
-      Zwei kompakte PDF-Factsheets — abgestimmt auf unterschiedliche Zielgruppen. Ohne E-Mail-Eingabe, direkt herunterladbar.
+      Drei kompakte PDF-Factsheets — abgestimmt auf unterschiedliche Zielgruppen. Ohne E-Mail-Eingabe, direkt herunterladbar.
     </p>
 
     <div class="factsheets-grid">
@@ -973,6 +995,17 @@
           <div class="factsheet-title">Weniger Abtippen. Weniger Fehler. Mehr Wachstum.</div>
           <p class="factsheet-desc">Für Handelsunternehmen: Kennzahlen, Ergebnisse, Vorgehen. Zum Teilen im Management-Meeting.</p>
           <div class="factsheet-meta">3 Seiten · DE · PDF</div>
+        </div>
+        <div class="factsheet-arrow">↓</div>
+      </a>
+
+      <a href="assets/factsheets/aikyma-factsheet-massarbeit-de.pdf" download class="factsheet-card factsheet-card--custom">
+        <div class="factsheet-icon">PDF</div>
+        <div class="factsheet-info">
+          <div class="factsheet-label">Für individuellen Bedarf</div>
+          <div class="factsheet-title">Massarbeit auf industriellem Fundament.</div>
+          <p class="factsheet-desc">Für Mittelstand mit eigenen Prozessen: Framework, Vorgehen, tiefe ERP/CRM/PIM-Integration.</p>
+          <div class="factsheet-meta">4 Seiten · DE · PDF</div>
         </div>
         <div class="factsheet-arrow">↓</div>
       </a>
@@ -1051,6 +1084,7 @@
         <h4>Produkt</h4>
         <a href="produkt.html#oscar">Oskar</a>
         <a href="produkt.html#petra">Petra</a>
+        <a href="massarbeit.html">Massarbeit</a>
         <a href="approach.html">Approach</a>
       </div>
       <div class="footer-col">

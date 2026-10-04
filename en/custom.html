@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom — aikyma.ai</title>
+<meta name="description" content="Tailored AI solutions for mid-sized companies — on our proven, production-grade framework. With deep ERP, CRM and PIM integration.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/shared.css">
+
+<style>
+.hero-cta-row { display: flex; gap: 16px; margin-top: 32px; flex-wrap: wrap; }
+
+.pattern-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px; }
+.pattern-card { background: #fff; border: 1px solid var(--border-light); border-radius: 12px; padding: 32px; transition: all 0.2s; }
+.pattern-card:hover { transform: translateY(-4px); border-color: var(--teal-line); box-shadow: 0 20px 40px -12px rgba(30, 42, 58, 0.10); }
+.pattern-card-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--teal-soft); color: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; font-weight: 700; }
+.pattern-card-title { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--navy-deep); margin-bottom: 8px; letter-spacing: -0.01em; }
+.pattern-card-text { font-size: 14.5px; line-height: 1.6; color: var(--text-on-light-muted); }
+
+.framework-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+.framework-card { background: linear-gradient(155deg, #243346 0%, var(--navy-darker) 100%); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px; padding: 28px 24px; color: var(--text-on-dark); transition: all 0.3s; position: relative; overflow: hidden; }
+.framework-card:hover { transform: translateY(-4px); border-color: var(--teal-line); }
+.framework-card-featured { border: 2px solid var(--teal); box-shadow: 0 20px 40px -12px rgba(63, 186, 194, 0.2); }
+.framework-card-featured::before { content: 'Central'; position: absolute; top: 16px; right: 16px; padding: 4px 10px; background: var(--teal); color: var(--navy-deep); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 100px; }
+.framework-card-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(63, 186, 194, 0.15); color: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 16px; font-weight: 700; }
+.framework-card-title { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--text-on-dark); margin-bottom: 8px; letter-spacing: -0.01em; line-height: 1.25; }
+.framework-card-text { font-size: 13px; line-height: 1.55; color: var(--text-on-dark-muted); }
+
+.framework-note { background: var(--bg-light); border-left: 3px solid var(--teal); padding: 24px 28px; margin-top: 32px; border-radius: 0 10px 10px 0; font-size: 15px; line-height: 1.6; color: var(--text-on-light); }
+.framework-note strong { color: var(--navy-deep); }
+
+.journey { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 32px; position: relative; }
+.journey::before { content: ''; position: absolute; top: 38px; left: 10%; right: 10%; height: 1px; background: repeating-linear-gradient(to right, var(--teal-line) 0, var(--teal-line) 8px, transparent 8px, transparent 16px); z-index: 0; }
+.journey-step { position: relative; z-index: 1; text-align: center; padding: 0 10px; }
+.journey-num { width: 72px; height: 72px; border-radius: 50%; background: #fff; border: 2px solid var(--teal); color: var(--teal); font-family: var(--font-display); font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; transition: all 0.3s; box-shadow: 0 0 0 6px #fff; }
+.journey-step:hover .journey-num { background: var(--teal); color: #fff; transform: scale(1.08); }
+.journey-title { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--navy-deep); margin-bottom: 6px; letter-spacing: -0.01em; }
+.journey-duration { font-size: 11px; color: var(--teal); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
+.journey-desc { font-size: 13px; line-height: 1.5; color: var(--text-on-light-muted); }
+
+.indicator-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 16px; }
+.indicator-card { background: linear-gradient(155deg, #243346 0%, var(--navy-darker) 100%); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px; padding: 36px 32px; color: var(--text-on-dark); position: relative; overflow: hidden; transition: all 0.3s; }
+.indicator-card:hover { transform: translateY(-4px); border-color: var(--teal-line); }
+.indicator-num { font-family: var(--font-display); font-size: 68px; font-weight: 800; color: var(--teal); line-height: 1; opacity: 0.35; margin-bottom: -20px; letter-spacing: -0.04em; }
+.indicator-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.01em; }
+.indicator-text { font-size: 14px; line-height: 1.6; color: var(--text-on-dark-muted); }
+
+.target-list { background: #fff; border: 1px solid var(--border-light); border-radius: 14px; padding: 40px; margin-top: 24px; }
+.target-list h3 { font-family: var(--font-display); font-size: 20px; color: var(--navy-deep); margin-bottom: 20px; letter-spacing: -0.01em; }
+.target-list ul { list-style: none; padding: 0; }
+.target-list li { padding: 14px 0; padding-left: 32px; position: relative; font-size: 15px; line-height: 1.55; color: var(--text-on-light); border-bottom: 1px solid var(--border-light); }
+.target-list li:last-child { border-bottom: none; }
+.target-list li::before { content: '✓'; position: absolute; left: 0; top: 14px; width: 20px; height: 20px; background: var(--teal); color: var(--navy-deep); border-radius: 50%; text-align: center; line-height: 20px; font-size: 12px; font-weight: 700; }
+
+@media (max-width: 1024px) {
+  .pattern-grid { grid-template-columns: 1fr; }
+  .framework-grid { grid-template-columns: 1fr 1fr; }
+  .indicator-grid { grid-template-columns: 1fr; }
+  .journey { grid-template-columns: 1fr 1fr; gap: 32px 16px; }
+  .journey::before { display: none; }
+}
+@media (max-width: 640px) {
+  .framework-grid { grid-template-columns: 1fr; }
+  .journey { grid-template-columns: 1fr; }
+  .target-list { padding: 28px 24px; }
+  .pattern-card { padding: 28px 24px; }
+  .indicator-card { padding: 28px 24px; }
+}
+</style>
+
+<!-- SEO: canonical & hreflang -->
+<link rel="canonical" href="https://aikyma.ai/en/custom.html">
+<link rel="alternate" hreflang="de" href="https://aikyma.ai/massarbeit.html">
+<link rel="alternate" hreflang="en" href="https://aikyma.ai/en/custom.html">
+<link rel="alternate" hreflang="x-default" href="https://aikyma.ai/massarbeit.html">
+
+<!-- SEO: Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aikyma.ai/en/custom.html">
+<meta property="og:title" content="Custom · Tailored AI solutions on our proven framework">
+<meta property="og:description" content="Tailored AI solutions for mid-sized companies — on our proven, production-grade framework. With deep ERP, CRM and PIM integration.">
+<meta property="og:image" content="https://aikyma.ai/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="aikyma">
+
+<!-- SEO: Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Custom · Tailored AI solutions on our proven framework">
+<meta name="twitter:description" content="Tailored AI solutions for mid-sized companies — on our proven, production-grade framework.">
+<meta name="twitter:image" content="https://aikyma.ai/assets/og-image.png">
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon-180.png">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Menu">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo"><img src="../assets/logo.svg" alt="aikyma · applied AI" class="nav-logo-img"></a>
+    <div class="nav-links">
+      <a href="produkt.html">Product</a>
+      <a href="custom.html" class="active">Custom</a>
+      <a href="approach.html">Approach</a>
+      <a href="team.html">Team</a>
+      <a href="kontakt.html">Contact</a>
+      <a href="media.html">Media</a>
+      <div class="nav-lang"><a href="../massarbeit.html" style="text-decoration: none; color: inherit;">DE</a><span>/</span><span class="active">EN</span></div>
+      <a href="#" data-cal-popup class="btn btn-primary">Book demo</a>
+    </div>
+    <label for="nav-toggle" class="nav-burger" aria-label="Open menu"><span></span><span></span><span></span></label>
+  </div>
+    <div class="nav-mobile-menu">
+      <a href="produkt.html">Product</a>
+      <a href="custom.html" class="active">Custom</a>
+      <a href="approach.html">Approach</a>
+      <a href="team.html">Team</a>
+      <a href="kontakt.html">Contact</a>
+      <a href="media.html">Media</a>
+      <div class="nav-mobile-lang">
+        <a href="../massarbeit.html">DE</a>
+        <span class="sep">/</span>
+        <span class="active">EN</span>
+      </div>
+      <a href="#" data-cal-popup class="nav-mobile-cta">Book demo</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="page-hero-circles">
+    <div class="page-hero-circle page-hero-circle-1"></div>
+    <div class="page-hero-circle page-hero-circle-2"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <div class="page-hero-eyebrow">Custom</div>
+    <h1>When standard products <span class="accent">aren't enough.</span></h1>
+    <p class="page-hero-lede">
+      Tailored AI solutions for mid-sized companies — on our proven, production-grade framework. With deep integration into your existing ERP, CRM and PIM landscape. Live in 4–8 weeks.
+    </p>
+    <div class="hero-cta-row">
+      <a href="#" data-cal-popup class="btn btn-primary btn-lg">Book a call <span class="btn-arrow">→</span></a>
+      <a href="../assets/factsheets/aikyma-factsheet-custom-en.pdf" download class="btn btn-ghost btn-lg">Factsheet (PDF) ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- PATTERN: WHAT WE SEE -->
+<section class="section section-light">
+  <div class="container">
+    <div class="eyebrow">The pattern we see</div>
+    <h2 class="section-title">PoC is easy. Production is hard.</h2>
+    <p class="section-subtitle">
+      Mid-sized companies today can build their first AI PoCs on their own. What's regularly missing is the ability to turn a working PoC into a productive, broadly usable operation — sustainably.
+    </p>
+
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <div class="pattern-card-icon">1</div>
+        <div class="pattern-card-title">Operations know-how is scarce</div>
+        <p class="pattern-card-text">Experience in safely running, monitoring and continuously developing AI solutions is rare in mid-sized companies. Developers aren't automatically operations teams.</p>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-card-icon">2</div>
+        <div class="pattern-card-title">Resources dry up after the PoC</div>
+        <p class="pattern-card-text">Time and personnel for operations, monitoring and development are typically depleted after a PoC. The solution stalls before it can scale.</p>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-card-icon">3</div>
+        <div class="pattern-card-title">Standards move fast</div>
+        <p class="pattern-card-text">What qualifies as a proven pattern today will be outdated in six months. Without a methodical foundation, an AI solution gets stuck in its year of development.</p>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-card-icon">4</div>
+        <div class="pattern-card-title">Integration stays shallow</div>
+        <p class="pattern-card-text">PoCs often work with CSV exports and manual data handovers. Deep, bidirectional integration into ERP, CRM and PIM — the actual production stage — remains an open construction site.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO QUOTE -->
+<section class="section section-dark section-tight">
+  <div class="container manifesto">
+    <div class="manifesto-quote">
+      A PoC shows feasibility. Production shows impact. Between the two lies the work we take on.
+    </div>
+    <div class="manifesto-attribution">— <span class="manifesto-attribution-name">aikyma team</span></div>
+  </div>
+</section>
+
+<!-- FRAMEWORK BUILDING BLOCKS -->
+<section class="section section-tinted">
+  <div class="container">
+    <div class="eyebrow">Framework capabilities</div>
+    <h2 class="section-title">What our framework delivers.</h2>
+    <p class="section-subtitle">
+      The foundation that turns an AI PoC into a reliable, multi-tenant, auditable operation. Nine building blocks — vertical-independent, production-proven.
+    </p>
+
+    <div class="framework-grid">
+      <div class="framework-card framework-card-featured">
+        <div class="framework-card-icon">⚡</div>
+        <div class="framework-card-title">ERP / CRM / PIM Integration</div>
+        <p class="framework-card-text">Production-proven connectors to Business Central, SAP (incl. IDoc), industry ERPs as well as CRM and PIM systems. Bidirectional data flows, no silos.</p>
+      </div>
+      <div class="framework-card">
+        <div class="framework-card-icon">◫</div>
+        <div class="framework-card-title">Multi-tenant Runtime</div>
+        <p class="framework-card-text">One image, one container per tenant. Production-proven — including hardened setup in third-party Azure.</p>
+      </div>
+      <div class="framework-card">
+        <div class="framework-card-icon">◆</div>
+        <div class="framework-card-title">Plugin Architecture</div>
+        <p class="framework-card-text">Customer-specific logic as an isolated plugin — without touching the core. Fault-tolerant, cleanly versioned.</p>
+      </div>
+      <div class="framework-card">
+        <div class="framework-card-icon">🔒</div>
+        <div class="framework-card-title">Secret Management</div>
+        <p class="framework-card-text">Encrypted configuration per tenant, optionally with Azure Key Vault. Credentials never in code, never in the image.</p>
+      </div>
+      <div class="framework-card">
+        <div class="framework-card-icon">↻</div>
+        <div class="framework-card-title">State Machine &amp; HITL</div>
+        <p class="framework-card-text">Every transaction is traceable. Resume exactly where it broke after a crash. Structured review instead of inbox chaos.</p>
+      </div>
+      <div class="framework-card">
+        <div class="framework-card-icon">💬</div>
+        <div class="framework-card-title">Dialog Agent Pattern</div>
+        <p class="framework-card-text">Autonomous AI precisely where it belongs — at the human-dialog boundary. Never on safety-critical transactions.</p>
+      </div>
+      <div class="framework-card">
+        <div class="framework-card-icon">◉</div>
+        <div class="framework-card-title">Admin Server &amp; Roles</div>
+        <p class="framework-card-text">Three server modes (Full / Control Plane / Tenant), role and permission model, CLI for operations.</p>
+      </div>
+      <div class="framework-card">
+        <div class="framework-card-icon">▲</div>
+        <div class="framework-card-title">Governed Learning</div>
+        <p class="framework-card-text">Rule engine, teach-test-confirm, layered memory. AI learns — but in a controlled and traceable way.</p>
+      </div>
+      <div class="framework-card">
+        <div class="framework-card-icon">⇄</div>
+        <div class="framework-card-title">Pluggable Connectors</div>
+        <p class="framework-card-text">Email, LLM, database — all selectable via configuration, not through code forks. No vendor lock-in.</p>
+      </div>
+    </div>
+
+    <div class="framework-note">
+      <strong>What this means in practice:</strong> You don't have to invent multi-tenancy, HITL workflows, secret management, audit trails, container deployment, dialog patterns, or deep integration into your target systems. These production-proven building blocks are available from day one. Your investment flows into what actually creates value for you — the part of the solution tailored to your process.
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY: 5 STEPS -->
+<section class="section section-light">
+  <div class="container">
+    <div class="eyebrow">How we work</div>
+    <h2 class="section-title">Five steps to production.</h2>
+    <p class="section-subtitle">Bottom-up, not top-down. No six-month strategy exercises — just an MVP that goes live after eight weeks.</p>
+
+    <div class="journey">
+      <div class="journey-step">
+        <div class="journey-num">1</div>
+        <div class="journey-title">Discovery</div>
+        <div class="journey-duration">30 minutes</div>
+        <div class="journey-desc">Initial call, no commitment. An honest assessment of whether and where automation makes sense.</div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-num">2</div>
+        <div class="journey-title">Workshop</div>
+        <div class="journey-duration">1–2 days</div>
+        <div class="journey-desc">Use-case prioritization. Which target systems (ERP, CRM, PIM) need to be connected?</div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-num">3</div>
+        <div class="journey-title">Pilot (MVP)</div>
+        <div class="journey-duration">4–8 weeks</div>
+        <div class="journey-desc">Tailored MVP on the framework — including production integration with your target systems.</div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-num">4</div>
+        <div class="journey-title">Proposal</div>
+        <div class="journey-duration">transparent</div>
+        <div class="journey-desc">Detailed proposal with integration and operations costs. Optionally with savings-sharing.</div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-num">5</div>
+        <div class="journey-title">Production</div>
+        <div class="journey-duration">ongoing</div>
+        <div class="journey-desc">Monitoring, development, adaptation to new AI standards.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASE CHECK -->
+<section class="section section-tinted">
+  <div class="container">
+    <div class="eyebrow">Use case check</div>
+    <h2 class="section-title">Is this your case?</h2>
+    <p class="section-subtitle">Three indicators that let us assess in ten minutes whether Custom is the right path for you.</p>
+
+    <div class="indicator-grid">
+      <div class="indicator-card">
+        <div class="indicator-num">1</div>
+        <h3 class="indicator-title">Process specificity</h3>
+        <p class="indicator-text">
+          Your process is too individual for standard tools, but too valuable to leave manual. Industry logic, in-house rules, grown workflows — standard SaaS hits its limits here.
+        </p>
+      </div>
+      <div class="indicator-card">
+        <div class="indicator-num">2</div>
+        <h3 class="indicator-title">Integration depth</h3>
+        <p class="indicator-text">
+          The solution has to be deeply integrated into your ERP, CRM or PIM world. Not just reports and exports — but bidirectional data flow that actually takes over processes.
+        </p>
+      </div>
+      <div class="indicator-card">
+        <div class="indicator-num">3</div>
+        <h3 class="indicator-title">Operations perspective</h3>
+        <p class="indicator-text">
+          You want more than a PoC — a solution that runs sustainably, with monitoring, development and adaptation to new standards. Without building your own AI ops team.
+        </p>
+      </div>
+    </div>
+
+    <div class="pricing-note" style="margin-top: 48px;">
+      <strong>Need a quick assessment?</strong> Send us a short description of your process and system landscape. We'll come back within 48 hours with a qualified first assessment — no commitment.
+    </div>
+  </div>
+</section>
+
+<!-- TARGET GROUP -->
+<section class="section section-light">
+  <div class="container">
+    <div class="eyebrow">Who Custom is for</div>
+    <h2 class="section-title">Mid-sized companies with AI ambition.</h2>
+    <p class="section-subtitle">
+      Custom is for mid-sized companies in the DACH region that take their processes seriously and seek a reliable partnership beyond the PoC.
+    </p>
+
+    <div class="target-list">
+      <h3>Custom is a fit if you…</h3>
+      <ul>
+        <li>have already run first AI experiments or PoCs in-house</li>
+        <li>are hitting the limits of standard SaaS tools for your specific processes</li>
+        <li>need a tailored solution — but don't want to run the infrastructure yourself</li>
+        <li>want an AI solution deeply integrated into your existing ERP, CRM or PIM landscape</li>
+        <li>are looking for a reliable partnership beyond the PoC — in development, operations and evolution</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="final-cta-circles"><div class="c c1"></div><div class="c c2"></div><div class="c c3"></div></div>
+  <div class="container final-cta-inner">
+    <h2>Ready to automate your process <span class="accent">on your own terms?</span></h2>
+    <p>30 minutes are enough to see whether Custom makes sense for your processes — or whether it doesn't. We'll say both honestly.</p>
+    <div class="final-cta-row">
+      <a href="#" data-cal-popup class="btn btn-primary btn-lg">Book a call <span class="btn-arrow">→</span></a>
+      <a href="../assets/factsheets/aikyma-factsheet-custom-en.pdf" download class="btn btn-ghost btn-lg">Factsheet (PDF) ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo"><img src="../assets/logo.svg" alt="aikyma · applied AI" class="footer-brand-logo-img"></div>
+        <p class="footer-brand-tagline">AI-native process automation for trade and manufacturing. Built in Basel, live across DACH.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="produkt.html#oscar">Oskar</a>
+        <a href="produkt.html#petra">Petra</a>
+        <a href="custom.html">Custom</a>
+        <a href="approach.html">Approach</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="team.html">Team</a>
+        <a href="kontakt.html">Contact</a>
+        <a href="media.html">Media</a>
+        <a href="kontakt.html#partner">Partner program</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:contact@aikyma.ai">contact@aikyma.ai</a>
+        <a>Blauenstrasse 6<br>4054 Basel, Switzerland</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 aikyma.ai · All rights reserved</div>
+      <div class="footer-legal">
+        <a href="#">Imprint</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav = document.querySelector('.nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 20) { nav.classList.add('scrolled'); }
+  else { nav.classList.remove('scrolled'); }
+});
+</script>
+
+<script type="text/javascript">
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", "popup-discover", { origin: "https://cal.com" });
+  Cal.ns["popup-discover"]("ui", {
+    theme: "light",
+    cssVarsPerTheme: { light: { "cal-brand": "#3FBAC2" } },
+    hideEventTypeDetails: false,
+    layout: "month_view"
+  });
+  document.querySelectorAll('[data-cal-popup]').forEach(el => {
+    el.setAttribute('data-cal-link', 'alexander-buch-sbw9zu/discover-call');
+    el.setAttribute('data-cal-namespace', 'popup-discover');
+    el.setAttribute('data-cal-config', '{"layout":"month_view","theme":"light"}');
+  });
+</script>
+
+<script src="../assets/shared.js"></script>
+</body>
+</html>

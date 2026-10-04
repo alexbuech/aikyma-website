@@ -501,7 +501,7 @@
 /* Factsheet Downloads */
 .factsheets-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-top: 16px;
 }
@@ -563,6 +563,23 @@
 .factsheet-card--customer .factsheet-icon {
   background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy-darker) 100%);
   color: #fff;
+}
+
+/* Variante: Custom-Karte — Navy-Teal-Mix */
+.factsheet-card--custom {
+  border-top: 3px solid var(--navy-deep);
+  border-top-color: #2A8A90;
+}
+.factsheet-card--custom:hover {
+  border-color: var(--border-light);
+  border-top-color: #2A8A90;
+}
+.factsheet-card--custom .factsheet-icon {
+  background: linear-gradient(135deg, #2A8A90 0%, var(--navy-deep) 100%);
+  color: #fff;
+}
+.factsheet-card--custom .factsheet-label {
+  color: #2A8A90;
 }
 
 .factsheet-icon {
@@ -673,6 +690,9 @@
   .factsheets-grid { grid-template-columns: 1fr; }
   .faq-grid { grid-template-columns: 1fr; }
 }
+@media (min-width: 1025px) and (max-width: 1180px) {
+  .factsheets-grid { grid-template-columns: 1fr 1fr; }
+}
 @media (max-width: 640px) {
   .form-submit-row { flex-direction: column; align-items: stretch; }
   .form-submit-row .btn { justify-content: center; }
@@ -719,6 +739,7 @@
     <a href="index.html" class="nav-logo"><img src="../assets/logo.svg" alt="aikyma · applied AI" class="nav-logo-img"></a>
     <div class="nav-links">
       <a href="produkt.html">Product</a>
+      <a href="custom.html">Custom</a>
       <a href="approach.html">Approach</a>
       <a href="team.html">Team</a>
       <a href="kontakt.html" class="active">Contact</a>
@@ -730,6 +751,7 @@
   </div>
     <div class="nav-mobile-menu">
       <a href="produkt.html">Product</a>
+      <a href="custom.html">Custom</a>
       <a href="approach.html">Approach</a>
       <a href="team.html">Team</a>
       <a href="kontakt.html" class="active">Contact</a>
@@ -963,7 +985,7 @@
     <div class="eyebrow">Factsheets</div>
     <h2 class="section-title">More details to read.</h2>
     <p class="section-subtitle">
-      Two compact PDF factsheets — tailored to different audiences. No email required, directly downloadable.
+      Three compact PDF factsheets — tailored to different audiences. No email required, directly downloadable.
     </p>
 
     <div class="factsheets-grid">
@@ -974,6 +996,17 @@
           <div class="factsheet-title">Less data entry. Fewer errors. More growth.</div>
           <p class="factsheet-desc">For commerce companies: key figures, results, approach. For sharing in management meetings.</p>
           <div class="factsheet-meta">3 pages · EN · PDF</div>
+        </div>
+        <div class="factsheet-arrow">↓</div>
+      </a>
+
+      <a href="../assets/factsheets/aikyma-factsheet-custom-en.pdf" download class="factsheet-card factsheet-card--custom">
+        <div class="factsheet-icon">PDF</div>
+        <div class="factsheet-info">
+          <div class="factsheet-label">For custom needs</div>
+          <div class="factsheet-title">Tailored automation on an industrial foundation.</div>
+          <p class="factsheet-desc">For mid-market with specific processes: framework, methodology, deep ERP/CRM/PIM integration.</p>
+          <div class="factsheet-meta">4 pages · EN · PDF</div>
         </div>
         <div class="factsheet-arrow">↓</div>
       </a>
@@ -1052,6 +1085,7 @@
         <h4>Product</h4>
         <a href="produkt.html#oscar">Oskar</a>
         <a href="produkt.html#petra">Petra</a>
+        <a href="custom.html">Custom</a>
         <a href="approach.html">Approach</a>
       </div>
       <div class="footer-col">
